@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Home, Sparkles, HardHat, Bed, Bath, Paintbrush, AlertCircle } from "lucide-react";
+import { Home, Sparkles, HardHat, Bed, Bath, Paintbrush, AlertCircle, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import { QuestionContainer } from "./QuestionContainer";
 import { OptionCard } from "./OptionCard";
 import { CheckboxOption } from "./CheckboxOption";
@@ -11,20 +12,25 @@ import { CallbackDialog } from "./CallbackDialog";
 import {
   calculateDomesticQuote,
   calculateTCQuote,
+  calculateSiteWelfareQuote,
   DomesticQuoteData,
   TCQuoteData,
+  SiteWelfareQuoteData,
   QuoteResult,
 } from "@/lib/pricingLogic";
 import logo from "@/assets/logo.jpeg";
 
-type FlowType = "entry" | "domestic" | "tc" | "exit";
-type ServiceType = "regular" | "end-of-tenancy" | "deep" | "post-construction";
+type FlowType = "entry" | "domestic" | "tc" | "site-welfare" | "exit";
+type ServiceType = "regular" | "end-of-tenancy" | "deep" | "post-construction" | "site-welfare";
 type Bedrooms = 1 | 2 | 3 | 4;
 type Bathrooms = 1 | 2 | 3;
 type Condition = "light" | "average" | "heavy";
 type TCBathrooms = "1" | "1+wc" | "2+";
 type TCCondition = "light" | "typical" | "heavy";
 type PostConstructionType = "tc" | "private" | "commercial";
+type ToiletShowerScale = "1-2" | "3-5" | "6+";
+type DailyOccupancy = "1-5" | "6-10" | "11-20" | "20+";
+type CleaningFrequency = "one-off" | "weekly" | "twice-weekly" | "daily";
 
 interface QuestionnaireState {
   flow: FlowType;
@@ -40,6 +46,14 @@ interface QuestionnaireState {
   tcBathrooms: TCBathrooms | null;
   worksCompleted: string[];
   siteCondition: TCCondition | null;
+  // Site Welfare specific
+  cabinCount: number;
+  cabinUses: string[];
+  toiletShowerScale: ToiletShowerScale | null;
+  dailyOccupancy: DailyOccupancy | null;
+  cleaningFrequency: CleaningFrequency | null;
+  accessDetails: string[];
+  accessNotes: string;
   // Results
   result: QuoteResult | null;
   exitReason: "large-property" | "private-commercial" | null;
@@ -60,6 +74,13 @@ const initialState: QuestionnaireState = {
   tcBathrooms: null,
   worksCompleted: [],
   siteCondition: null,
+  cabinCount: 1,
+  cabinUses: [],
+  toiletShowerScale: null,
+  dailyOccupancy: null,
+  cleaningFrequency: null,
+  accessDetails: [],
+  accessNotes: "",
   result: null,
   exitReason: null,
   showDeepCleanSuggestion: false,
@@ -100,6 +121,8 @@ export function PricingQuestionnaire() {
     updateState({ serviceType: type });
     if (type === "post-construction") {
       updateState({ flow: "entry", step: 2 });
+    } else if (type === "site-welfare") {
+      updateState({ flow: "site-welfare", step: 1 });
     } else if (type === "deep") {
       // Pre-select deep clean add-ons
       updateState({ 
@@ -242,6 +265,61 @@ export function PricingQuestionnaire() {
     updateState({ result, step: 5, siteCondition: condition });
   };
 
+  // Site Welfare flow handlers
+  const setCabinCount = (count: number) => {
+    updateState({ cabinCount: count, step: 2 });
+  };
+
+  const toggleCabinUse = (use: string) => {
+    const currentUses = state.cabinUses || [];
+    const newUses = currentUses.includes(use)
+      ? currentUses.filter((u) => u !== use)
+      : [...currentUses, use];
+    updateState({ cabinUses: newUses });
+  };
+
+  const confirmCabinUses = () => {
+    const hasToiletsOrShowers = state.cabinUses.includes('toilets') || state.cabinUses.includes('showers');
+    if (hasToiletsOrShowers) {
+      updateState({ step: 3 });
+    } else {
+      updateState({ step: 4 });
+    }
+  };
+
+  const selectToiletShowerScale = (scale: ToiletShowerScale) => {
+    updateState({ toiletShowerScale: scale, step: 4 });
+  };
+
+  const selectDailyOccupancy = (occupancy: DailyOccupancy) => {
+    updateState({ dailyOccupancy: occupancy, step: 5 });
+  };
+
+  const selectCleaningFrequency = (frequency: CleaningFrequency) => {
+    updateState({ cleaningFrequency: frequency, step: 6 });
+  };
+
+  const toggleAccessDetail = (detail: string) => {
+    const currentDetails = state.accessDetails || [];
+    const newDetails = currentDetails.includes(detail)
+      ? currentDetails.filter((d) => d !== detail)
+      : [...currentDetails, detail];
+    updateState({ accessDetails: newDetails });
+  };
+
+  const submitSiteWelfareQuote = () => {
+    const quoteData: SiteWelfareQuoteData = {
+      cabinCount: state.cabinCount,
+      cabinUses: state.cabinUses,
+      toiletShowerScale: state.toiletShowerScale,
+      dailyOccupancy: state.dailyOccupancy as DailyOccupancy,
+      frequency: state.cleaningFrequency as CleaningFrequency,
+      accessDetails: state.accessDetails,
+    };
+    const result = calculateSiteWelfareQuote(quoteData);
+    updateState({ result, step: 7 });
+  };
+
   const resetQuestionnaire = () => {
     setState(initialState);
   };
@@ -249,6 +327,10 @@ export function PricingQuestionnaire() {
   // Calculate total steps based on flow
   const getDomesticTotalSteps = () => 6;
   const getTCTotalSteps = () => 5;
+  const getSiteWelfareTotalSteps = () => {
+    const hasToiletsOrShowers = state.cabinUses.includes('toilets') || state.cabinUses.includes('showers');
+    return hasToiletsOrShowers ? 7 : 6;
+  };
 
   // Entry screen
   if (state.flow === "entry" && state.step === 0) {
@@ -315,6 +397,14 @@ export function PricingQuestionnaire() {
           description="Builder's clean or handover cleaning"
           selected={state.serviceType === "post-construction"}
           onClick={() => selectServiceType("post-construction")}
+          variant="large"
+        />
+        <OptionCard
+          icon={Building2}
+          title="Site welfare cleaning"
+          description="Portable cabins, toilets, canteens"
+          selected={state.serviceType === "site-welfare"}
+          onClick={() => selectServiceType("site-welfare")}
           variant="large"
         />
       </QuestionContainer>
@@ -692,6 +782,235 @@ export function PricingQuestionnaire() {
 
     // Step 5: Result
     if (state.step === 5 && state.result) {
+      return (
+        <>
+          <ResultScreen
+            result={state.result}
+            onRequestCallback={() => setCallbackOpen(true)}
+          />
+          <CallbackDialog open={callbackOpen} onOpenChange={setCallbackOpen} />
+        </>
+      );
+    }
+  }
+
+  // SITE WELFARE FLOW
+  if (state.flow === "site-welfare") {
+    const hasToiletsOrShowers = state.cabinUses.includes('toilets') || state.cabinUses.includes('showers');
+    
+    // Adjust step numbers based on whether toilet/shower scale is shown
+    const getAdjustedStep = () => {
+      if (!hasToiletsOrShowers && state.step >= 3) {
+        return state.step + 1;
+      }
+      return state.step;
+    };
+
+    // Step 1: Number of cabins
+    if (state.step === 1) {
+      return (
+        <QuestionContainer
+          currentStep={1}
+          totalSteps={getSiteWelfareTotalSteps()}
+          question="How many site cabins are on site?"
+          onBack={() => updateState({ flow: "entry", step: 1, serviceType: null })}
+        >
+          <div className="grid grid-cols-3 gap-3">
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+              <OptionCard
+                key={num}
+                title={num === 10 ? "10+" : `${num}`}
+                selected={state.cabinCount === num}
+                onClick={() => setCabinCount(num)}
+              />
+            ))}
+          </div>
+        </QuestionContainer>
+      );
+    }
+
+    // Step 2: Cabin use
+    if (state.step === 2) {
+      const cabinUseOptions = [
+        { id: "toilets", label: "Toilets" },
+        { id: "showers", label: "Showers" },
+        { id: "canteen", label: "Canteen / break room" },
+        { id: "drying", label: "Drying room" },
+        { id: "office", label: "Site office" },
+      ];
+
+      return (
+        <QuestionContainer
+          currentStep={2}
+          totalSteps={getSiteWelfareTotalSteps()}
+          question="What are the cabins used for?"
+          helperText="This helps us allocate the correct time and materials."
+          onBack={() => updateState({ step: 1 })}
+        >
+          {cabinUseOptions.map((option) => (
+            <CheckboxOption
+              key={option.id}
+              label={option.label}
+              checked={(state.cabinUses || []).includes(option.id)}
+              onChange={() => toggleCabinUse(option.id)}
+            />
+          ))}
+          <div className="pt-4">
+            <Button 
+              size="lg" 
+              className="w-full" 
+              onClick={confirmCabinUses}
+              disabled={state.cabinUses.length === 0}
+            >
+              Continue
+            </Button>
+          </div>
+        </QuestionContainer>
+      );
+    }
+
+    // Step 3: Toilet/shower scale (conditional)
+    if (state.step === 3 && hasToiletsOrShowers) {
+      return (
+        <QuestionContainer
+          currentStep={3}
+          totalSteps={getSiteWelfareTotalSteps()}
+          question="How many toilet cubicles / showers are there?"
+          onBack={() => updateState({ step: 2 })}
+        >
+          <OptionCard
+            title="1–2"
+            selected={state.toiletShowerScale === "1-2"}
+            onClick={() => selectToiletShowerScale("1-2")}
+          />
+          <OptionCard
+            title="3–5"
+            selected={state.toiletShowerScale === "3-5"}
+            onClick={() => selectToiletShowerScale("3-5")}
+          />
+          <OptionCard
+            title="6+"
+            selected={state.toiletShowerScale === "6+"}
+            onClick={() => selectToiletShowerScale("6+")}
+          />
+        </QuestionContainer>
+      );
+    }
+
+    // Step 4: Daily occupancy
+    if (state.step === 4 || (state.step === 3 && !hasToiletsOrShowers)) {
+      const currentStep = hasToiletsOrShowers ? 4 : 3;
+      return (
+        <QuestionContainer
+          currentStep={currentStep}
+          totalSteps={getSiteWelfareTotalSteps()}
+          question="Approx. how many people use the welfare facilities daily?"
+          onBack={() => updateState({ step: hasToiletsOrShowers ? 3 : 2 })}
+        >
+          <OptionCard
+            title="1–5"
+            selected={state.dailyOccupancy === "1-5"}
+            onClick={() => selectDailyOccupancy("1-5")}
+          />
+          <OptionCard
+            title="6–10"
+            selected={state.dailyOccupancy === "6-10"}
+            onClick={() => selectDailyOccupancy("6-10")}
+          />
+          <OptionCard
+            title="11–20"
+            selected={state.dailyOccupancy === "11-20"}
+            onClick={() => selectDailyOccupancy("11-20")}
+          />
+          <OptionCard
+            title="20+"
+            selected={state.dailyOccupancy === "20+"}
+            onClick={() => selectDailyOccupancy("20+")}
+          />
+        </QuestionContainer>
+      );
+    }
+
+    // Step 5: Cleaning frequency
+    if (state.step === 5 || (state.step === 4 && !hasToiletsOrShowers)) {
+      const currentStep = hasToiletsOrShowers ? 5 : 4;
+      return (
+        <QuestionContainer
+          currentStep={currentStep}
+          totalSteps={getSiteWelfareTotalSteps()}
+          question="How often do you need cleaning?"
+          onBack={() => updateState({ step: hasToiletsOrShowers ? 4 : 3 })}
+        >
+          <OptionCard
+            title="One-off"
+            description="Single visit"
+            selected={state.cleaningFrequency === "one-off"}
+            onClick={() => selectCleaningFrequency("one-off")}
+          />
+          <OptionCard
+            title="Weekly"
+            description="Once per week"
+            selected={state.cleaningFrequency === "weekly"}
+            onClick={() => selectCleaningFrequency("weekly")}
+          />
+          <OptionCard
+            title="Twice weekly"
+            description="Two visits per week"
+            selected={state.cleaningFrequency === "twice-weekly"}
+            onClick={() => selectCleaningFrequency("twice-weekly")}
+          />
+          <OptionCard
+            title="Daily (Mon–Fri)"
+            description="Five visits per week"
+            selected={state.cleaningFrequency === "daily"}
+            onClick={() => selectCleaningFrequency("daily")}
+          />
+        </QuestionContainer>
+      );
+    }
+
+    // Step 6: Access & site status
+    if (state.step === 6 || (state.step === 5 && !hasToiletsOrShowers)) {
+      const currentStep = hasToiletsOrShowers ? 6 : 5;
+      const accessOptions = [
+        { id: "active-use", label: "Cabins in active use" },
+        { id: "vacant", label: "Vacant during cleaning" },
+        { id: "water-power", label: "Water & power available" },
+        { id: "parking", label: "Parking available" },
+      ];
+
+      return (
+        <QuestionContainer
+          currentStep={currentStep}
+          totalSteps={getSiteWelfareTotalSteps()}
+          question="Site access details"
+          onBack={() => updateState({ step: hasToiletsOrShowers ? 5 : 4 })}
+        >
+          {accessOptions.map((option) => (
+            <CheckboxOption
+              key={option.id}
+              label={option.label}
+              checked={(state.accessDetails || []).includes(option.id)}
+              onChange={() => toggleAccessDetail(option.id)}
+            />
+          ))}
+          <div className="pt-4">
+            <Textarea 
+              placeholder="Any additional notes about site access (optional)"
+              value={state.accessNotes}
+              onChange={(e) => updateState({ accessNotes: e.target.value })}
+              className="mb-4"
+            />
+            <Button size="lg" className="w-full" onClick={submitSiteWelfareQuote}>
+              Get estimate
+            </Button>
+          </div>
+        </QuestionContainer>
+      );
+    }
+
+    // Step 7: Result
+    if ((state.step === 7 || (state.step === 6 && !hasToiletsOrShowers)) && state.result) {
       return (
         <>
           <ResultScreen
