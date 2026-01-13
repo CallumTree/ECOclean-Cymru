@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Menu, X, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import logo from "@/assets/logo.jpeg";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -21,14 +22,8 @@ export function Header() {
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b border-border">
       <nav className="container-wide mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16 md:h-20">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground font-heading font-bold text-lg">E</span>
-          </div>
-          <div className="flex flex-col">
-            <span className="font-heading font-semibold text-lg text-foreground leading-tight">ECOclean</span>
-            <span className="text-xs text-muted-foreground leading-tight">Cymru</span>
-          </div>
+        <Link to="/" className="flex items-center">
+          <img src={logo} alt="ECOclean Cymru" className="h-12 md:h-14 w-auto" />
         </Link>
 
         {/* Desktop Navigation */}

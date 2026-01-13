@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Phone, Mail, Clock, MapPin, Shield, Leaf, BadgeCheck } from "lucide-react";
+import logo from "@/assets/logo.jpeg";
 
 const quickLinks = [
   { name: "Home", href: "/" },
@@ -23,15 +24,9 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Company Info */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
-                <span className="font-heading font-bold text-lg">E</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="font-heading font-semibold text-lg leading-tight">ECOclean</span>
-                <span className="text-xs text-white/60 leading-tight">Cymru LTD</span>
-              </div>
-            </div>
+            <Link to="/" className="inline-block">
+              <img src={logo} alt="ECOclean Cymru" className="h-16 w-auto bg-white rounded-lg p-1" />
+            </Link>
             <p className="text-white/70 text-sm leading-relaxed">
               Professional cleaning services across Pembrokeshire, Wales. Reliable, eco-friendly, and committed to excellence.
             </p>
