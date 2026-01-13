@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select";
 import { Layout } from "@/components/Layout";
 import { useToast } from "@/hooks/use-toast";
+import logo from "@/assets/logo.jpeg";
 
 const services = [
   "Domestic Cleaning",
@@ -102,6 +103,7 @@ export default function Contact() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
+            <img src={logo} alt="ECOclean Cymru" className="h-16 md:h-20 w-auto mb-4 bg-white rounded-lg p-2" />
             <h1 className="font-heading text-4xl md:text-5xl font-bold text-white mb-4">
               Get in Touch
             </h1>
