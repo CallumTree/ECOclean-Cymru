@@ -1,14 +1,15 @@
 // Pricing logic - NEVER expose these values to users
 // All calculations are internal only
 
+export type ServiceType = 'regular' | 'end-of-tenancy' | 'deep' | 'post-construction';
+
 export interface DomesticQuoteData {
-  serviceType: 'domestic' | 'end-of-tenancy';
+  serviceType: 'regular' | 'end-of-tenancy' | 'deep';
   bedrooms: 1 | 2 | 3;
   bathrooms: 1 | 2 | 3;
-  cleanType: 'regular' | 'one-off' | 'deep' | 'end-of-tenancy';
-  addOns: string[];
+  detailedAddOns: string[];
+  applianceAddOns: string[];
   condition: 'light' | 'average' | 'heavy';
-  accessNotes?: string;
 }
 
 export interface TCQuoteData {
@@ -16,113 +17,156 @@ export interface TCQuoteData {
   bathrooms: '1' | '1+wc' | '2+';
   worksCompleted: string[];
   siteCondition: 'light' | 'typical' | 'heavy';
-  accessDetails: {
-    vacant: boolean;
-    keysAvailable: boolean;
-    parkingAvailable: boolean;
-    notes?: string;
-  };
 }
 
 export interface QuoteResult {
   estimatedPrice: number;
-  timeBlock: '2-hour' | '4-hour' | 'full-day';
+  durationRange: string;
+  scopeSummary: string;
   inclusions: string[];
   exclusions: string[];
+  serviceType: ServiceType;
 }
 
-// Base pricing (hidden)
+// =============== INTERNAL PRICING CONSTANTS (NEVER SHOWN) ===============
+
 const MINIMUM_CHARGE = 45;
 
-const DOMESTIC_BASE_RATES = {
-  1: 45,
-  2: 55,
-  3: 75,
+// Hourly rates per cleaner
+const DOMESTIC_HOURLY_RATE = 22.50;
+const TC_HOURLY_RATE = 27.50;
+
+// Base labour hours by bedroom count (domestic)
+const DOMESTIC_BASE_HOURS = {
+  1: 2,
+  2: 2.5,
+  3: 3.5,
 };
 
-const BATHROOM_MULTIPLIERS = {
-  1: 1,
-  2: 1.15,
-  3: 1.3,
+// Bathroom labour additions
+const DOMESTIC_BATHROOM_HOURS = {
+  1: 0,
+  2: 0.5,
+  3: 1,
 };
 
-const CLEAN_TYPE_MULTIPLIERS = {
+// Service type labour multipliers
+const SERVICE_TYPE_MULTIPLIERS = {
   'regular': 1,
-  'one-off': 1.1,
-  'deep': 1.4,
-  'end-of-tenancy': 1.5,
+  'end-of-tenancy': 1.4,
+  'deep': 1.6,
 };
 
+// Condition labour multipliers
 const CONDITION_MULTIPLIERS = {
   'light': 1,
   'average': 1.15,
-  'heavy': 1.35,
+  'heavy': 1.4,
 };
 
-const ADD_ON_PRICES: Record<string, number> = {
-  'oven': 25,
-  'fridge': 15,
-  'cupboards': 20,
-  'windows': 15,
-  'skirting': 10,
-  'ironing': 20,
+// Add-on labour hours (detailed cleaning)
+const DETAILED_ADDON_HOURS: Record<string, number> = {
+  'skirting': 0.5,
+  'cupboards': 0.5,
+  'windows': 0.5,
+  'doorframes': 0.25,
+  'wallmarks': 0.25,
 };
 
-// TC Pricing
-const TC_BASE_RATES = {
-  1: 75,
-  2: 95,
-  3: 125,
+// Add-on labour hours (appliances)
+const APPLIANCE_ADDON_HOURS: Record<string, number> = {
+  'oven': 1,
+  'fridge': 0.5,
 };
 
-const TC_BATHROOM_MULTIPLIERS = {
-  '1': 1,
-  '1+wc': 1.1,
-  '2+': 1.25,
+// =============== TC (POST-CONSTRUCTION) PRICING ===============
+
+// Base labour hours by bedroom count (TC)
+const TC_BASE_HOURS = {
+  1: 3,
+  2: 4,
+  3: 5.5,
 };
 
-const TC_WORKS_PRICES: Record<string, number> = {
-  'kitchen': 25,
-  'bathroom': 20,
-  'floor-tiling': 15,
-  'carpet-vinyl': 10,
-  'decoration': 15,
-  'joinery': 10,
+// TC bathroom labour additions
+const TC_BATHROOM_HOURS = {
+  '1': 0,
+  '1+wc': 0.5,
+  '2+': 1,
 };
 
+// TC works completed labour additions
+const TC_WORKS_HOURS: Record<string, number> = {
+  'kitchen': 1,
+  'bathroom': 0.75,
+  'floor-tiling': 0.5,
+  'carpet-vinyl': 0.25,
+  'decoration': 0.5,
+  'joinery': 0.25,
+};
+
+// TC site condition multipliers
 const TC_CONDITION_MULTIPLIERS = {
   'light': 1,
   'typical': 1.2,
   'heavy': 1.5,
 };
 
-function getTimeBlock(price: number): '2-hour' | '4-hour' | 'full-day' {
-  if (price <= 49) return '2-hour';
-  if (price <= 149) return '4-hour';
-  return 'full-day';
+// =============== DURATION CALCULATION (INTERNAL) ===============
+
+function calculateDurationRange(labourHours: number): string {
+  // Based on crew guidance - approximates duration for customer
+  if (labourHours <= 4) {
+    return 'Approx. 2–4 hours';
+  } else if (labourHours <= 8) {
+    return 'Approx. 4–6 hours';
+  } else if (labourHours <= 12) {
+    return 'Approx. 6–8 hours';
+  } else if (labourHours <= 16) {
+    return 'Full day (staged clean possible)';
+  } else {
+    return 'Multi-day clean';
+  }
 }
 
+function roundToHalfHour(hours: number): number {
+  return Math.ceil(hours * 2) / 2;
+}
+
+// =============== DOMESTIC QUOTE CALCULATION ===============
+
 export function calculateDomesticQuote(data: DomesticQuoteData): QuoteResult {
-  // Base calculation
-  let price = DOMESTIC_BASE_RATES[data.bedrooms];
+  // Calculate base labour hours
+  let labourHours = DOMESTIC_BASE_HOURS[data.bedrooms];
   
-  // Apply bathroom multiplier
-  price *= BATHROOM_MULTIPLIERS[data.bathrooms];
+  // Add bathroom hours
+  labourHours += DOMESTIC_BATHROOM_HOURS[data.bathrooms];
   
-  // Apply clean type multiplier
-  price *= CLEAN_TYPE_MULTIPLIERS[data.cleanType];
+  // Apply service type multiplier
+  labourHours *= SERVICE_TYPE_MULTIPLIERS[data.serviceType];
   
   // Apply condition multiplier
-  price *= CONDITION_MULTIPLIERS[data.condition];
+  labourHours *= CONDITION_MULTIPLIERS[data.condition];
   
-  // Add add-ons
-  let addOnTotal = 0;
-  data.addOns.forEach(addOn => {
-    if (ADD_ON_PRICES[addOn]) {
-      addOnTotal += ADD_ON_PRICES[addOn];
+  // Add detailed add-ons
+  data.detailedAddOns.forEach(addOn => {
+    if (DETAILED_ADDON_HOURS[addOn]) {
+      labourHours += DETAILED_ADDON_HOURS[addOn];
     }
   });
-  price += addOnTotal;
+  
+  // Add appliance add-ons
+  data.applianceAddOns.forEach(addOn => {
+    if (APPLIANCE_ADDON_HOURS[addOn]) {
+      labourHours += APPLIANCE_ADDON_HOURS[addOn];
+    }
+  });
+  
+  // Round to nearest 0.5 hour
+  labourHours = roundToHalfHour(labourHours);
+  
+  // Calculate price
+  let price = labourHours * DOMESTIC_HOURLY_RATE;
   
   // Round to nearest £5
   price = Math.ceil(price / 5) * 5;
@@ -130,37 +174,66 @@ export function calculateDomesticQuote(data: DomesticQuoteData): QuoteResult {
   // Enforce minimum charge
   price = Math.max(price, MINIMUM_CHARGE);
   
-  // Build inclusions based on selections
+  // Calculate duration range
+  const durationRange = calculateDurationRange(labourHours);
+  
+  // Generate scope summary
+  const scopeSummary = generateDomesticScopeSummary(data);
+  
+  // Build inclusions
   const inclusions = [
     'All rooms cleaned',
-    'Kitchen surfaces and appliances (exterior)',
-    'Bathroom/WC cleaning',
+    'Kitchen surfaces',
+    'Bathroom / WC cleaning',
     'Vacuuming and mopping',
-    'Dusting surfaces',
+    'Dusting reachable surfaces',
+    'Visible appliance fronts wiped (wipe-down only)',
   ];
   
-  if (data.cleanType === 'deep' || data.cleanType === 'end-of-tenancy') {
+  // Add service-specific inclusions
+  if (data.serviceType === 'deep') {
     inclusions.push('Detailed cleaning throughout');
+    inclusions.push('Skirting boards');
+    inclusions.push('Door frames & light switches');
+    inclusions.push('Inside cupboards');
   }
   
-  // Add selected add-ons to inclusions
-  const addOnLabels: Record<string, string> = {
-    'oven': 'Oven clean (interior)',
-    'fridge': 'Fridge clean (interior)',
-    'cupboards': 'Inside cupboard cleaning',
-    'windows': 'Interior window cleaning',
-    'skirting': 'Skirting boards detail focus',
-    'ironing': 'Ironing service',
+  if (data.serviceType === 'end-of-tenancy') {
+    inclusions.push('Move-out standard deep clean');
+  }
+  
+  // Add selected add-ons
+  const detailedLabels: Record<string, string> = {
+    'skirting': 'Skirting boards (detailed clean)',
+    'cupboards': 'Inside cupboards',
+    'windows': 'Inside windows',
+    'doorframes': 'Door frames & light switches',
+    'wallmarks': 'Spot wall marks',
   };
   
-  data.addOns.forEach(addOn => {
-    if (addOnLabels[addOn]) {
-      inclusions.push(addOnLabels[addOn]);
+  const applianceLabels: Record<string, string> = {
+    'oven': 'Oven internal clean',
+    'fridge': 'Fridge internal clean',
+  };
+  
+  // Only add if not already included in deep clean
+  if (data.serviceType !== 'deep') {
+    data.detailedAddOns.forEach(addOn => {
+      if (detailedLabels[addOn]) {
+        inclusions.push(detailedLabels[addOn]);
+      }
+    });
+  }
+  
+  data.applianceAddOns.forEach(addOn => {
+    if (applianceLabels[addOn]) {
+      inclusions.push(applianceLabels[addOn]);
     }
   });
   
   const exclusions = [
-    'Waste removal (unless agreed)',
+    'Internal appliance cleaning unless selected',
+    'Waste removal unless agreed',
     'External window cleaning',
     'Carpet shampooing',
     'High-level cleaning requiring equipment',
@@ -168,36 +241,77 @@ export function calculateDomesticQuote(data: DomesticQuoteData): QuoteResult {
   
   return {
     estimatedPrice: price,
-    timeBlock: getTimeBlock(price),
+    durationRange,
+    scopeSummary,
     inclusions,
     exclusions,
+    serviceType: data.serviceType,
   };
 }
 
+function generateDomesticScopeSummary(data: DomesticQuoteData): string {
+  const serviceLabels = {
+    'regular': 'General',
+    'end-of-tenancy': 'End-of-tenancy',
+    'deep': 'Deep',
+  };
+  
+  const hasDetailedAddOns = data.detailedAddOns.length > 0;
+  const hasApplianceAddOns = data.applianceAddOns.length > 0;
+  
+  let summary = `${serviceLabels[data.serviceType]} clean`;
+  
+  if (data.serviceType === 'deep') {
+    summary += ' with detailed areas included';
+  } else if (hasDetailedAddOns) {
+    summary += ' with selected detailed areas';
+  }
+  
+  if (hasApplianceAddOns) {
+    summary += '. Internal appliances included.';
+  } else {
+    summary += '. No internal appliance cleaning included.';
+  }
+  
+  return summary;
+}
+
+// =============== TC (POST-CONSTRUCTION) QUOTE CALCULATION ===============
+
 export function calculateTCQuote(data: TCQuoteData): QuoteResult {
-  // Base calculation
-  let price = TC_BASE_RATES[data.bedrooms];
+  // Calculate base labour hours
+  let labourHours = TC_BASE_HOURS[data.bedrooms];
   
-  // Apply bathroom multiplier
-  price *= TC_BATHROOM_MULTIPLIERS[data.bathrooms];
+  // Add bathroom hours
+  labourHours += TC_BATHROOM_HOURS[data.bathrooms];
   
-  // Add works completed pricing
-  let worksTotal = 0;
+  // Add works completed hours
   data.worksCompleted.forEach(work => {
-    if (TC_WORKS_PRICES[work]) {
-      worksTotal += TC_WORKS_PRICES[work];
+    if (TC_WORKS_HOURS[work]) {
+      labourHours += TC_WORKS_HOURS[work];
     }
   });
-  price += worksTotal;
   
-  // Apply condition multiplier
-  price *= TC_CONDITION_MULTIPLIERS[data.siteCondition];
+  // Apply site condition multiplier
+  labourHours *= TC_CONDITION_MULTIPLIERS[data.siteCondition];
+  
+  // Round to nearest 0.5 hour
+  labourHours = roundToHalfHour(labourHours);
+  
+  // Calculate price
+  let price = labourHours * TC_HOURLY_RATE;
   
   // Round to nearest £5
   price = Math.ceil(price / 5) * 5;
   
   // Enforce minimum charge
   price = Math.max(price, MINIMUM_CHARGE);
+  
+  // Calculate duration range
+  const durationRange = calculateDurationRange(labourHours);
+  
+  // Generate scope summary
+  const scopeSummary = generateTCScopeSummary(data);
   
   // Build inclusions
   const inclusions = [
@@ -212,7 +326,7 @@ export function calculateTCQuote(data: TCQuoteData): QuoteResult {
   const worksLabels: Record<string, string> = {
     'kitchen': 'New kitchen area cleaning',
     'bathroom': 'New bathroom fit cleaning',
-    'floor-tiling': 'Floor tile cleaning and polish',
+    'floor-tiling': 'Floor tile cleaning',
     'carpet-vinyl': 'New floor protection and clean',
     'decoration': 'Post-decoration clean-down',
     'joinery': 'Joinery dust removal',
@@ -234,8 +348,30 @@ export function calculateTCQuote(data: TCQuoteData): QuoteResult {
   
   return {
     estimatedPrice: price,
-    timeBlock: getTimeBlock(price),
+    durationRange,
+    scopeSummary,
     inclusions,
     exclusions,
+    serviceType: 'post-construction',
   };
+}
+
+function generateTCScopeSummary(data: TCQuoteData): string {
+  const conditionLabels = {
+    'light': 'light site dust',
+    'typical': 'typical handover condition',
+    'heavy': 'heavy build-up',
+  };
+  
+  const worksCount = data.worksCompleted.length;
+  
+  let summary = `Social housing handover clean with ${conditionLabels[data.siteCondition]}`;
+  
+  if (worksCount > 0) {
+    summary += `. Includes cleaning for ${worksCount} completed work${worksCount > 1 ? 's' : ''}.`;
+  } else {
+    summary += '.';
+  }
+  
+  return summary;
 }

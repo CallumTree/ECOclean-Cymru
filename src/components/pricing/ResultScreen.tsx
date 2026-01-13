@@ -1,21 +1,16 @@
 import { motion } from "framer-motion";
-import { Check, X, Clock, Phone, MessageSquare, Shield } from "lucide-react";
+import { Check, X, Clock, Phone, MessageSquare, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { QuoteResult } from "@/lib/pricingLogic";
 
 interface ResultScreenProps {
   result: QuoteResult;
-  variant: "domestic" | "tc";
   onRequestCallback: () => void;
 }
 
-const timeBlockLabels = {
-  "2-hour": "2 hours",
-  "4-hour": "4 hours",
-  "full-day": "Full day",
-};
-
-export function ResultScreen({ result, variant, onRequestCallback }: ResultScreenProps) {
+export function ResultScreen({ result, onRequestCallback }: ResultScreenProps) {
+  const isTC = result.serviceType === 'post-construction';
+  
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -32,20 +27,19 @@ export function ResultScreen({ result, variant, onRequestCallback }: ResultScree
         </div>
         <div className="flex items-center gap-2 text-primary-foreground/90">
           <Clock className="w-5 h-5" />
-          <span>Allocated time: {timeBlockLabels[result.timeBlock]}</span>
+          <span>{result.durationRange}</span>
         </div>
       </div>
 
-      {variant === "tc" && (
-        <div className="flex items-center gap-3 p-4 bg-eco-gold/10 rounded-xl border border-eco-gold/30">
-          <Shield className="w-6 h-6 text-eco-gold-muted flex-shrink-0" />
-          <p className="text-sm text-foreground">
-            Designed for standard social housing handover specifications.
-          </p>
-        </div>
-      )}
+      {/* Scope Summary */}
+      <div className="flex items-start gap-3 p-4 bg-muted/50 rounded-xl border border-border">
+        <FileText className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+        <p className="text-sm text-foreground">
+          {result.scopeSummary}
+        </p>
+      </div>
 
-      {/* Inclusions */}
+      {/* What's Included */}
       <div className="bg-card rounded-xl border border-border p-5">
         <h3 className="font-heading font-semibold text-foreground mb-4">
           What's included
@@ -60,7 +54,7 @@ export function ResultScreen({ result, variant, onRequestCallback }: ResultScree
         </ul>
       </div>
 
-      {/* Exclusions */}
+      {/* What's Not Included */}
       <div className="bg-muted/50 rounded-xl border border-border p-5">
         <h3 className="font-heading font-semibold text-foreground mb-4">
           Not included
@@ -77,8 +71,8 @@ export function ResultScreen({ result, variant, onRequestCallback }: ResultScree
 
       {/* Footer Note */}
       <p className="text-sm text-muted-foreground text-center px-4">
-        This is an estimated price. Final confirmation depends on access and condition.
-        {variant === "tc" && " Non-standard works may require review."}
+        Time and price shown are estimates based on typical cleaning pace. Final scheduling may vary depending on access and condition.
+        {isTC && " Non-standard works may require review."}
       </p>
 
       {/* CTAs */}
