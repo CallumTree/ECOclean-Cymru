@@ -10,6 +10,7 @@ interface ResultScreenProps {
 
 export function ResultScreen({ result, onRequestCallback }: ResultScreenProps) {
   const isTC = result.serviceType === 'post-construction';
+  const isSiteWelfare = result.serviceType === 'site-welfare';
   
   return (
     <motion.div
@@ -19,7 +20,9 @@ export function ResultScreen({ result, onRequestCallback }: ResultScreenProps) {
     >
       {/* Price Card */}
       <div className="bg-gradient-to-br from-primary to-secondary rounded-2xl p-6 md:p-8 text-primary-foreground">
-        <p className="text-primary-foreground/80 mb-1">Estimated price</p>
+        <p className="text-primary-foreground/80 mb-1">
+          {isSiteWelfare ? "Estimated price per visit" : "Estimated price"}
+        </p>
         <div className="flex items-baseline gap-2 mb-4">
           <span className="font-heading text-5xl md:text-6xl font-bold">
             £{result.estimatedPrice}
@@ -71,8 +74,12 @@ export function ResultScreen({ result, onRequestCallback }: ResultScreenProps) {
 
       {/* Footer Note */}
       <p className="text-sm text-muted-foreground text-center px-4">
-        Time and price shown are estimates based on typical cleaning pace. Final scheduling may vary depending on access and condition.
-        {isTC && " Non-standard works may require review."}
+        {result.footerNote || (
+          <>
+            Time and price shown are estimates based on typical cleaning pace. Final scheduling may vary depending on access and condition.
+            {isTC && " Non-standard works may require review."}
+          </>
+        )}
       </p>
 
       {/* CTAs */}

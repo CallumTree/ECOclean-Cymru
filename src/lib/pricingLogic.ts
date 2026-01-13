@@ -1,7 +1,7 @@
 // Pricing logic - NEVER expose these values to users
 // All calculations are internal only
 
-export type ServiceType = 'regular' | 'end-of-tenancy' | 'deep' | 'post-construction';
+export type ServiceType = 'regular' | 'end-of-tenancy' | 'deep' | 'post-construction' | 'site-welfare';
 
 export interface DomesticQuoteData {
   serviceType: 'regular' | 'end-of-tenancy' | 'deep';
@@ -19,6 +19,15 @@ export interface TCQuoteData {
   siteCondition: 'light' | 'typical' | 'heavy';
 }
 
+export interface SiteWelfareQuoteData {
+  cabinCount: number;
+  cabinUses: string[];
+  toiletShowerScale: '1-2' | '3-5' | '6+' | null;
+  dailyOccupancy: '1-5' | '6-10' | '11-20' | '20+';
+  frequency: 'one-off' | 'weekly' | 'twice-weekly' | 'daily';
+  accessDetails: string[];
+}
+
 export interface QuoteResult {
   estimatedPrice: number;
   durationRange: string;
@@ -26,6 +35,7 @@ export interface QuoteResult {
   inclusions: string[];
   exclusions: string[];
   serviceType: ServiceType;
+  footerNote?: string;
 }
 
 // =============== INTERNAL PRICING CONSTANTS (NEVER SHOWN) ===============
@@ -374,4 +384,166 @@ function generateTCScopeSummary(data: TCQuoteData): string {
   }
   
   return summary;
+}
+
+// =============== SITE WELFARE PRICING CONSTANTS ===============
+
+const SITE_WELFARE_HOURLY_RATE = 27.50;
+
+// Base hours per cabin by use type
+const CABIN_USE_HOURS: Record<string, number> = {
+  'toilets': 1.5,      // Heavy use
+  'showers': 1.25,     // Heavy use
+  'canteen': 0.75,     // Medium use
+  'drying': 0.5,       // Light use
+  'office': 0.5,       // Light use
+};
+
+// Toilet/shower scale multipliers
+const TOILET_SHOWER_SCALE_MULTIPLIERS = {
+  '1-2': 1,
+  '3-5': 1.5,
+  '6+': 2,
+};
+
+// Occupancy multipliers
+const OCCUPANCY_MULTIPLIERS = {
+  '1-5': 1,
+  '6-10': 1.15,
+  '11-20': 1.3,
+  '20+': 1.5,
+};
+
+// Frequency discount rates (per visit)
+const FREQUENCY_MULTIPLIERS = {
+  'one-off': 1,
+  'weekly': 0.9,
+  'twice-weekly': 0.85,
+  'daily': 0.8,
+};
+
+// =============== SITE WELFARE QUOTE CALCULATION ===============
+
+export function calculateSiteWelfareQuote(data: SiteWelfareQuoteData): QuoteResult {
+  // Calculate base labour hours from cabin uses
+  let labourHours = 0;
+  
+  data.cabinUses.forEach(use => {
+    if (CABIN_USE_HOURS[use]) {
+      labourHours += CABIN_USE_HOURS[use];
+    }
+  });
+  
+  // Multiply by cabin count (with diminishing returns for multiple similar cabins)
+  if (data.cabinCount > 1) {
+    labourHours = labourHours * (1 + (data.cabinCount - 1) * 0.75);
+  }
+  
+  // Apply toilet/shower scale multiplier if applicable
+  const hasToiletsOrShowers = data.cabinUses.includes('toilets') || data.cabinUses.includes('showers');
+  if (hasToiletsOrShowers && data.toiletShowerScale) {
+    labourHours *= TOILET_SHOWER_SCALE_MULTIPLIERS[data.toiletShowerScale];
+  }
+  
+  // Apply occupancy multiplier
+  labourHours *= OCCUPANCY_MULTIPLIERS[data.dailyOccupancy];
+  
+  // Round to nearest 0.5 hour
+  labourHours = roundToHalfHour(labourHours);
+  
+  // Ensure minimum 2 hours
+  labourHours = Math.max(labourHours, 2);
+  
+  // Calculate price
+  let price = labourHours * SITE_WELFARE_HOURLY_RATE;
+  
+  // Apply frequency discount
+  price *= FREQUENCY_MULTIPLIERS[data.frequency];
+  
+  // Round to nearest £5
+  price = Math.ceil(price / 5) * 5;
+  
+  // Enforce minimum charge
+  price = Math.max(price, MINIMUM_CHARGE);
+  
+  // Calculate duration range
+  const durationRange = calculateDurationRange(labourHours);
+  
+  // Generate scope summary
+  const scopeSummary = generateSiteWelfareScopeSummary(data);
+  
+  // Build inclusions
+  const inclusions = [
+    'Cabin interior cleaning',
+    'Floor cleaning and mopping',
+    'Surface sanitisation',
+    'Waste bin emptying',
+  ];
+  
+  const useLabels: Record<string, string> = {
+    'toilets': 'Toilet cubicle cleaning & sanitisation',
+    'showers': 'Shower cubicle cleaning',
+    'canteen': 'Canteen surfaces and tables',
+    'drying': 'Drying room floor and surfaces',
+    'office': 'Office desk and surface cleaning',
+  };
+  
+  data.cabinUses.forEach(use => {
+    if (useLabels[use]) {
+      inclusions.push(useLabels[use]);
+    }
+  });
+  
+  const exclusions = [
+    'Consumables / supplies (unless agreed)',
+    'Deep cleaning or descaling',
+    'External cabin cleaning',
+    'Waste collection / skip emptying',
+    'Equipment maintenance',
+  ];
+  
+  // Add frequency note
+  const frequencyLabels = {
+    'one-off': 'One-off clean',
+    'weekly': 'Weekly service',
+    'twice-weekly': 'Twice weekly service',
+    'daily': 'Daily service (Mon–Fri)',
+  };
+  
+  const footerNote = `Site welfare cleaning is priced based on cabin use, occupancy, and frequency. ${frequencyLabels[data.frequency]} pricing shown.`;
+  
+  return {
+    estimatedPrice: price,
+    durationRange,
+    scopeSummary,
+    inclusions,
+    exclusions,
+    serviceType: 'site-welfare',
+    footerNote,
+  };
+}
+
+function generateSiteWelfareScopeSummary(data: SiteWelfareQuoteData): string {
+  const cabinWord = data.cabinCount === 1 ? 'cabin' : 'cabins';
+  
+  const useLabels: Record<string, string> = {
+    'toilets': 'toilets',
+    'showers': 'showers',
+    'canteen': 'canteen',
+    'drying': 'drying room',
+    'office': 'site office',
+  };
+  
+  const uses = data.cabinUses
+    .map(use => useLabels[use])
+    .filter(Boolean);
+  
+  if (uses.length === 0) {
+    return `${data.cabinCount} site ${cabinWord}.`;
+  }
+  
+  const lastUse = uses.pop();
+  const usesText = uses.length > 0 ? `${uses.join(', ')} and ${lastUse}` : lastUse;
+  
+  return `${data.cabinCount} site ${cabinWord} containing ${usesText}.`;
 }
