@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Layout } from "@/components/Layout";
 import { PricingQuestionnaire } from "@/components/pricing/PricingQuestionnaire";
+import logo from "@/assets/logo.jpeg";
 
 export default function Pricing() {
   return (
@@ -13,6 +14,7 @@ export default function Pricing() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
+            <img src={logo} alt="ECOclean Cymru" className="h-14 md:h-16 w-auto mb-3 bg-white rounded-lg p-1.5" />
             <h1 className="font-heading text-3xl md:text-4xl font-bold text-primary-foreground mb-2">
               Get an Instant Estimate
             </h1>

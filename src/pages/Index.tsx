@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Phone, Shield, Leaf, Users, BadgeCheck, UserCheck, ArrowRight, Sparkles, Home, Building2, HardHat } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
+import logo from "@/assets/logo.jpeg";
 
 const trustItems = [
   { icon: Shield, text: "Fully Insured" },
@@ -99,11 +100,19 @@ const Index = () => {
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-50" />
         <div className="container-wide mx-auto section-padding relative">
           <div className="max-w-3xl">
+            <motion.img
+              src={logo}
+              alt="ECOclean Cymru"
+              className="h-20 md:h-24 w-auto mb-6 bg-white rounded-lg p-2"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            />
             <motion.h1
               className="font-heading text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-tight mb-6"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.6, delay: 0.05 }}
             >
               Reliable Cleaning You Can Trust
             </motion.h1>

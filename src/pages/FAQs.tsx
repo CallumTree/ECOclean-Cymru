@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
+import logo from "@/assets/logo.jpeg";
 import {
   Accordion,
   AccordionContent,
@@ -56,6 +57,7 @@ export default function FAQs() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
+            <img src={logo} alt="ECOclean Cymru" className="h-16 md:h-20 w-auto mb-4 bg-white rounded-lg p-2" />
             <h1 className="font-heading text-4xl md:text-5xl font-bold text-white mb-4">
               Frequently Asked Questions
             </h1>
