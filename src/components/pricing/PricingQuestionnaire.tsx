@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Home, Sparkles, HardHat, Bed, Bath, Calendar, Paintbrush } from "lucide-react";
+import { Home, Sparkles, HardHat, Bed, Bath, Paintbrush, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { QuestionContainer } from "./QuestionContainer";
 import { OptionCard } from "./OptionCard";
 import { CheckboxOption } from "./CheckboxOption";
@@ -19,10 +18,9 @@ import {
 import logo from "@/assets/logo.jpeg";
 
 type FlowType = "entry" | "domestic" | "tc" | "exit";
-type ServiceType = "domestic" | "end-of-tenancy" | "post-construction";
+type ServiceType = "regular" | "end-of-tenancy" | "deep" | "post-construction";
 type Bedrooms = 1 | 2 | 3 | 4;
 type Bathrooms = 1 | 2 | 3;
-type CleanType = "regular" | "one-off" | "deep" | "end-of-tenancy";
 type Condition = "light" | "average" | "heavy";
 type TCBathrooms = "1" | "1+wc" | "2+";
 type TCCondition = "light" | "typical" | "heavy";
@@ -35,23 +33,18 @@ interface QuestionnaireState {
   postConstructionType: PostConstructionType | null;
   bedrooms: Bedrooms | null;
   bathrooms: Bathrooms | null;
-  cleanType: CleanType | null;
-  addOns: string[];
+  detailedAddOns: string[];
+  applianceAddOns: string[];
   condition: Condition | null;
-  accessNotes: string;
   // TC specific
   tcBathrooms: TCBathrooms | null;
   worksCompleted: string[];
   siteCondition: TCCondition | null;
-  tcAccessDetails: {
-    vacant: boolean;
-    keysAvailable: boolean;
-    parkingAvailable: boolean;
-    notes: string;
-  };
   // Results
   result: QuoteResult | null;
   exitReason: "large-property" | "private-commercial" | null;
+  // Deep clean suggestion
+  showDeepCleanSuggestion: boolean;
 }
 
 const initialState: QuestionnaireState = {
@@ -61,22 +54,19 @@ const initialState: QuestionnaireState = {
   postConstructionType: null,
   bedrooms: null,
   bathrooms: null,
-  cleanType: null,
-  addOns: [],
+  detailedAddOns: [],
+  applianceAddOns: [],
   condition: null,
-  accessNotes: "",
   tcBathrooms: null,
   worksCompleted: [],
   siteCondition: null,
-  tcAccessDetails: {
-    vacant: false,
-    keysAvailable: false,
-    parkingAvailable: false,
-    notes: "",
-  },
   result: null,
   exitReason: null,
+  showDeepCleanSuggestion: false,
 };
+
+// Deep clean automatically includes these add-ons
+const DEEP_CLEAN_INCLUDED_ADDONS = ['skirting', 'doorframes', 'cupboards'];
 
 export function PricingQuestionnaire() {
   const [state, setState] = useState<QuestionnaireState>(initialState);
@@ -89,13 +79,13 @@ export function PricingQuestionnaire() {
   const goBack = () => {
     if (state.flow === "domestic") {
       if (state.step === 1) {
-        updateState({ flow: "entry", step: 0, serviceType: null });
+        updateState({ flow: "entry", step: 1, serviceType: null });
       } else {
-        updateState({ step: state.step - 1 });
+        updateState({ step: state.step - 1, showDeepCleanSuggestion: false });
       }
     } else if (state.flow === "tc") {
       if (state.step === 1) {
-        updateState({ flow: "entry", step: 0, postConstructionType: null });
+        updateState({ flow: "entry", step: 2, postConstructionType: null });
       } else {
         updateState({ step: state.step - 1 });
       }
@@ -110,8 +100,15 @@ export function PricingQuestionnaire() {
     updateState({ serviceType: type });
     if (type === "post-construction") {
       updateState({ flow: "entry", step: 2 });
+    } else if (type === "deep") {
+      // Pre-select deep clean add-ons
+      updateState({ 
+        flow: "domestic", 
+        step: 1,
+        detailedAddOns: [...DEEP_CLEAN_INCLUDED_ADDONS],
+      });
     } else {
-      updateState({ flow: "domestic", step: 1 });
+      updateState({ flow: "domestic", step: 1, detailedAddOns: [] });
     }
   };
 
@@ -138,37 +135,69 @@ export function PricingQuestionnaire() {
     updateState({ bathrooms: baths, step: 3 });
   };
 
-  const selectCleanType = (type: CleanType) => {
-    updateState({ cleanType: type, step: 4 });
+  const toggleDetailedAddOn = (addOn: string) => {
+    const newAddOns = state.detailedAddOns.includes(addOn)
+      ? state.detailedAddOns.filter((a) => a !== addOn)
+      : [...state.detailedAddOns, addOn];
+    updateState({ detailedAddOns: newAddOns });
   };
 
-  const toggleAddOn = (addOn: string) => {
-    const newAddOns = state.addOns.includes(addOn)
-      ? state.addOns.filter((a) => a !== addOn)
-      : [...state.addOns, addOn];
-    updateState({ addOns: newAddOns });
+  const confirmDetailedAddOns = () => {
+    updateState({ step: 4 });
   };
 
-  const confirmAddOns = () => {
+  const toggleApplianceAddOn = (addOn: string) => {
+    const newAddOns = state.applianceAddOns.includes(addOn)
+      ? state.applianceAddOns.filter((a) => a !== addOn)
+      : [...state.applianceAddOns, addOn];
+    updateState({ applianceAddOns: newAddOns });
+  };
+
+  const confirmApplianceAddOns = () => {
     updateState({ step: 5 });
   };
 
   const selectCondition = (cond: Condition) => {
-    updateState({ condition: cond, step: 6 });
+    updateState({ condition: cond });
+    
+    // Check if we should suggest deep clean
+    const shouldSuggestDeepClean = 
+      state.serviceType !== 'deep' && 
+      (cond === 'heavy' || state.detailedAddOns.length >= 3);
+    
+    if (shouldSuggestDeepClean) {
+      updateState({ showDeepCleanSuggestion: true });
+    } else {
+      submitDomesticQuote(cond);
+    }
   };
 
-  const submitDomesticQuote = () => {
+  const switchToDeepClean = () => {
+    updateState({ 
+      serviceType: 'deep',
+      detailedAddOns: [...DEEP_CLEAN_INCLUDED_ADDONS, ...state.detailedAddOns.filter(a => !DEEP_CLEAN_INCLUDED_ADDONS.includes(a))],
+      showDeepCleanSuggestion: false,
+    });
+    submitDomesticQuote(state.condition as Condition, 'deep');
+  };
+
+  const keepCurrentSelection = () => {
+    updateState({ showDeepCleanSuggestion: false });
+    submitDomesticQuote(state.condition as Condition);
+  };
+
+  const submitDomesticQuote = (condition: Condition, overrideServiceType?: 'deep') => {
+    const serviceType = overrideServiceType || state.serviceType;
     const quoteData: DomesticQuoteData = {
-      serviceType: state.serviceType === "end-of-tenancy" ? "end-of-tenancy" : "domestic",
+      serviceType: serviceType as 'regular' | 'end-of-tenancy' | 'deep',
       bedrooms: state.bedrooms as 1 | 2 | 3,
       bathrooms: state.bathrooms as 1 | 2 | 3,
-      cleanType: state.cleanType as CleanType,
-      addOns: state.addOns,
-      condition: state.condition as Condition,
-      accessNotes: state.accessNotes,
+      detailedAddOns: state.detailedAddOns,
+      applianceAddOns: state.applianceAddOns,
+      condition: condition,
     };
     const result = calculateDomesticQuote(quoteData);
-    updateState({ result, step: 7 });
+    updateState({ result, step: 6, condition });
   };
 
   // TC flow handlers
@@ -197,35 +226,28 @@ export function PricingQuestionnaire() {
   };
 
   const selectSiteCondition = (cond: TCCondition) => {
-    updateState({ siteCondition: cond, step: 5 });
+    updateState({ siteCondition: cond });
+    submitTCQuote(cond);
   };
 
-  const updateTCAccess = (field: keyof QuestionnaireState["tcAccessDetails"], value: boolean | string) => {
-    updateState({
-      tcAccessDetails: { ...state.tcAccessDetails, [field]: value },
-    });
-  };
-
-  const submitTCQuote = () => {
+  const submitTCQuote = (condition: TCCondition) => {
     const quoteData: TCQuoteData = {
       bedrooms: state.bedrooms as 1 | 2 | 3,
       bathrooms: state.tcBathrooms as TCBathrooms,
       worksCompleted: state.worksCompleted,
-      siteCondition: state.siteCondition as TCCondition,
-      accessDetails: state.tcAccessDetails,
+      siteCondition: condition,
     };
     const result = calculateTCQuote(quoteData);
-    updateState({ result, step: 6 });
+    updateState({ result, step: 5, siteCondition: condition });
   };
-
-  const canSubmitTCAccess =
-    state.tcAccessDetails.vacant &&
-    state.tcAccessDetails.keysAvailable &&
-    state.tcAccessDetails.parkingAvailable;
 
   const resetQuestionnaire = () => {
     setState(initialState);
   };
+
+  // Calculate total steps based on flow
+  const getDomesticTotalSteps = () => 6;
+  const getTCTotalSteps = () => 5;
 
   // Entry screen
   if (state.flow === "entry" && state.step === 0) {
@@ -244,7 +266,7 @@ export function PricingQuestionnaire() {
           Build your clean in under 60 seconds
         </h1>
         <p className="text-muted-foreground text-lg max-w-md mx-auto mb-8">
-          Answer a few simple questions so we can allocate the right time and give you an accurate estimate.
+          Answer a few quick questions so we can give you an accurate estimate and allocate the right time.
         </p>
         <Button size="lg" onClick={startQuestionnaire}>
           Start
@@ -258,24 +280,32 @@ export function PricingQuestionnaire() {
     return (
       <QuestionContainer
         currentStep={1}
-        totalSteps={7}
+        totalSteps={getDomesticTotalSteps()}
         question="What type of clean do you need?"
         onBack={resetQuestionnaire}
       >
         <OptionCard
           icon={Home}
-          title="Domestic cleaning"
-          description="Regular home cleaning services"
-          selected={state.serviceType === "domestic"}
-          onClick={() => selectServiceType("domestic")}
+          title="Regular / one-off clean"
+          description="Routine maintenance or single visit"
+          selected={state.serviceType === "regular"}
+          onClick={() => selectServiceType("regular")}
           variant="large"
         />
         <OptionCard
           icon={Sparkles}
-          title="End of tenancy cleaning"
+          title="End of tenancy clean"
           description="Move-out deep clean to landlord standards"
           selected={state.serviceType === "end-of-tenancy"}
           onClick={() => selectServiceType("end-of-tenancy")}
+          variant="large"
+        />
+        <OptionCard
+          icon={Sparkles}
+          title="Deep clean"
+          description="Thorough top-to-bottom cleaning"
+          selected={state.serviceType === "deep"}
+          onClick={() => selectServiceType("deep")}
           variant="large"
         />
         <OptionCard
@@ -295,7 +325,7 @@ export function PricingQuestionnaire() {
     return (
       <QuestionContainer
         currentStep={1}
-        totalSteps={6}
+        totalSteps={getTCTotalSteps()}
         question="What best describes the job?"
         onBack={() => updateState({ step: 1, serviceType: null })}
       >
@@ -352,7 +382,7 @@ export function PricingQuestionnaire() {
       return (
         <QuestionContainer
           currentStep={1}
-          totalSteps={7}
+          totalSteps={getDomesticTotalSteps()}
           question="How many bedrooms does the property have?"
           onBack={goBack}
         >
@@ -374,7 +404,7 @@ export function PricingQuestionnaire() {
       return (
         <QuestionContainer
           currentStep={2}
-          totalSteps={7}
+          totalSteps={getDomesticTotalSteps()}
           question="How many bathrooms or en-suites?"
           onBack={goBack}
         >
@@ -391,76 +421,38 @@ export function PricingQuestionnaire() {
       );
     }
 
-    // Step 3: Clean type
+    // Step 3: Detailed cleaning add-ons
     if (state.step === 3) {
+      const detailedOptions = [
+        { id: "skirting", label: "Skirting boards (detailed clean)" },
+        { id: "cupboards", label: "Inside cupboards" },
+        { id: "windows", label: "Inside windows" },
+        { id: "doorframes", label: "Door frames & light switches" },
+        { id: "wallmarks", label: "Spot wall marks" },
+      ];
+
+      const isDeepClean = state.serviceType === 'deep';
+
       return (
         <QuestionContainer
           currentStep={3}
-          totalSteps={7}
-          question="Which best describes the clean?"
+          totalSteps={getDomesticTotalSteps()}
+          question="Detailed cleaning add-ons"
+          helperText={isDeepClean 
+            ? "These are pre-selected for deep cleans. Adjust if needed." 
+            : "Detailed cleaning beyond a standard clean. Adds time."}
           onBack={goBack}
         >
-          <OptionCard
-            icon={Calendar}
-            title="Regular clean"
-            description="Routine maintenance cleaning"
-            selected={state.cleanType === "regular"}
-            onClick={() => selectCleanType("regular")}
-          />
-          <OptionCard
-            icon={Sparkles}
-            title="One-off clean"
-            description="Single visit, general refresh"
-            selected={state.cleanType === "one-off"}
-            onClick={() => selectCleanType("one-off")}
-          />
-          <OptionCard
-            icon={Sparkles}
-            title="Deep clean"
-            description="Thorough top-to-bottom cleaning"
-            selected={state.cleanType === "deep"}
-            onClick={() => selectCleanType("deep")}
-          />
-          <OptionCard
-            icon={Home}
-            title="End of tenancy clean"
-            description="Move-out standard cleaning"
-            selected={state.cleanType === "end-of-tenancy"}
-            onClick={() => selectCleanType("end-of-tenancy")}
-          />
-        </QuestionContainer>
-      );
-    }
-
-    // Step 4: Add-ons
-    if (state.step === 4) {
-      const addOnOptions = [
-        { id: "oven", label: "Oven clean" },
-        { id: "fridge", label: "Fridge clean" },
-        { id: "cupboards", label: "Inside cupboards" },
-        { id: "windows", label: "Inside windows" },
-        { id: "skirting", label: "Skirting boards / detail focus" },
-        { id: "ironing", label: "Ironing" },
-      ];
-
-      return (
-        <QuestionContainer
-          currentStep={4}
-          totalSteps={7}
-          question="Do you need any of the following?"
-          helperText="Select all that apply (optional)"
-          onBack={goBack}
-        >
-          {addOnOptions.map((option) => (
+          {detailedOptions.map((option) => (
             <CheckboxOption
               key={option.id}
               label={option.label}
-              checked={state.addOns.includes(option.id)}
-              onChange={() => toggleAddOn(option.id)}
+              checked={state.detailedAddOns.includes(option.id)}
+              onChange={() => toggleDetailedAddOn(option.id)}
             />
           ))}
           <div className="pt-4">
-            <Button size="lg" className="w-full" onClick={confirmAddOns}>
+            <Button size="lg" className="w-full" onClick={confirmDetailedAddOns}>
               Continue
             </Button>
           </div>
@@ -468,12 +460,70 @@ export function PricingQuestionnaire() {
       );
     }
 
-    // Step 5: Condition
+    // Step 4: Appliance add-ons
+    if (state.step === 4) {
+      const applianceOptions = [
+        { id: "oven", label: "Oven internal clean" },
+        { id: "fridge", label: "Fridge internal clean" },
+      ];
+
+      return (
+        <QuestionContainer
+          currentStep={4}
+          totalSteps={getDomesticTotalSteps()}
+          question="Appliance add-ons"
+          helperText="These are not included in a standard clean."
+          onBack={goBack}
+        >
+          {applianceOptions.map((option) => (
+            <CheckboxOption
+              key={option.id}
+              label={option.label}
+              checked={state.applianceAddOns.includes(option.id)}
+              onChange={() => toggleApplianceAddOn(option.id)}
+            />
+          ))}
+          <div className="pt-4">
+            <Button size="lg" className="w-full" onClick={confirmApplianceAddOns}>
+              Continue
+            </Button>
+          </div>
+        </QuestionContainer>
+      );
+    }
+
+    // Step 5: Condition (with deep clean suggestion)
     if (state.step === 5) {
+      if (state.showDeepCleanSuggestion) {
+        return (
+          <QuestionContainer
+            currentStep={5}
+            totalSteps={getDomesticTotalSteps()}
+            question="Consider a deep clean?"
+            onBack={() => updateState({ showDeepCleanSuggestion: false })}
+          >
+            <div className="flex items-start gap-3 p-4 bg-eco-gold/10 rounded-xl border border-eco-gold/30 mb-4">
+              <AlertCircle className="w-6 h-6 text-eco-gold-muted flex-shrink-0" />
+              <p className="text-sm text-foreground">
+                Based on your selections, a deep clean may be more suitable.
+              </p>
+            </div>
+            <div className="space-y-3">
+              <Button size="lg" className="w-full" onClick={switchToDeepClean}>
+                Switch to deep clean
+              </Button>
+              <Button size="lg" variant="outline" className="w-full" onClick={keepCurrentSelection}>
+                Keep current selection
+              </Button>
+            </div>
+          </QuestionContainer>
+        );
+      }
+
       return (
         <QuestionContainer
           currentStep={5}
-          totalSteps={7}
+          totalSteps={getDomesticTotalSteps()}
           question="How would you describe the current condition?"
           helperText="Please be honest — this helps us allocate the right time so the job isn't rushed."
           onBack={goBack}
@@ -500,38 +550,12 @@ export function PricingQuestionnaire() {
       );
     }
 
-    // Step 6: Access notes
-    if (state.step === 6) {
-      return (
-        <QuestionContainer
-          currentStep={6}
-          totalSteps={7}
-          question="Anything we should know about access, parking, or pets?"
-          helperText="Optional — skip if not applicable"
-          onBack={goBack}
-        >
-          <Textarea
-            placeholder="e.g. Key under mat, parking on street, friendly dog..."
-            value={state.accessNotes}
-            onChange={(e) => updateState({ accessNotes: e.target.value })}
-            className="min-h-[120px]"
-          />
-          <div className="pt-4">
-            <Button size="lg" className="w-full" onClick={submitDomesticQuote}>
-              Get my estimate
-            </Button>
-          </div>
-        </QuestionContainer>
-      );
-    }
-
-    // Step 7: Result
-    if (state.step === 7 && state.result) {
+    // Step 6: Result
+    if (state.step === 6 && state.result) {
       return (
         <>
           <ResultScreen
             result={state.result}
-            variant="domestic"
             onRequestCallback={() => setCallbackOpen(true)}
           />
           <CallbackDialog open={callbackOpen} onOpenChange={setCallbackOpen} />
@@ -547,7 +571,7 @@ export function PricingQuestionnaire() {
       return (
         <QuestionContainer
           currentStep={1}
-          totalSteps={6}
+          totalSteps={getTCTotalSteps()}
           question="How many bedrooms does the property have?"
           onBack={goBack}
         >
@@ -569,7 +593,7 @@ export function PricingQuestionnaire() {
       return (
         <QuestionContainer
           currentStep={2}
-          totalSteps={6}
+          totalSteps={getTCTotalSteps()}
           question="Bathroom layout?"
           onBack={goBack}
         >
@@ -609,7 +633,7 @@ export function PricingQuestionnaire() {
       return (
         <QuestionContainer
           currentStep={3}
-          totalSteps={6}
+          totalSteps={getTCTotalSteps()}
           question="What works have been completed?"
           helperText="Select all that apply"
           onBack={goBack}
@@ -636,8 +660,8 @@ export function PricingQuestionnaire() {
       return (
         <QuestionContainer
           currentStep={4}
-          totalSteps={6}
-          question="Condition on completion?"
+          totalSteps={getTCTotalSteps()}
+          question="Condition on site?"
           onBack={goBack}
         >
           <OptionCard
@@ -665,65 +689,12 @@ export function PricingQuestionnaire() {
       );
     }
 
-    // Step 5: Access details
-    if (state.step === 5) {
-      return (
-        <QuestionContainer
-          currentStep={5}
-          totalSteps={6}
-          question="Site access details"
-          helperText="Please confirm the following (all required)"
-          onBack={goBack}
-        >
-          <CheckboxOption
-            label="Vacant property"
-            checked={state.tcAccessDetails.vacant}
-            onChange={(checked) => updateTCAccess("vacant", checked)}
-          />
-          <CheckboxOption
-            label="Keys available / welfare access"
-            checked={state.tcAccessDetails.keysAvailable}
-            onChange={(checked) => updateTCAccess("keysAvailable", checked)}
-          />
-          <CheckboxOption
-            label="Parking available"
-            checked={state.tcAccessDetails.parkingAvailable}
-            onChange={(checked) => updateTCAccess("parkingAvailable", checked)}
-          />
-          <div className="pt-2">
-            <Textarea
-              placeholder="Additional notes (optional)"
-              value={state.tcAccessDetails.notes}
-              onChange={(e) => updateTCAccess("notes", e.target.value)}
-              className="min-h-[80px]"
-            />
-          </div>
-          <div className="pt-4">
-            <Button
-              size="lg"
-              className="w-full"
-              onClick={submitTCQuote}
-              disabled={!canSubmitTCAccess}
-            >
-              Get my estimate
-            </Button>
-            {!canSubmitTCAccess && (
-              <p className="text-sm text-muted-foreground text-center mt-2">
-                Please confirm all access requirements above
-              </p>
-            )}
-          </div>
-        </QuestionContainer>
-      );
-    }
-
-    // Step 6: Result
-    if (state.step === 6 && state.result) {
+    // Step 5: Result
+    if (state.step === 5 && state.result) {
       return (
         <>
           <ResultScreen
             result={state.result}
-            variant="tc"
             onRequestCallback={() => setCallbackOpen(true)}
           />
           <CallbackDialog open={callbackOpen} onOpenChange={setCallbackOpen} />
