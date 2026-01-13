@@ -215,9 +215,10 @@ export function PricingQuestionnaire() {
   };
 
   const toggleWork = (work: string) => {
-    const newWorks = state.worksCompleted.includes(work)
-      ? state.worksCompleted.filter((w) => w !== work)
-      : [...state.worksCompleted, work];
+    const currentWorks = state.worksCompleted || [];
+    const newWorks = currentWorks.includes(work)
+      ? currentWorks.filter((w) => w !== work)
+      : [...currentWorks, work];
     updateState({ worksCompleted: newWorks });
   };
 
@@ -642,7 +643,7 @@ export function PricingQuestionnaire() {
             <CheckboxOption
               key={option.id}
               label={option.label}
-              checked={state.worksCompleted.includes(option.id)}
+              checked={(state.worksCompleted || []).includes(option.id)}
               onChange={() => toggleWork(option.id)}
             />
           ))}
