@@ -16,6 +16,7 @@ import {
   TCQuoteData,
   QuoteResult,
 } from "@/lib/pricingLogic";
+import logo from "@/assets/logo.jpeg";
 
 type FlowType = "entry" | "domestic" | "tc" | "exit";
 type ServiceType = "domestic" | "end-of-tenancy" | "post-construction";
@@ -234,6 +235,11 @@ export function PricingQuestionnaire() {
         animate={{ opacity: 1, y: 0 }}
         className="text-center py-8"
       >
+        <img 
+          src={logo} 
+          alt="ECOclean Cymru" 
+          className="h-20 md:h-24 w-auto mx-auto mb-6 rounded-lg shadow-md" 
+        />
         <h1 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-4">
           Build your clean in under 60 seconds
         </h1>
