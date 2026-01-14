@@ -36,6 +36,10 @@ export interface QuoteResult {
   exclusions: string[];
   serviceType: ServiceType;
   footerNote?: string;
+  // Flags for availability booking
+  isLargeJob?: boolean;
+  isMultiDay?: boolean;
+  isStaged?: boolean;
 }
 
 // =============== INTERNAL PRICING CONSTANTS (NEVER SHOWN) ===============
@@ -124,18 +128,24 @@ const TC_CONDITION_MULTIPLIERS = {
 
 // =============== DURATION CALCULATION (INTERNAL) ===============
 
-function calculateDurationRange(labourHours: number): string {
+interface DurationResult {
+  durationRange: string;
+  isStaged: boolean;
+  isMultiDay: boolean;
+}
+
+function calculateDurationRange(labourHours: number): DurationResult {
   // Based on crew guidance - approximates duration for customer
   if (labourHours <= 4) {
-    return 'Approx. 2–4 hours';
+    return { durationRange: 'Approx. 2–4 hours', isStaged: false, isMultiDay: false };
   } else if (labourHours <= 8) {
-    return 'Approx. 4–6 hours';
+    return { durationRange: 'Approx. 4–6 hours', isStaged: false, isMultiDay: false };
   } else if (labourHours <= 12) {
-    return 'Approx. 6–8 hours';
+    return { durationRange: 'Approx. 6–8 hours', isStaged: false, isMultiDay: false };
   } else if (labourHours <= 16) {
-    return 'Full day (staged clean possible)';
+    return { durationRange: 'Full day (staged clean possible)', isStaged: true, isMultiDay: false };
   } else {
-    return 'Multi-day clean';
+    return { durationRange: 'Multi-day clean', isStaged: true, isMultiDay: true };
   }
 }
 
@@ -185,7 +195,10 @@ export function calculateDomesticQuote(data: DomesticQuoteData): QuoteResult {
   price = Math.max(price, MINIMUM_CHARGE);
   
   // Calculate duration range
-  const durationRange = calculateDurationRange(labourHours);
+  const durationInfo = calculateDurationRange(labourHours);
+  
+  // Determine if this is a large job (price threshold for domestic)
+  const isLargeJob = price >= 300;
   
   // Generate scope summary
   const scopeSummary = generateDomesticScopeSummary(data);
@@ -251,11 +264,14 @@ export function calculateDomesticQuote(data: DomesticQuoteData): QuoteResult {
   
   return {
     estimatedPrice: price,
-    durationRange,
+    durationRange: durationInfo.durationRange,
     scopeSummary,
     inclusions,
     exclusions,
     serviceType: data.serviceType,
+    isLargeJob,
+    isStaged: durationInfo.isStaged,
+    isMultiDay: durationInfo.isMultiDay,
   };
 }
 
@@ -318,7 +334,10 @@ export function calculateTCQuote(data: TCQuoteData): QuoteResult {
   price = Math.max(price, MINIMUM_CHARGE);
   
   // Calculate duration range
-  const durationRange = calculateDurationRange(labourHours);
+  const durationInfo = calculateDurationRange(labourHours);
+  
+  // TC/Construction jobs are always handled carefully - flag large ones
+  const isLargeJob = price >= 400;
   
   // Generate scope summary
   const scopeSummary = generateTCScopeSummary(data);
@@ -358,11 +377,14 @@ export function calculateTCQuote(data: TCQuoteData): QuoteResult {
   
   return {
     estimatedPrice: price,
-    durationRange,
+    durationRange: durationInfo.durationRange,
     scopeSummary,
     inclusions,
     exclusions,
     serviceType: 'post-construction',
+    isLargeJob,
+    isStaged: durationInfo.isStaged,
+    isMultiDay: durationInfo.isMultiDay,
   };
 }
 
@@ -467,7 +489,10 @@ export function calculateSiteWelfareQuote(data: SiteWelfareQuoteData): QuoteResu
   price = Math.max(price, MINIMUM_CHARGE);
   
   // Calculate duration range
-  const durationRange = calculateDurationRange(labourHours);
+  const durationInfo = calculateDurationRange(labourHours);
+  
+  // Site welfare with many cabins or heavy use is large
+  const isLargeJob = data.cabinCount >= 6 || price >= 400;
   
   // Generate scope summary
   const scopeSummary = generateSiteWelfareScopeSummary(data);
@@ -514,12 +539,15 @@ export function calculateSiteWelfareQuote(data: SiteWelfareQuoteData): QuoteResu
   
   return {
     estimatedPrice: price,
-    durationRange,
+    durationRange: durationInfo.durationRange,
     scopeSummary,
     inclusions,
     exclusions,
     serviceType: 'site-welfare',
     footerNote,
+    isLargeJob,
+    isStaged: durationInfo.isStaged,
+    isMultiDay: durationInfo.isMultiDay,
   };
 }
 

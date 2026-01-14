@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Home, Sparkles, HardHat, Bed, Bath, Paintbrush, AlertCircle, Building2 } from "lucide-react";
+import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { QuestionContainer } from "./QuestionContainer";
@@ -9,6 +10,8 @@ import { CheckboxOption } from "./CheckboxOption";
 import { ResultScreen } from "./ResultScreen";
 import { ExitScreen } from "./ExitScreen";
 import { CallbackDialog } from "./CallbackDialog";
+import { AvailabilityRequest, AvailabilitySubmission } from "./AvailabilityRequest";
+import { AvailabilityConfirmation } from "./AvailabilityConfirmation";
 import {
   calculateDomesticQuote,
   calculateTCQuote,
@@ -20,7 +23,7 @@ import {
 } from "@/lib/pricingLogic";
 import logo from "@/assets/logo.jpeg";
 
-type FlowType = "entry" | "domestic" | "tc" | "site-welfare" | "exit";
+type FlowType = "entry" | "domestic" | "tc" | "site-welfare" | "exit" | "availability" | "confirmation";
 type ServiceType = "regular" | "end-of-tenancy" | "deep" | "post-construction" | "site-welfare";
 type Bedrooms = 1 | 2 | 3 | 4;
 type Bathrooms = 1 | 2 | 3;
@@ -59,6 +62,8 @@ interface QuestionnaireState {
   exitReason: "large-property" | "private-commercial" | null;
   // Deep clean suggestion
   showDeepCleanSuggestion: boolean;
+  // Availability request
+  preferredDate: Date | null;
 }
 
 const initialState: QuestionnaireState = {
@@ -84,6 +89,7 @@ const initialState: QuestionnaireState = {
   result: null,
   exitReason: null,
   showDeepCleanSuggestion: false,
+  preferredDate: null,
 };
 
 // Deep clean automatically includes these add-ons
@@ -322,6 +328,60 @@ export function PricingQuestionnaire() {
 
   const resetQuestionnaire = () => {
     setState(initialState);
+  };
+
+  // Availability flow handlers
+  const startAvailabilityRequest = () => {
+    updateState({ flow: "availability" });
+  };
+
+  const handleAvailabilitySubmit = (submission: AvailabilitySubmission) => {
+    // Build service type label for the message header
+    const serviceLabels: Record<string, string> = {
+      'regular': 'Domestic Clean',
+      'end-of-tenancy': 'End of Tenancy',
+      'deep': 'Deep Clean',
+      'post-construction': 'Post-Construction – TC',
+      'site-welfare': 'Site Welfare Cleaning',
+    };
+    const serviceLabel = serviceLabels[submission.result.serviceType] || 'Cleaning';
+    
+    // Format date
+    const dateStr = format(submission.preferredDate, "EEEE, d MMMM yyyy");
+    
+    // Build WhatsApp message
+    const whatsappMessage = encodeURIComponent(
+      `[${serviceLabel} – Availability Request]\n\n` +
+      `Name: ${submission.customerName}\n` +
+      `Phone: ${submission.customerPhone}\n` +
+      `${submission.customerEmail ? `Email: ${submission.customerEmail}\n` : ''}` +
+      `\nPreferred Date: ${dateStr}\n` +
+      `\nService: ${submission.result.scopeSummary}\n` +
+      `Estimated Price: £${submission.result.estimatedPrice}\n` +
+      `Duration: ${submission.result.durationRange}\n` +
+      `${submission.notes ? `\nNotes: ${submission.notes}` : ''}`
+    );
+    
+    // Open WhatsApp with the message
+    window.open(`https://wa.me/447432670535?text=${whatsappMessage}`, '_blank');
+    
+    // Update state to show confirmation
+    updateState({ 
+      flow: "confirmation",
+      preferredDate: submission.preferredDate,
+    });
+  };
+
+  const handleBackToResult = () => {
+    // Return to the appropriate result step based on flow
+    if (state.serviceType === 'site-welfare') {
+      const hasToiletsOrShowers = state.cabinUses.includes('toilets') || state.cabinUses.includes('showers');
+      updateState({ flow: "site-welfare", step: hasToiletsOrShowers ? 7 : 6 });
+    } else if (state.serviceType === 'post-construction') {
+      updateState({ flow: "tc", step: 5 });
+    } else {
+      updateState({ flow: "domestic", step: 6 });
+    }
   };
 
   // Calculate total steps based on flow
@@ -648,6 +708,7 @@ export function PricingQuestionnaire() {
           <ResultScreen
             result={state.result}
             onRequestCallback={() => setCallbackOpen(true)}
+            onCheckAvailability={startAvailabilityRequest}
           />
           <CallbackDialog open={callbackOpen} onOpenChange={setCallbackOpen} />
         </>
@@ -787,6 +848,7 @@ export function PricingQuestionnaire() {
           <ResultScreen
             result={state.result}
             onRequestCallback={() => setCallbackOpen(true)}
+            onCheckAvailability={startAvailabilityRequest}
           />
           <CallbackDialog open={callbackOpen} onOpenChange={setCallbackOpen} />
         </>
@@ -1016,11 +1078,34 @@ export function PricingQuestionnaire() {
           <ResultScreen
             result={state.result}
             onRequestCallback={() => setCallbackOpen(true)}
+            onCheckAvailability={startAvailabilityRequest}
           />
           <CallbackDialog open={callbackOpen} onOpenChange={setCallbackOpen} />
         </>
       );
     }
+  }
+
+  // AVAILABILITY FLOW
+  if (state.flow === "availability" && state.result) {
+    return (
+      <AvailabilityRequest
+        result={state.result}
+        onBack={handleBackToResult}
+        onSubmit={handleAvailabilitySubmit}
+      />
+    );
+  }
+
+  // CONFIRMATION FLOW
+  if (state.flow === "confirmation" && state.result && state.preferredDate) {
+    return (
+      <AvailabilityConfirmation
+        result={state.result}
+        preferredDate={state.preferredDate}
+        onStartOver={resetQuestionnaire}
+      />
+    );
   }
 
   return null;
