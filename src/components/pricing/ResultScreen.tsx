@@ -1,16 +1,26 @@
 import { motion } from "framer-motion";
-import { Check, X, Clock, Phone, MessageSquare, FileText } from "lucide-react";
+import { Check, X, Clock, Phone, MessageSquare, FileText, Calendar, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { QuoteResult } from "@/lib/pricingLogic";
 
 interface ResultScreenProps {
   result: QuoteResult;
   onRequestCallback: () => void;
+  onCheckAvailability: () => void;
 }
 
-export function ResultScreen({ result, onRequestCallback }: ResultScreenProps) {
+export function ResultScreen({ result, onRequestCallback, onCheckAvailability }: ResultScreenProps) {
   const isTC = result.serviceType === 'post-construction';
   const isSiteWelfare = result.serviceType === 'site-welfare';
+  const isDomestic = result.serviceType === 'regular' || 
+                     result.serviceType === 'end-of-tenancy' || 
+                     result.serviceType === 'deep';
+  
+  // Determine if booking is available
+  const isBookingRestricted = result.isLargeJob || result.isMultiDay || result.isStaged;
+  
+  // Show deposit note for larger domestic cleans
+  const showDepositNote = isDomestic && result.estimatedPrice >= 180;
   
   return (
     <motion.div
@@ -72,6 +82,16 @@ export function ResultScreen({ result, onRequestCallback }: ResultScreenProps) {
         </ul>
       </div>
 
+      {/* Deposit Note for Domestic Cleans */}
+      {showDepositNote && (
+        <div className="flex items-start gap-3 p-4 bg-muted/50 rounded-xl border border-border">
+          <Info className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+          <p className="text-sm text-muted-foreground">
+            For larger domestic cleans (£180+), we may request a small booking deposit once availability is confirmed. This is deducted from the final invoice.
+          </p>
+        </div>
+      )}
+
       {/* Footer Note */}
       <p className="text-sm text-muted-foreground text-center px-4">
         {result.footerNote || (
@@ -84,6 +104,24 @@ export function ResultScreen({ result, onRequestCallback }: ResultScreenProps) {
 
       {/* CTAs */}
       <div className="space-y-3 pt-4">
+        {/* Availability Request - Only show if not restricted */}
+        {!isBookingRestricted ? (
+          <Button
+            size="lg"
+            className="w-full"
+            onClick={onCheckAvailability}
+          >
+            <Calendar className="w-5 h-5" />
+            Check availability
+          </Button>
+        ) : (
+          <div className="bg-muted/50 rounded-xl p-4 border border-border text-center">
+            <p className="text-sm text-muted-foreground">
+              This job requires scheduling review — please contact us to confirm availability.
+            </p>
+          </div>
+        )}
+
         <Button
           variant="whatsapp"
           size="lg"
@@ -108,15 +146,6 @@ export function ResultScreen({ result, onRequestCallback }: ResultScreenProps) {
         >
           <Phone className="w-5 h-5" />
           Request a callback
-        </Button>
-
-        <Button
-          variant="ghost"
-          size="lg"
-          className="w-full text-muted-foreground"
-          disabled
-        >
-          Continue to booking (coming soon)
         </Button>
       </div>
     </motion.div>
