@@ -44,7 +44,7 @@ const MINIMUM_CHARGE = 45;
 
 // Hourly rates per cleaner
 const DOMESTIC_HOURLY_RATE = 22.50;
-const TC_HOURLY_RATE = 27.50;
+const TC_HOURLY_RATE = 26.00;
 
 // Base labour hours by bedroom count (domestic)
 const DOMESTIC_BASE_HOURS = {
@@ -388,7 +388,7 @@ function generateTCScopeSummary(data: TCQuoteData): string {
 
 // =============== SITE WELFARE PRICING CONSTANTS ===============
 
-const SITE_WELFARE_HOURLY_RATE = 27.50;
+const SITE_WELFARE_HOURLY_RATE = 26.00;
 
 // Base hours per cabin by use type
 const CABIN_USE_HOURS: Record<string, number> = {
