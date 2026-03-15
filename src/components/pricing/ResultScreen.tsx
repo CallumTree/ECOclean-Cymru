@@ -29,7 +29,7 @@ export function ResultScreen({ result, onRequestCallback, onCheckAvailability }:
       {/* Price Card */}
       <div className="bg-gradient-to-br from-primary to-secondary rounded-2xl p-6 md:p-8 text-primary-foreground">
         <p className="text-primary-foreground/80 mb-1">
-          {isSiteWelfare ? "Estimated price per visit" : "Estimated price"}
+          {"Estimated price"}
         </p>
         <div className="flex items-baseline gap-2 mb-4">
           <span className="font-heading text-5xl md:text-6xl font-bold">
