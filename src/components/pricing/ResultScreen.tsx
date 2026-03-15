@@ -95,7 +95,6 @@ export function ResultScreen({ result, onRequestCallback, onCheckAvailability }:
         {result.footerNote || (
           <>
             Time and price shown are estimates based on typical cleaning pace. Final scheduling may vary depending on access and condition.
-            {isTC && " Non-standard works may require review."}
           </>
         )}
       </p>
