@@ -1,31 +1,25 @@
 // Pricing logic - NEVER expose these values to users
 // All calculations are internal only
 
-export type ServiceType = 'regular' | 'end-of-tenancy' | 'deep' | 'post-construction' | 'site-welfare';
+export type ServiceType = 'holiday-let' | 'end-of-tenancy' | 'deep';
+
+// Keep these types available for future re-addition of construction services
+// export type ConstructionServiceType = 'post-construction' | 'site-welfare';
+
+export interface ExtrasSelection {
+  kitchenAppliance: string[];
+  interiorCleaning: string[];
+  carpetUpholstery: string[];
+  holidayLet: string[];
+  exterior: string[];
+}
 
 export interface DomesticQuoteData {
-  serviceType: 'regular' | 'end-of-tenancy' | 'deep';
+  serviceType: ServiceType;
   bedrooms: 1 | 2 | 3;
   bathrooms: 1 | 2 | 3;
-  detailedAddOns: string[];
-  applianceAddOns: string[];
+  extras: ExtrasSelection;
   condition: 'light' | 'average' | 'heavy';
-}
-
-export interface TCQuoteData {
-  bedrooms: 1 | 2 | 3;
-  bathrooms: '1' | '1+wc' | '2+';
-  worksCompleted: string[];
-  siteCondition: 'light' | 'typical' | 'heavy';
-}
-
-export interface SiteWelfareQuoteData {
-  cabinCount: number;
-  cabinUses: string[];
-  toiletShowerScale: '1-2' | '3-5' | '6+' | null;
-  dailyOccupancy: '1-5' | '6-10' | '11-20' | '20+';
-  frequency: 'one-off' | 'weekly' | 'twice-weekly' | 'daily';
-  accessDetails: string[];
 }
 
 export interface QuoteResult {
@@ -36,6 +30,7 @@ export interface QuoteResult {
   exclusions: string[];
   serviceType: ServiceType;
   footerNote?: string;
+  selectedExtras: string[];
   // Flags for availability booking
   isLargeJob?: boolean;
   isMultiDay?: boolean;
@@ -48,9 +43,8 @@ const MINIMUM_CHARGE = 45;
 
 // Hourly rates per cleaner
 const DOMESTIC_HOURLY_RATE = 22.50;
-const TC_HOURLY_RATE = 26.00;
 
-// Base labour hours by bedroom count (domestic)
+// Base labour hours by bedroom count
 const DOMESTIC_BASE_HOURS = {
   1: 2,
   2: 2.5,
@@ -65,8 +59,8 @@ const DOMESTIC_BATHROOM_HOURS = {
 };
 
 // Service type labour multipliers
-const SERVICE_TYPE_MULTIPLIERS = {
-  'regular': 1,
+const SERVICE_TYPE_MULTIPLIERS: Record<ServiceType, number> = {
+  'holiday-let': 1,
   'end-of-tenancy': 1.4,
   'deep': 1.6,
 };
@@ -78,52 +72,76 @@ const CONDITION_MULTIPLIERS = {
   'heavy': 1.4,
 };
 
-// Add-on labour hours (detailed cleaning)
-const DETAILED_ADDON_HOURS: Record<string, number> = {
-  'skirting': 0.5,
-  'cupboards': 0.5,
-  'windows': 0.5,
-  'doorframes': 0.25,
-  'wallmarks': 0.25,
-};
+// =============== EXTRAS LABOUR HOURS ===============
 
-// Add-on labour hours (appliances)
-const APPLIANCE_ADDON_HOURS: Record<string, number> = {
+const EXTRAS_HOURS: Record<string, number> = {
+  // Kitchen & Appliance
   'oven': 1,
+  'double-oven': 1.5,
   'fridge': 0.5,
+  'microwave': 0.25,
+  'extractor': 0.5,
+  'kitchen-cupboards': 0.75,
+  // Interior Cleaning
+  'interior-windows': 0.5,
+  'skirting-deep': 0.5,
+  'tile-grout': 0.75,
+  'limescale': 0.5,
+  'washing-machine': 0.5,
+  'dishwasher': 0.25,
+  // Carpet & Upholstery
+  'carpet-room': 0.75,
+  'rug': 0.5,
+  'sofa': 1,
+  'mattress': 0.5,
+  // Holiday Let Specific
+  'linen-change': 0.25,
+  'towel-replacement': 0.15,
+  'linen-laundry': 0.5,
+  'welcome-pack': 0.25,
+  'toiletries': 0.15,
+  'bin-management': 0.15,
+  // Exterior
+  'patio-wash': 1.5,
+  'driveway-wash': 1.5,
+  'render-wash': 2,
+  'roof-moss': 2,
+  'gutter-clearing': 1,
 };
 
-// =============== TC (POST-CONSTRUCTION) PRICING ===============
-
-// Base labour hours by bedroom count (TC)
-const TC_BASE_HOURS = {
-  1: 3,
-  2: 4,
-  3: 5.5,
-};
-
-// TC bathroom labour additions
-const TC_BATHROOM_HOURS = {
-  '1': 0,
-  '1+wc': 0.5,
-  '2+': 1,
-};
-
-// TC works completed labour additions
-const TC_WORKS_HOURS: Record<string, number> = {
-  'kitchen': 1,
-  'bathroom': 0.75,
-  'floor-tiling': 0.5,
-  'carpet-vinyl': 0.25,
-  'decoration': 0.5,
-  'joinery': 0.25,
-};
-
-// TC site condition multipliers
-const TC_CONDITION_MULTIPLIERS = {
-  'light': 1,
-  'typical': 1.2,
-  'heavy': 1.5,
+const EXTRAS_LABELS: Record<string, string> = {
+  // Kitchen & Appliance
+  'oven': 'Oven deep clean',
+  'double-oven': 'Double oven / range cooker clean',
+  'fridge': 'Fridge interior clean',
+  'microwave': 'Microwave clean',
+  'extractor': 'Extractor fan and filter clean',
+  'kitchen-cupboards': 'Inside kitchen cupboards',
+  // Interior Cleaning
+  'interior-windows': 'Interior window cleaning',
+  'skirting-deep': 'Skirting board deep clean',
+  'tile-grout': 'Tile and grout cleaning',
+  'limescale': 'Limescale removal',
+  'washing-machine': 'Washing machine deep clean',
+  'dishwasher': 'Dishwasher clean',
+  // Carpet & Upholstery
+  'carpet-room': 'Carpet cleaning (per room)',
+  'rug': 'Rug cleaning',
+  'sofa': 'Sofa / upholstery cleaning',
+  'mattress': 'Mattress sanitation',
+  // Holiday Let Specific
+  'linen-change': 'Bed linen change (per bed)',
+  'towel-replacement': 'Towel replacement',
+  'linen-laundry': 'Linen laundry service',
+  'welcome-pack': 'Welcome pack setup',
+  'toiletries': 'Toiletries restocking',
+  'bin-management': 'Bin management between guests',
+  // Exterior
+  'patio-wash': 'Patio pressure washing',
+  'driveway-wash': 'Driveway pressure washing',
+  'render-wash': 'Render soft wash',
+  'roof-moss': 'Roof moss removal',
+  'gutter-clearing': 'Gutter clearing',
 };
 
 // =============== DURATION CALCULATION (INTERNAL) ===============
@@ -135,7 +153,6 @@ interface DurationResult {
 }
 
 function calculateDurationRange(labourHours: number): DurationResult {
-  // Based on crew guidance - approximates duration for customer
   if (labourHours <= 4) {
     return { durationRange: 'Approx. 2–4 hours', isStaged: false, isMultiDay: false };
   } else if (labourHours <= 8) {
@@ -153,7 +170,7 @@ function roundToHalfHour(hours: number): number {
   return Math.ceil(hours * 2) / 2;
 }
 
-// =============== DOMESTIC QUOTE CALCULATION ===============
+// =============== QUOTE CALCULATION ===============
 
 export function calculateDomesticQuote(data: DomesticQuoteData): QuoteResult {
   // Calculate base labour hours
@@ -168,17 +185,18 @@ export function calculateDomesticQuote(data: DomesticQuoteData): QuoteResult {
   // Apply condition multiplier
   labourHours *= CONDITION_MULTIPLIERS[data.condition];
   
-  // Add detailed add-ons
-  data.detailedAddOns.forEach(addOn => {
-    if (DETAILED_ADDON_HOURS[addOn]) {
-      labourHours += DETAILED_ADDON_HOURS[addOn];
-    }
-  });
+  // Add extras hours
+  const allExtras = [
+    ...data.extras.kitchenAppliance,
+    ...data.extras.interiorCleaning,
+    ...data.extras.carpetUpholstery,
+    ...data.extras.holidayLet,
+    ...data.extras.exterior,
+  ];
   
-  // Add appliance add-ons
-  data.applianceAddOns.forEach(addOn => {
-    if (APPLIANCE_ADDON_HOURS[addOn]) {
-      labourHours += APPLIANCE_ADDON_HOURS[addOn];
+  allExtras.forEach(extra => {
+    if (EXTRAS_HOURS[extra]) {
+      labourHours += EXTRAS_HOURS[extra];
     }
   });
   
@@ -197,70 +215,25 @@ export function calculateDomesticQuote(data: DomesticQuoteData): QuoteResult {
   // Calculate duration range
   const durationInfo = calculateDurationRange(labourHours);
   
-  // Determine if this is a large job (price threshold for domestic)
+  // Determine if this is a large job
   const isLargeJob = price >= 300;
   
   // Generate scope summary
-  const scopeSummary = generateDomesticScopeSummary(data);
+  const scopeSummary = generateScopeSummary(data);
   
-  // Build inclusions
-  const inclusions = [
-    'All rooms cleaned',
-    'Kitchen surfaces',
-    'Bathroom / WC cleaning',
-    'Vacuuming and mopping',
-    'Dusting reachable surfaces',
-    'Visible appliance fronts wiped (wipe-down only)',
-  ];
+  // Build inclusions based on service type
+  const inclusions = getBaseInclusions(data.serviceType);
   
-  // Add service-specific inclusions
-  if (data.serviceType === 'deep') {
-    inclusions.push('Detailed cleaning throughout');
-    inclusions.push('Skirting boards');
-    inclusions.push('Door frames & light switches');
-    inclusions.push('Inside cupboards');
-  }
-  
-  if (data.serviceType === 'end-of-tenancy') {
-    inclusions.push('Move-out standard deep clean');
-  }
-  
-  // Add selected add-ons
-  const detailedLabels: Record<string, string> = {
-    'skirting': 'Skirting boards (detailed clean)',
-    'cupboards': 'Inside cupboards',
-    'windows': 'Inside windows',
-    'doorframes': 'Door frames & light switches',
-    'wallmarks': 'Spot wall marks',
-  };
-  
-  const applianceLabels: Record<string, string> = {
-    'oven': 'Oven internal clean',
-    'fridge': 'Fridge internal clean',
-  };
-  
-  // Only add if not already included in deep clean
-  if (data.serviceType !== 'deep') {
-    data.detailedAddOns.forEach(addOn => {
-      if (detailedLabels[addOn]) {
-        inclusions.push(detailedLabels[addOn]);
-      }
-    });
-  }
-  
-  data.applianceAddOns.forEach(addOn => {
-    if (applianceLabels[addOn]) {
-      inclusions.push(applianceLabels[addOn]);
+  // Build selected extras labels
+  const selectedExtras: string[] = [];
+  allExtras.forEach(extra => {
+    if (EXTRAS_LABELS[extra]) {
+      selectedExtras.push(EXTRAS_LABELS[extra]);
+      inclusions.push(EXTRAS_LABELS[extra]);
     }
   });
   
-  const exclusions = [
-    'Internal appliance cleaning unless selected',
-    'Waste removal unless agreed',
-    'External window cleaning',
-    'Carpet shampooing',
-    'High-level cleaning requiring equipment',
-  ];
+  const exclusions = getExclusions(data.serviceType);
   
   return {
     estimatedPrice: price,
@@ -269,309 +242,93 @@ export function calculateDomesticQuote(data: DomesticQuoteData): QuoteResult {
     inclusions,
     exclusions,
     serviceType: data.serviceType,
+    selectedExtras,
     isLargeJob,
     isStaged: durationInfo.isStaged,
     isMultiDay: durationInfo.isMultiDay,
   };
 }
 
-function generateDomesticScopeSummary(data: DomesticQuoteData): string {
-  const serviceLabels = {
-    'regular': 'General',
-    'end-of-tenancy': 'End-of-tenancy',
+function getBaseInclusions(serviceType: ServiceType): string[] {
+  switch (serviceType) {
+    case 'holiday-let':
+      return [
+        'Kitchen clean',
+        'Bathroom clean',
+        'Surface dusting',
+        'Vacuuming and mopping floors',
+        'Bin emptying',
+        'Property check for damage or missing items',
+      ];
+    case 'end-of-tenancy':
+      return [
+        'Full kitchen deep clean',
+        'Bathroom deep clean',
+        'Interior windows',
+        'Skirting boards and door frames',
+        'Cupboards and drawers cleaned',
+        'Floors vacuumed and mopped',
+      ];
+    case 'deep':
+      return [
+        'Detailed kitchen cleaning',
+        'Bathroom deep cleaning',
+        'Skirting boards',
+        'Doors and frames',
+        'Light switches and sockets',
+        'High dusting areas',
+        'Detailed floor cleaning',
+      ];
+  }
+}
+
+function getExclusions(serviceType: ServiceType): string[] {
+  switch (serviceType) {
+    case 'holiday-let':
+      return [
+        'Linen services (unless selected as extra)',
+        'External window cleaning',
+        'Garden or outdoor areas (unless selected)',
+      ];
+    case 'end-of-tenancy':
+      return [
+        'Carpet steam cleaning (available as extra)',
+        'External windows',
+        'Garden or outdoor areas',
+      ];
+    case 'deep':
+      return [
+        'Specialist equipment cleaning',
+        'Exterior work (unless selected as extra)',
+        'Carpet deep cleaning (available as extra)',
+      ];
+  }
+}
+
+function generateScopeSummary(data: DomesticQuoteData): string {
+  const serviceLabels: Record<ServiceType, string> = {
+    'holiday-let': 'Holiday let changeover',
+    'end-of-tenancy': 'End of tenancy',
     'deep': 'Deep',
   };
   
-  const hasDetailedAddOns = data.detailedAddOns.length > 0;
-  const hasApplianceAddOns = data.applianceAddOns.length > 0;
+  const allExtras = [
+    ...data.extras.kitchenAppliance,
+    ...data.extras.interiorCleaning,
+    ...data.extras.carpetUpholstery,
+    ...data.extras.holidayLet,
+    ...data.extras.exterior,
+  ];
+  
+  const extrasCount = allExtras.length;
   
   let summary = `${serviceLabels[data.serviceType]} clean`;
   
-  if (data.serviceType === 'deep') {
-    summary += ' with detailed areas included';
-  } else if (hasDetailedAddOns) {
-    summary += ' with selected detailed areas';
+  if (extrasCount > 0) {
+    summary += ` with ${extrasCount} extra${extrasCount > 1 ? 's' : ''} selected`;
   }
   
-  if (hasApplianceAddOns) {
-    summary += '. Internal appliances included.';
-  } else {
-    summary += '. No internal appliance cleaning included.';
-  }
+  summary += '.';
   
   return summary;
-}
-
-// =============== TC (POST-CONSTRUCTION) QUOTE CALCULATION ===============
-
-export function calculateTCQuote(data: TCQuoteData): QuoteResult {
-  // Calculate base labour hours
-  let labourHours = TC_BASE_HOURS[data.bedrooms];
-  
-  // Add bathroom hours
-  labourHours += TC_BATHROOM_HOURS[data.bathrooms];
-  
-  // Add works completed hours
-  data.worksCompleted.forEach(work => {
-    if (TC_WORKS_HOURS[work]) {
-      labourHours += TC_WORKS_HOURS[work];
-    }
-  });
-  
-  // Apply site condition multiplier
-  labourHours *= TC_CONDITION_MULTIPLIERS[data.siteCondition];
-  
-  // Round to nearest 0.5 hour
-  labourHours = roundToHalfHour(labourHours);
-  
-  // Calculate price
-  let price = labourHours * TC_HOURLY_RATE;
-  
-  // Round to nearest £5
-  price = Math.ceil(price / 5) * 5;
-  
-  // Enforce minimum charge
-  price = Math.max(price, MINIMUM_CHARGE);
-  
-  // Calculate duration range
-  const durationInfo = calculateDurationRange(labourHours);
-  
-  // TC/Construction jobs are always handled carefully - flag large ones
-  const isLargeJob = price >= 400;
-  
-  // Generate scope summary
-  const scopeSummary = generateTCScopeSummary(data);
-  
-  // Build inclusions
-  const inclusions = [
-    'Full property clean',
-    'Construction dust removal',
-    'All hard surfaces cleaned',
-    'Window sills and frames',
-    'Light switches and sockets',
-    'Door handles and frames',
-  ];
-  
-  const worksLabels: Record<string, string> = {
-    'kitchen': 'New kitchen area cleaning',
-    'bathroom': 'New bathroom fit cleaning',
-    'floor-tiling': 'Floor tile cleaning',
-    'carpet-vinyl': 'New floor protection and clean',
-    'decoration': 'Post-decoration clean-down',
-    'joinery': 'Joinery dust removal',
-  };
-  
-  data.worksCompleted.forEach(work => {
-    if (worksLabels[work]) {
-      inclusions.push(worksLabels[work]);
-    }
-  });
-  
-  const exclusions = [
-    'Waste or debris removal',
-    'Heavy staining or paint removal',
-    'External cleaning',
-    'Carpet deep cleaning',
-    'Works not specified above',
-  ];
-  
-  return {
-    estimatedPrice: price,
-    durationRange: durationInfo.durationRange,
-    scopeSummary,
-    inclusions,
-    exclusions,
-    serviceType: 'post-construction',
-    isLargeJob,
-    isStaged: durationInfo.isStaged,
-    isMultiDay: durationInfo.isMultiDay,
-  };
-}
-
-function generateTCScopeSummary(data: TCQuoteData): string {
-  const conditionLabels = {
-    'light': 'light site dust',
-    'typical': 'typical handover condition',
-    'heavy': 'heavy build-up',
-  };
-  
-  const worksCount = data.worksCompleted.length;
-  
-  let summary = `Social housing handover clean with ${conditionLabels[data.siteCondition]}`;
-  
-  if (worksCount > 0) {
-    summary += `. Includes cleaning for ${worksCount} completed work${worksCount > 1 ? 's' : ''}.`;
-  } else {
-    summary += '.';
-  }
-  
-  return summary;
-}
-
-// =============== SITE WELFARE PRICING CONSTANTS ===============
-
-const SITE_WELFARE_HOURLY_RATE = 26.00;
-
-// Base hours per cabin by use type
-const CABIN_USE_HOURS: Record<string, number> = {
-  'toilets': 1.5,      // Heavy use
-  'showers': 1.25,     // Heavy use
-  'canteen': 0.75,     // Medium use
-  'drying': 0.5,       // Light use
-  'office': 0.5,       // Light use
-};
-
-// Toilet/shower scale multipliers
-const TOILET_SHOWER_SCALE_MULTIPLIERS = {
-  '1-2': 1,
-  '3-5': 1.5,
-  '6+': 2,
-};
-
-// Occupancy multipliers
-const OCCUPANCY_MULTIPLIERS = {
-  '1-5': 1,
-  '6-10': 1.15,
-  '11-20': 1.3,
-  '20+': 1.5,
-};
-
-// Frequency discount rates (per visit)
-const FREQUENCY_MULTIPLIERS = {
-  'one-off': 1,
-  'weekly': 0.9,
-  'twice-weekly': 0.85,
-  'daily': 0.8,
-};
-
-// =============== SITE WELFARE QUOTE CALCULATION ===============
-
-export function calculateSiteWelfareQuote(data: SiteWelfareQuoteData): QuoteResult {
-  // Calculate base labour hours from cabin uses
-  let labourHours = 0;
-  
-  data.cabinUses.forEach(use => {
-    if (CABIN_USE_HOURS[use]) {
-      labourHours += CABIN_USE_HOURS[use];
-    }
-  });
-  
-  // Multiply by cabin count (with diminishing returns for multiple similar cabins)
-  if (data.cabinCount > 1) {
-    labourHours = labourHours * (1 + (data.cabinCount - 1) * 0.75);
-  }
-  
-  // Apply toilet/shower scale multiplier if applicable
-  const hasToiletsOrShowers = data.cabinUses.includes('toilets') || data.cabinUses.includes('showers');
-  if (hasToiletsOrShowers && data.toiletShowerScale) {
-    labourHours *= TOILET_SHOWER_SCALE_MULTIPLIERS[data.toiletShowerScale];
-  }
-  
-  // Apply occupancy multiplier
-  labourHours *= OCCUPANCY_MULTIPLIERS[data.dailyOccupancy];
-  
-  // Round to nearest 0.5 hour
-  labourHours = roundToHalfHour(labourHours);
-  
-  // Ensure minimum 2 hours
-  labourHours = Math.max(labourHours, 2);
-  
-  // Calculate price
-  let price = labourHours * SITE_WELFARE_HOURLY_RATE;
-  
-  // Apply frequency discount
-  price *= FREQUENCY_MULTIPLIERS[data.frequency];
-  
-  // Round to nearest £5
-  price = Math.ceil(price / 5) * 5;
-  
-  // Enforce minimum charge
-  price = Math.max(price, MINIMUM_CHARGE);
-  
-  // Calculate duration range
-  const durationInfo = calculateDurationRange(labourHours);
-  
-  // Site welfare with many cabins or heavy use is large
-  const isLargeJob = data.cabinCount >= 6 || price >= 400;
-  
-  // Generate scope summary
-  const scopeSummary = generateSiteWelfareScopeSummary(data);
-  
-  // Build inclusions
-  const inclusions = [
-    'Cabin interior cleaning',
-    'Floor cleaning and mopping',
-    'Surface sanitisation',
-    'Waste bin emptying',
-  ];
-  
-  const useLabels: Record<string, string> = {
-    'toilets': 'Toilet cubicle cleaning & sanitisation',
-    'showers': 'Shower cubicle cleaning',
-    'canteen': 'Canteen surfaces and tables',
-    'drying': 'Drying room floor and surfaces',
-    'office': 'Office desk and surface cleaning',
-  };
-  
-  data.cabinUses.forEach(use => {
-    if (useLabels[use]) {
-      inclusions.push(useLabels[use]);
-    }
-  });
-  
-  const exclusions = [
-    'Consumables / supplies (unless agreed)',
-    'Deep cleaning or descaling',
-    'External cabin cleaning',
-    'Waste collection / skip emptying',
-    'Equipment maintenance',
-  ];
-  
-  // Add frequency note
-  const frequencyLabels = {
-    'one-off': 'One-off clean',
-    'weekly': 'Weekly service',
-    'twice-weekly': 'Twice weekly service',
-    'daily': 'Daily service (Mon–Fri)',
-  };
-  
-  const footerNote = `Site welfare cleaning is priced based on cabin use, occupancy, and frequency. ${frequencyLabels[data.frequency]} pricing shown.`;
-  
-  return {
-    estimatedPrice: price,
-    durationRange: durationInfo.durationRange,
-    scopeSummary,
-    inclusions,
-    exclusions,
-    serviceType: 'site-welfare',
-    footerNote,
-    isLargeJob,
-    isStaged: durationInfo.isStaged,
-    isMultiDay: durationInfo.isMultiDay,
-  };
-}
-
-function generateSiteWelfareScopeSummary(data: SiteWelfareQuoteData): string {
-  const cabinWord = data.cabinCount === 1 ? 'cabin' : 'cabins';
-  
-  const useLabels: Record<string, string> = {
-    'toilets': 'toilets',
-    'showers': 'showers',
-    'canteen': 'canteen',
-    'drying': 'drying room',
-    'office': 'site office',
-  };
-  
-  const uses = data.cabinUses
-    .map(use => useLabels[use])
-    .filter(Boolean);
-  
-  if (uses.length === 0) {
-    return `${data.cabinCount} site ${cabinWord}.`;
-  }
-  
-  const lastUse = uses.pop();
-  const usesText = uses.length > 0 ? `${uses.join(', ')} and ${lastUse}` : lastUse;
-  
-  return `${data.cabinCount} site ${cabinWord} containing ${usesText}.`;
 }
