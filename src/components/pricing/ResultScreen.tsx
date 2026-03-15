@@ -10,9 +10,7 @@ interface ResultScreenProps {
 }
 
 export function ResultScreen({ result, onRequestCallback, onCheckAvailability }: ResultScreenProps) {
-  const isTC = result.serviceType === 'post-construction';
-  const isSiteWelfare = result.serviceType === 'site-welfare';
-  const isDomestic = result.serviceType === 'regular' || 
+  const isDomestic = result.serviceType === 'holiday-let' || 
                      result.serviceType === 'end-of-tenancy' || 
                      result.serviceType === 'deep';
   

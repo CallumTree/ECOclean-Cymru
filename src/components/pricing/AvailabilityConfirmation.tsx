@@ -15,7 +15,7 @@ export function AvailabilityConfirmation({
   preferredDate,
   onStartOver 
 }: AvailabilityConfirmationProps) {
-  const isDomestic = result.serviceType === 'regular' || 
+  const isDomestic = result.serviceType === 'holiday-let' || 
                      result.serviceType === 'end-of-tenancy' || 
                      result.serviceType === 'deep';
 
