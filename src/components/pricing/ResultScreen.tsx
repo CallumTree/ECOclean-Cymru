@@ -10,9 +10,7 @@ interface ResultScreenProps {
 }
 
 export function ResultScreen({ result, onRequestCallback, onCheckAvailability }: ResultScreenProps) {
-  const isTC = result.serviceType === 'post-construction';
-  const isSiteWelfare = result.serviceType === 'site-welfare';
-  const isDomestic = result.serviceType === 'regular' || 
+  const isDomestic = result.serviceType === 'holiday-let' || 
                      result.serviceType === 'end-of-tenancy' || 
                      result.serviceType === 'deep';
   
@@ -31,7 +29,7 @@ export function ResultScreen({ result, onRequestCallback, onCheckAvailability }:
       {/* Price Card */}
       <div className="bg-gradient-to-br from-primary to-secondary rounded-2xl p-6 md:p-8 text-primary-foreground">
         <p className="text-primary-foreground/80 mb-1">
-          {isSiteWelfare ? "Estimated price per visit" : "Estimated price"}
+          {"Estimated price"}
         </p>
         <div className="flex items-baseline gap-2 mb-4">
           <span className="font-heading text-5xl md:text-6xl font-bold">
@@ -97,7 +95,6 @@ export function ResultScreen({ result, onRequestCallback, onCheckAvailability }:
         {result.footerNote || (
           <>
             Time and price shown are estimates based on typical cleaning pace. Final scheduling may vary depending on access and condition.
-            {isTC && " Non-standard works may require review."}
           </>
         )}
       </p>
