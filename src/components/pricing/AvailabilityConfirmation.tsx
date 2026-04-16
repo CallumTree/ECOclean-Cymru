@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { CheckCircle, MessageSquare, RotateCcw, Info } from "lucide-react";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
-import { QuoteResult } from "@/lib/pricingLogic";
+import { QuoteResult, isDomesticService } from "@/lib/pricingLogic";
 
 interface AvailabilityConfirmationProps {
   result: QuoteResult;
@@ -15,11 +15,8 @@ export function AvailabilityConfirmation({
   preferredDate,
   onStartOver 
 }: AvailabilityConfirmationProps) {
-  const isDomestic = result.serviceType === 'holiday-let' || 
-                     result.serviceType === 'end-of-tenancy' || 
-                     result.serviceType === 'deep';
-
-  const showDepositNote = isDomestic && result.estimatedPrice >= 180;
+  const isDomestic = isDomesticService(result.serviceType);
+  const showDepositNote = isDomestic && result.finalPrice >= 180;
 
   return (
     <motion.div
@@ -60,7 +57,7 @@ export function AvailabilityConfirmation({
         </div>
         <div>
           <p className="text-sm text-muted-foreground">Estimated price</p>
-          <p className="font-semibold text-foreground">£{result.estimatedPrice}</p>
+          <p className="font-semibold text-foreground">£{result.finalPrice}</p>
         </div>
         <div>
           <p className="text-sm text-muted-foreground">Approximate duration</p>
