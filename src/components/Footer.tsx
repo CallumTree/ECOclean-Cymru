@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Phone, Mail, Clock, MapPin, Shield, Leaf, BadgeCheck } from "lucide-react";
+import { Phone, Mail, MapPin, Shield, Leaf, BadgeCheck } from "lucide-react";
 import logo from "@/assets/logo.jpeg";
 
 const quickLinks = [
