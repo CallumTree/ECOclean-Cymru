@@ -52,12 +52,11 @@ export function AvailabilityRequest({ result, onBack, onSubmit }: AvailabilityRe
   };
 
   const validateStep1 = () => {
-    if (!selectedDate) {
-      setErrors({ date: "Please select a preferred date" });
-      return false;
-    }
-    setErrors({});
-    return true;
+    const e: Record<string, string> = {};
+    if (!selectedDate) e.date = "Please select a preferred date";
+    if (!timeSlot) e.timeSlot = "Please choose a time slot";
+    setErrors(e);
+    return Object.keys(e).length === 0;
   };
 
   const validateStep3 = () => {
@@ -92,12 +91,13 @@ export function AvailabilityRequest({ result, onBack, onSubmit }: AvailabilityRe
   };
 
   const handleSubmit = () => {
-    if (validateStep3() && selectedDate) {
+    if (validateStep3() && selectedDate && timeSlot) {
       onSubmit({
         customerName,
         customerEmail,
         customerPhone,
         preferredDate: selectedDate,
+        timeSlot,
         notes,
         result,
       });
