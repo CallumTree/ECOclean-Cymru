@@ -15,18 +15,28 @@ interface AvailabilityRequestProps {
   onSubmit: (data: AvailabilitySubmission) => void;
 }
 
+export type TimeSlot = 'morning' | 'midday' | 'afternoon';
+
 export interface AvailabilitySubmission {
   customerName: string;
   customerEmail: string;
   customerPhone: string;
   preferredDate: Date;
+  timeSlot: TimeSlot;
   notes: string;
   result: QuoteResult;
 }
 
+const TIME_SLOT_LABELS: Record<TimeSlot, string> = {
+  morning: 'Morning (8am–12pm)',
+  midday: 'Midday (11am–2pm)',
+  afternoon: 'Afternoon (1pm–5pm)',
+};
+
 export function AvailabilityRequest({ result, onBack, onSubmit }: AvailabilityRequestProps) {
   const [step, setStep] = useState(1);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [timeSlot, setTimeSlot] = useState<TimeSlot | null>(null);
   const [notes, setNotes] = useState("");
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
