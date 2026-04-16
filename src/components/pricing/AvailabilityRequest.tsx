@@ -274,7 +274,7 @@ export function AvailabilityRequest({ result, onBack, onSubmit }: AvailabilityRe
             {result.scopeSummary}
           </p>
           <p className="text-foreground font-semibold mt-1">
-            Estimated: £{result.estimatedPrice}
+            Estimated: £{result.finalPrice}
           </p>
         </div>
 
