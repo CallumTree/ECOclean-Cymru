@@ -114,7 +114,7 @@ const Index = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.05 }}
             >
-              Reliable Cleaning You Can Trust
+              Complete cleaning solutions
             </motion.h1>
             <motion.p
               className="text-lg sm:text-xl text-white/90 mb-8 leading-relaxed max-w-2xl"

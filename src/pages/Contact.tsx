@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Phone, Mail, Clock, MapPin, Send, CheckCircle } from "lucide-react";
+import { Phone, Mail, MapPin, Send, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -274,16 +274,6 @@ export default function Contact() {
                       <a href="mailto:Leanne@ecocleancymru.com" className="text-muted-foreground hover:text-primary transition-colors">
                         Leanne@ecocleancymru.com
                       </a>
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <Clock className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-medium text-foreground">Hours</p>
-                      <p className="text-muted-foreground">
-                        Monday–Friday<br />
-                        8:00am – 4:30pm
-                      </p>
                     </div>
                   </li>
                   <li className="flex items-start gap-3">
