@@ -7,13 +7,21 @@ import { QuoteResult, isDomesticService } from "@/lib/pricingLogic";
 interface AvailabilityConfirmationProps {
   result: QuoteResult;
   preferredDate: Date;
+  timeSlot?: string;
   onStartOver: () => void;
 }
 
-export function AvailabilityConfirmation({ 
-  result, 
+const TIME_SLOT_LABELS: Record<string, string> = {
+  morning: 'Morning (8am–12pm)',
+  midday: 'Midday (11am–2pm)',
+  afternoon: 'Afternoon (1pm–5pm)',
+};
+
+export function AvailabilityConfirmation({
+  result,
   preferredDate,
-  onStartOver 
+  timeSlot,
+  onStartOver,
 }: AvailabilityConfirmationProps) {
   const isDomestic = isDomesticService(result.serviceType);
   const showDepositNote = isDomestic && result.finalPrice >= 180;
@@ -51,6 +59,12 @@ export function AvailabilityConfirmation({
             {format(preferredDate, "EEEE, d MMMM yyyy")}
           </p>
         </div>
+        {timeSlot && (
+          <div>
+            <p className="text-sm text-muted-foreground">Time slot</p>
+            <p className="text-foreground">{TIME_SLOT_LABELS[timeSlot] ?? timeSlot}</p>
+          </div>
+        )}
         <div>
           <p className="text-sm text-muted-foreground">Service</p>
           <p className="text-foreground">{result.scopeSummary}</p>

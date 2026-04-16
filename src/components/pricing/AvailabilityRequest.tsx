@@ -15,18 +15,28 @@ interface AvailabilityRequestProps {
   onSubmit: (data: AvailabilitySubmission) => void;
 }
 
+export type TimeSlot = 'morning' | 'midday' | 'afternoon';
+
 export interface AvailabilitySubmission {
   customerName: string;
   customerEmail: string;
   customerPhone: string;
   preferredDate: Date;
+  timeSlot: TimeSlot;
   notes: string;
   result: QuoteResult;
 }
 
+const TIME_SLOT_LABELS: Record<TimeSlot, string> = {
+  morning: 'Morning (8am–12pm)',
+  midday: 'Midday (11am–2pm)',
+  afternoon: 'Afternoon (1pm–5pm)',
+};
+
 export function AvailabilityRequest({ result, onBack, onSubmit }: AvailabilityRequestProps) {
   const [step, setStep] = useState(1);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [timeSlot, setTimeSlot] = useState<TimeSlot | null>(null);
   const [notes, setNotes] = useState("");
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
@@ -42,12 +52,11 @@ export function AvailabilityRequest({ result, onBack, onSubmit }: AvailabilityRe
   };
 
   const validateStep1 = () => {
-    if (!selectedDate) {
-      setErrors({ date: "Please select a preferred date" });
-      return false;
-    }
-    setErrors({});
-    return true;
+    const e: Record<string, string> = {};
+    if (!selectedDate) e.date = "Please select a preferred date";
+    if (!timeSlot) e.timeSlot = "Please choose a time slot";
+    setErrors(e);
+    return Object.keys(e).length === 0;
   };
 
   const validateStep3 = () => {
@@ -82,12 +91,13 @@ export function AvailabilityRequest({ result, onBack, onSubmit }: AvailabilityRe
   };
 
   const handleSubmit = () => {
-    if (validateStep3() && selectedDate) {
+    if (validateStep3() && selectedDate && timeSlot) {
       onSubmit({
         customerName,
         customerEmail,
         customerPhone,
         preferredDate: selectedDate,
+        timeSlot,
         notes,
         result,
       });
@@ -140,11 +150,34 @@ export function AvailabilityRequest({ result, onBack, onSubmit }: AvailabilityRe
           <p className="text-center text-destructive text-sm">{errors.date}</p>
         )}
 
+        <div>
+          <p className="font-heading font-semibold text-foreground mb-3">Preferred time slot</p>
+          <div className="grid grid-cols-1 gap-2">
+            {(Object.keys(TIME_SLOT_LABELS) as TimeSlot[]).map((slot) => (
+              <button
+                key={slot}
+                type="button"
+                onClick={() => setTimeSlot(slot)}
+                className={`p-4 rounded-xl border-2 text-left transition-all ${
+                  timeSlot === slot
+                    ? 'border-primary bg-primary/5 text-primary font-semibold'
+                    : 'border-border bg-card text-foreground hover:border-primary/50'
+                }`}
+              >
+                {TIME_SLOT_LABELS[slot]}
+              </button>
+            ))}
+          </div>
+          {errors.timeSlot && (
+            <p className="text-destructive text-sm mt-2">{errors.timeSlot}</p>
+          )}
+        </div>
+
         <Button
           size="lg"
           className="w-full"
           onClick={handleContinueToNotes}
-          disabled={!selectedDate}
+          disabled={!selectedDate || !timeSlot}
         >
           Continue
         </Button>
