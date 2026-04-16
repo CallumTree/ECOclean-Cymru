@@ -1,5 +1,17 @@
 // Pricing engine — internal calculations only.
 // Customer-facing UI shows Final Price + approximate duration only.
+//
+// Customer-facing services (5):
+//   deep-clean, end-of-tenancy, holiday-let, post-construction, vehicle
+// Internally, holiday-let resolves to either 'domestic-regular' (Standard
+// Turnover) or 'domestic-deep' (Deep Reset) rates.
+
+export type CustomerService =
+  | 'deep-clean'
+  | 'end-of-tenancy'
+  | 'holiday-let'
+  | 'post-construction'
+  | 'vehicle';
 
 export type ServiceType =
   | 'domestic-regular'
@@ -25,16 +37,20 @@ export const VEHICLE_SERVICES: ServiceType[] = [
 
 export type PropertySize = 1 | 2 | 3 | 4 | 5;
 export type VehicleSize = 'small-car' | 'saloon' | 'suv' | 'van';
+export type VehicleLevel = 'exterior' | 'interior' | 'full-detail';
 export type Condition = 'light' | 'medium' | 'heavy';
 export type Access = 'easy' | 'normal' | 'awkward';
+export type HolidayLetVariant = 'standard' | 'deep-reset';
 
 export interface QuoteInput {
   serviceType: ServiceType;
   propertySize?: PropertySize;
+  bathrooms?: number;
+  kitchens?: number;
+  receptionRooms?: number;
   vehicleSize?: VehicleSize;
   condition: Condition;
   access: Access;
-  travelMiles: number;
   wasteRemoval: boolean;
   parkingIssue: boolean;
   addOns: string[];
@@ -45,7 +61,6 @@ export interface QuoteResult {
   estimatedHours: number;
   labourCost: number;
   materialsCost: number;
-  travelCost: number;
   wasteCost: number;
   parkingCost: number;
   addOnsTotal: number;
@@ -108,19 +123,39 @@ const MARGINS: Record<ServiceType, number> = {
   'vehicle-full-detail': 1.15,
 };
 
-// Add-on catalogues
-export const PROPERTY_ADDONS: { id: string; label: string; price: number }[] = [
+// Add-on catalogues — service-specific
+export interface AddOn { id: string; label: string; price: number }
+
+export const DEEP_INTERIOR_ADDONS: AddOn[] = [
   { id: 'oven', label: 'Oven', price: 40 },
   { id: 'fridge', label: 'Fridge', price: 20 },
-  { id: 'windows-inside', label: 'Windows (inside)', price: 30 },
+  { id: 'windows-inside', label: 'Inside windows', price: 30 },
   { id: 'cupboards', label: 'Cupboards', price: 25 },
   { id: 'carpet-clean', label: 'Carpet clean', price: 40 },
   { id: 'upholstery', label: 'Upholstery', price: 50 },
   { id: 'heavy-limescale', label: 'Heavy limescale', price: 30 },
-  { id: 'pressure-wash-exterior', label: 'Pressure wash exterior', price: 45 },
 ];
 
-export const VEHICLE_ADDONS: { id: string; label: string; price: number }[] = [
+export const DEEP_EXTERIOR_ADDONS: AddOn[] = [
+  { id: 'pressure-wash-exterior', label: 'Pressure washing', price: 45 },
+  { id: 'windows-outside', label: 'External windows', price: 30 },
+];
+
+export const HOLIDAY_LET_ADDONS: AddOn[] = [
+  { id: 'linen-change', label: 'Linen change', price: 25 },
+  { id: 'restocking', label: 'Restocking', price: 15 },
+  { id: 'windows-inside', label: 'Inside windows', price: 30 },
+  { id: 'fridge', label: 'Fridge clean', price: 20 },
+];
+
+export const POST_CONSTRUCTION_ADDONS: AddOn[] = [
+  { id: 'paint-plaster', label: 'Paint / plaster removal', price: 50 },
+  { id: 'sticker-removal', label: 'Window sticker removal', price: 30 },
+  { id: 'heavy-dust', label: 'Heavy dust removal', price: 40 },
+  { id: 'pressure-wash-exterior', label: 'External pressure wash', price: 45 },
+];
+
+export const VEHICLE_ADDONS: AddOn[] = [
   { id: 'pet-hair', label: 'Pet hair', price: 20 },
   { id: 'seat-shampoo', label: 'Seat shampoo', price: 30 },
   { id: 'stain-removal', label: 'Stain removal', price: 25 },
@@ -128,18 +163,30 @@ export const VEHICLE_ADDONS: { id: string; label: string; price: number }[] = [
   { id: 'engine-bay', label: 'Engine bay', price: 20 },
   { id: 'machine-polish', label: 'Machine polish', price: 50 },
   { id: 'ceramic-sealant', label: 'Ceramic / sealant', price: 60 },
-  { id: 'snow-foam', label: 'Snow foam', price: 10 },
-  { id: 'pressure-wash', label: 'Pressure wash', price: 25 },
+];
+
+// Backwards-compat alias used elsewhere
+export const PROPERTY_ADDONS: AddOn[] = [
+  ...DEEP_INTERIOR_ADDONS,
+  ...DEEP_EXTERIOR_ADDONS,
 ];
 
 export const SERVICE_LABELS: Record<ServiceType, string> = {
-  'domestic-regular': 'Domestic Regular Clean',
-  'domestic-deep': 'Domestic Deep Clean',
+  'domestic-regular': 'Standard Turnover Clean',
+  'domestic-deep': 'Deep Clean',
   'end-of-tenancy': 'End of Tenancy Clean',
   'post-construction': 'Post-Construction Clean',
-  'vehicle-exterior': 'Vehicle Exterior Detail',
-  'vehicle-interior': 'Vehicle Interior Detail',
-  'vehicle-full-detail': 'Vehicle Full Detail',
+  'vehicle-exterior': 'Exterior Valet',
+  'vehicle-interior': 'Interior Valet',
+  'vehicle-full-detail': 'Full Detail',
+};
+
+export const CUSTOMER_SERVICE_LABELS: Record<CustomerService, string> = {
+  'deep-clean': 'Deep Clean',
+  'end-of-tenancy': 'End of Tenancy',
+  'holiday-let': 'Holiday Let / Airbnb',
+  'post-construction': 'Post Construction',
+  'vehicle': 'Vehicle Cleaning / Detailing',
 };
 
 const VEHICLE_LABELS: Record<VehicleSize, string> = {
@@ -155,11 +202,16 @@ function isVehicleService(s: ServiceType): boolean {
   return VEHICLE_SERVICES.includes(s);
 }
 
-function getAddonsCatalogue(s: ServiceType) {
-  return isVehicleService(s) ? VEHICLE_ADDONS : PROPERTY_ADDONS;
+function getAddonsCatalogue(s: ServiceType): AddOn[] {
+  if (isVehicleService(s)) return VEHICLE_ADDONS;
+  if (s === 'post-construction') return POST_CONSTRUCTION_ADDONS;
+  // domestic-regular here means Holiday Let Standard Turnover
+  if (s === 'domestic-regular') return HOLIDAY_LET_ADDONS;
+  // deep / end-of-tenancy share the same catalogue
+  return [...DEEP_INTERIOR_ADDONS, ...DEEP_EXTERIOR_ADDONS];
 }
 
-export function getAddonsForService(s: ServiceType) {
+export function getAddonsForService(s: ServiceType): AddOn[] {
   return getAddonsCatalogue(s);
 }
 
@@ -176,10 +228,22 @@ function roundToNearest5(n: number): number {
   return Math.round(n / 5) * 5;
 }
 
+// Map a customer-facing vehicle level + variant to internal ServiceType
+export function vehicleServiceType(level: VehicleLevel): ServiceType {
+  if (level === 'exterior') return 'vehicle-exterior';
+  if (level === 'interior') return 'vehicle-interior';
+  return 'vehicle-full-detail';
+}
+
+// Map Holiday Let variant to internal ServiceType
+export function holidayLetServiceType(variant: HolidayLetVariant): ServiceType {
+  return variant === 'deep-reset' ? 'domestic-deep' : 'domestic-regular';
+}
+
 // =============== MAIN CALCULATION ===============
 
 export function calculateQuote(input: QuoteInput): QuoteResult {
-  const { serviceType, condition, access, travelMiles, wasteRemoval, parkingIssue, addOns } = input;
+  const { serviceType, condition, access, wasteRemoval, parkingIssue, addOns } = input;
 
   // STEP 1 — Base hours
   let baseHours = 0;
@@ -189,6 +253,13 @@ export function calculateQuote(input: QuoteInput): QuoteResult {
   } else {
     if (!input.propertySize) throw new Error('Property size required');
     baseHours = PROPERTY_BASE_HOURS[serviceType][input.propertySize];
+
+    // Small uplifts for extra rooms beyond the implied baseline (1 bath, 1 kitchen).
+    // These are intentionally modest so they don't override the bedroom-driven base.
+    const extraBaths = Math.max(0, (input.bathrooms ?? 1) - 1);
+    const extraKitchens = Math.max(0, (input.kitchens ?? 1) - 1);
+    const extraReceptions = Math.max(0, input.receptionRooms ?? 0);
+    baseHours += extraBaths * 0.5 + extraKitchens * 0.75 + extraReceptions * 0.25;
   }
 
   // STEP 2 — Adjusted hours
@@ -201,24 +272,21 @@ export function calculateQuote(input: QuoteInput): QuoteResult {
   // STEP 5 — Materials
   const materialsCost = labourCost * 0.05;
 
-  // STEP 6 — Travel
-  const travelCost = travelMiles > 10 ? (travelMiles - 10) * 1 : 0;
-
-  // STEP 7 — Waste
+  // STEP 6 — Waste
   const wasteCost = wasteRemoval ? 50 : 0;
 
-  // STEP 8 — Parking
+  // STEP 7 — Parking
   const parkingCost = parkingIssue ? 10 : 0;
 
-  // STEP 9 — Add-ons
+  // STEP 8 — Add-ons
   const catalogue = getAddonsCatalogue(serviceType);
   const selectedAddons = catalogue.filter((a) => addOns.includes(a.id));
   const addOnsTotal = selectedAddons.reduce((sum, a) => sum + a.price, 0);
 
-  // STEP 10 — Subtotal
-  const subtotal = labourCost + materialsCost + travelCost + wasteCost + addOnsTotal + parkingCost;
+  // STEP 9 — Subtotal
+  const subtotal = labourCost + materialsCost + wasteCost + addOnsTotal + parkingCost;
 
-  // STEP 11 & 12 — Margin and final price
+  // STEP 10 & 11 — Margin and final price
   const margin = MARGINS[serviceType];
   const finalPrice = roundToNearest5(subtotal * margin);
 
@@ -243,7 +311,6 @@ export function calculateQuote(input: QuoteInput): QuoteResult {
     estimatedHours: Math.round(adjustedHours * 10) / 10,
     labourCost: Math.round(labourCost * 100) / 100,
     materialsCost: Math.round(materialsCost * 100) / 100,
-    travelCost,
     wasteCost,
     parkingCost,
     addOnsTotal,
@@ -268,7 +335,6 @@ export function isDomesticService(s: ServiceType): boolean {
 }
 
 // Backwards-compat alias for callers expecting `estimatedPrice`.
-// New code should read `finalPrice`.
 export function withLegacyFields<T extends QuoteResult>(r: T): T & { estimatedPrice: number } {
   return { ...r, estimatedPrice: r.finalPrice };
 }
