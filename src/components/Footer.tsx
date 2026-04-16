@@ -94,10 +94,6 @@ export function Footer() {
                   Leanne@ecocleancymru.com
                 </a>
               </li>
-              <li className="flex items-start gap-3">
-                <Clock className="w-5 h-5 text-eco-gold shrink-0 mt-0.5" />
-                <span className="text-white/70 text-sm">Mon–Fri, 8:00am–4:30pm</span>
-              </li>
             </ul>
           </div>
 
