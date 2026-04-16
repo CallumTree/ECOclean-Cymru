@@ -150,11 +150,34 @@ export function AvailabilityRequest({ result, onBack, onSubmit }: AvailabilityRe
           <p className="text-center text-destructive text-sm">{errors.date}</p>
         )}
 
+        <div>
+          <p className="font-heading font-semibold text-foreground mb-3">Preferred time slot</p>
+          <div className="grid grid-cols-1 gap-2">
+            {(Object.keys(TIME_SLOT_LABELS) as TimeSlot[]).map((slot) => (
+              <button
+                key={slot}
+                type="button"
+                onClick={() => setTimeSlot(slot)}
+                className={`p-4 rounded-xl border-2 text-left transition-all ${
+                  timeSlot === slot
+                    ? 'border-primary bg-primary/5 text-primary font-semibold'
+                    : 'border-border bg-card text-foreground hover:border-primary/50'
+                }`}
+              >
+                {TIME_SLOT_LABELS[slot]}
+              </button>
+            ))}
+          </div>
+          {errors.timeSlot && (
+            <p className="text-destructive text-sm mt-2">{errors.timeSlot}</p>
+          )}
+        </div>
+
         <Button
           size="lg"
           className="w-full"
           onClick={handleContinueToNotes}
-          disabled={!selectedDate}
+          disabled={!selectedDate || !timeSlot}
         >
           Continue
         </Button>
