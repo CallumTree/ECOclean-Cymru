@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
+import { whatsappLink } from "@/lib/constants";
 import logo from "@/assets/logo.jpeg";
 import {
   Accordion,
@@ -14,7 +15,7 @@ import {
 const faqs = [
   {
     question: "What products do you use?",
-    answer: "We use eco-friendly, non-toxic cleaning products that are safe for your family, pets, and the environment. Our products are effective yet gentle, and we're happy to accommodate any specific product requests or sensitivities.",
+    answer: "We use eco-friendly, non-toxic cleaning products as standard — safe for your family, pets, and the environment. They're effective on everyday dirt and grime, though occasionally tougher stains or heavy build-up need a stronger product or a different method to fully shift. We're happy to accommodate any specific product requests or sensitivities.",
   },
   {
     question: "Are you insured?",
@@ -112,7 +113,7 @@ export default function FAQs() {
                 <Link to="/contact">Contact Us</Link>
               </Button>
               <Button variant="whatsapp" asChild>
-                <a href="https://wa.me/447432670535" target="_blank" rel="noopener noreferrer">
+                <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
                   <Phone className="w-4 h-4" />
                   WhatsApp Us
                 </a>

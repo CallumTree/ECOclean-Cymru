@@ -3,12 +3,13 @@ import { useState } from "react";
 import { Menu, X, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { whatsappLink } from "@/lib/constants";
 import logo from "@/assets/logo.jpeg";
 
+// "Pricing" is intentionally left out of the nav (kept at /pricing for later re-enabling).
 const navigation = [
   { name: "Home", href: "/" },
   { name: "Services", href: "/services" },
-  { name: "Pricing", href: "/pricing" },
   { name: "FAQs", href: "/faqs" },
   { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
@@ -50,7 +51,7 @@ export function Header() {
             <Link to="/contact">Get a Quote</Link>
           </Button>
           <Button variant="whatsapp" size="sm" asChild>
-            <a href="https://wa.me/447432670535" target="_blank" rel="noopener noreferrer">
+            <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
               <Phone className="w-4 h-4" />
               WhatsApp Us
             </a>
@@ -91,7 +92,7 @@ export function Header() {
                 <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>Get a Quote</Link>
               </Button>
               <Button variant="whatsapp" className="w-full" asChild>
-                <a href="https://wa.me/447432670535" target="_blank" rel="noopener noreferrer">
+                <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
                   <Phone className="w-4 h-4" />
                   WhatsApp Us
                 </a>

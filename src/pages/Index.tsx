@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Phone, Shield, Leaf, Users, BadgeCheck, UserCheck, ArrowRight, Sparkles, Home, Building2, HardHat } from "lucide-react";
+import { Phone, Shield, Leaf, Users, BadgeCheck, UserCheck, ArrowRight, Sparkles, HardHat, Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
+import { whatsappLink } from "@/lib/constants";
 import logo from "@/assets/logo.jpeg";
 
 const trustItems = [
@@ -15,23 +16,23 @@ const trustItems = [
 
 const services = [
   {
-    icon: Home,
-    title: "Domestic Cleaning",
-    description: "Regular home cleaning tailored to your needs. Keep your space fresh and welcoming.",
-  },
-  {
     icon: Sparkles,
-    title: "Deep Cleaning",
-    description: "Thorough top-to-bottom cleaning for homes that need extra attention.",
+    title: "Deep Cleans",
+    description: "Thorough top-to-bottom cleaning for homes and businesses that need extra attention.",
   },
   {
-    icon: Building2,
-    title: "End of Tenancy",
-    description: "Professional cleans to help secure your deposit and leave properties spotless.",
+    icon: Users,
+    title: "Regular Cleans",
+    description: "Weekly or biweekly cleans to keep your space consistently fresh, on a routine that suits you.",
+  },
+  {
+    icon: Briefcase,
+    title: "Commercial Office Cleans",
+    description: "Reliable cleaning for offices and workspaces, keeping things presentable for staff and clients.",
   },
   {
     icon: HardHat,
-    title: "Post-Construction",
+    title: "Post Construction Cleans",
     description: "Specialist cleaning for building sites. Quoted only after site visit or photos.",
   },
 ];
@@ -134,7 +135,7 @@ const Index = () => {
                 <Link to="/contact">Get a Quote</Link>
               </Button>
               <Button size="lg" variant="whatsapp" asChild>
-                <a href="https://wa.me/447432670535" target="_blank" rel="noopener noreferrer">
+                <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
                   <Phone className="w-5 h-5" />
                   WhatsApp Us
                 </a>
@@ -276,7 +277,7 @@ const Index = () => {
       </section>
 
       {/* How It Works */}
-      <section className="section-padding bg-eco-dark text-white">
+      <section className="section-padding bg-eco-charcoal text-white">
         <div className="container-wide mx-auto">
           <div className="text-center mb-12">
             <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4">

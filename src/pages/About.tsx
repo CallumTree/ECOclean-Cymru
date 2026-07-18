@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Phone, Shield, Leaf, BadgeCheck, Users, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
+import { whatsappLink } from "@/lib/constants";
 import logo from "@/assets/logo.jpeg";
 
 const values = [
@@ -14,7 +15,7 @@ const values = [
   {
     icon: Leaf,
     title: "Eco-Friendly",
-    description: "Non-toxic, environmentally responsible products that are safe for your family and pets.",
+    description: "We use non-toxic, environmentally responsible products as standard — safe for your family and pets. Tougher dirt or stains occasionally need extra product or a different method, but eco-friendly is always our starting point.",
   },
   {
     icon: BadgeCheck,
@@ -129,7 +130,7 @@ export default function About() {
                 <Link to="/contact">Get in Touch</Link>
               </Button>
               <Button variant="whatsapp" asChild>
-                <a href="https://wa.me/447432670535" target="_blank" rel="noopener noreferrer">
+                <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
                   <Phone className="w-4 h-4" />
                   WhatsApp Us
                 </a>
