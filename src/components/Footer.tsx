@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin, Shield, Leaf, BadgeCheck } from "lucide-react";
+import { CONTACT_EMAIL, WHATSAPP_DISPLAY_NUMBER } from "@/lib/constants";
 import logo from "@/assets/logo.jpeg";
 
+// "Pricing" is intentionally left out of the nav (kept at /pricing for later re-enabling).
 const quickLinks = [
   { name: "Home", href: "/" },
   { name: "Services", href: "/services" },
-  { name: "Pricing", href: "/pricing" },
   { name: "FAQs", href: "/faqs" },
   { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
@@ -19,7 +20,7 @@ const trustSignals = [
 
 export function Footer() {
   return (
-    <footer className="bg-eco-dark text-white">
+    <footer className="bg-eco-charcoal text-white">
       <div className="container-wide mx-auto section-padding">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Company Info */}
@@ -85,13 +86,13 @@ export function Footer() {
               <li className="flex items-start gap-3">
                 <Phone className="w-5 h-5 text-eco-gold shrink-0 mt-0.5" />
                 <a href="tel:07432670535" className="text-white/70 hover:text-white transition-colors text-sm">
-                  07432 670535
+                  {WHATSAPP_DISPLAY_NUMBER}
                 </a>
               </li>
               <li className="flex items-start gap-3">
                 <Mail className="w-5 h-5 text-eco-gold shrink-0 mt-0.5" />
-                <a href="mailto:Leanne@ecocleancymru.com" className="text-white/70 hover:text-white transition-colors text-sm">
-                  Leanne@ecocleancymru.com
+                <a href={`mailto:${CONTACT_EMAIL}`} className="text-white/70 hover:text-white transition-colors text-sm">
+                  {CONTACT_EMAIL}
                 </a>
               </li>
             </ul>

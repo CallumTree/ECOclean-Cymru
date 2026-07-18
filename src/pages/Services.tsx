@@ -1,15 +1,33 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Phone, Home, Sparkles, Building2, Check, AlertCircle } from "lucide-react";
+import { Phone, Home, Sparkles, Building2, HardHat, Briefcase, Calendar, Refrigerator, Layers, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
+import { whatsappLink } from "@/lib/constants";
 import logo from "@/assets/logo.jpeg";
 
 const services = [
   {
+    icon: HardHat,
+    title: "Post Construction Cleans",
+    description: "Specialist cleaning for building sites and new-builds, removing dust, debris and residue ready for handover. Quoted after a site visit or photos.",
+    included: [
+      "Dust and debris removal",
+      "Surface, window sill and skirting wipe-down",
+      "Floor sweep, vacuum and wash",
+      "Kitchen and bathroom fixture clean",
+      "Removal of stickers and protective film",
+      "Final touch-up clean before handover",
+    ],
+    excluded: [
+      "Waste/skip removal (can be arranged separately)",
+      "Exterior render or window cleaning",
+    ],
+  },
+  {
     icon: Home,
-    title: "Holiday Let / Airbnb Changeover Clean",
-    description: "Cleaning service between guest stays for holiday cottages and short-term lets. We ensure your property is guest-ready every time.",
+    title: "Holiday Let Turnovers",
+    description: "Fast, reliable changeover cleans between guests so your holiday let is spotless and guest-ready every time.",
     included: [
       "Kitchen clean",
       "Bathroom clean",
@@ -27,6 +45,86 @@ const services = [
   },
   {
     icon: Sparkles,
+    title: "Deep Cleans: Domestic and Commercial",
+    description: "A thorough top-to-bottom clean beyond a normal tidy-up — ideal for homes needing extra attention or commercial spaces before or after a big push.",
+    included: [
+      "Detailed kitchen cleaning",
+      "Bathroom deep cleaning",
+      "Skirting boards, doors and frames",
+      "Light switches and sockets",
+      "High dusting areas",
+      "Detailed floor cleaning",
+    ],
+    excluded: [
+      "Specialist equipment cleaning",
+      "Exterior work",
+    ],
+  },
+  {
+    icon: Calendar,
+    title: "Regular Weekly/Biweekly Cleans",
+    description: "Ongoing scheduled cleaning to keep your home or workplace consistently fresh, on a routine that suits you.",
+    included: [
+      "Kitchen and bathroom clean",
+      "Dusting and surface wipe-down",
+      "Vacuuming and mopping floors",
+      "Bin emptying",
+      "Tidying of common areas",
+    ],
+    excluded: [
+      "Deep-clean tasks (available as an occasional add-on)",
+      "Laundry and ironing",
+    ],
+  },
+  {
+    icon: Briefcase,
+    title: "Commercial Office Cleans",
+    description: "Reliable cleaning for offices and workspaces, keeping things presentable for staff and clients.",
+    included: [
+      "Desk and surface wipe-down",
+      "Kitchen/break room clean",
+      "Washroom clean and restock",
+      "Vacuuming and mopping floors",
+      "Bin emptying and recycling",
+    ],
+    excluded: [
+      "IT/electronics cleaning",
+      "Out-of-hours access arrangements (agreed in advance)",
+    ],
+  },
+  {
+    icon: Refrigerator,
+    title: "Appliance Cleans",
+    description: "Deep cleans for ovens, fridges, washing machines and other appliances that build up grime regular cleaning misses.",
+    included: [
+      "Oven interior and door clean",
+      "Fridge/freezer interior clean",
+      "Washing machine drum and seal clean",
+      "Extractor fan and filter clean",
+      "Microwave clean",
+    ],
+    excluded: [
+      "Appliance repairs",
+      "Dismantling of fixed appliances",
+    ],
+  },
+  {
+    icon: Layers,
+    title: "Carpets",
+    description: "Carpet and rug cleaning to lift dirt, stains and odours and refresh tired flooring.",
+    included: [
+      "Pre-vacuum",
+      "Stain treatment",
+      "Deep carpet/rug clean",
+      "Deodorising",
+    ],
+    excluded: [
+      "Carpet repairs or re-fitting",
+      "Upholstery cleaning (available as extra)",
+    ],
+  },
+  {
+    icon: Building2,
     title: "End of Tenancy Clean",
     description: "A full deep clean carried out when tenants move out of a property. Designed to help you secure your deposit.",
     included: [
@@ -41,24 +139,6 @@ const services = [
       "Carpet steam cleaning (available as extra)",
       "Exterior windows",
       "Garden or outdoor areas",
-    ],
-  },
-  {
-    icon: Sparkles,
-    title: "Deep Clean",
-    description: "A detailed cleaning service beyond a normal domestic clean. Perfect for spring cleans or when your home needs extra attention.",
-    included: [
-      "Detailed kitchen cleaning",
-      "Bathroom deep cleaning",
-      "Skirting boards",
-      "Doors and frames",
-      "Light switches and sockets",
-      "High dusting areas",
-      "Detailed floor cleaning",
-    ],
-    excluded: [
-      "Specialist equipment cleaning",
-      "Exterior work",
     ],
   },
 ];
@@ -79,8 +159,8 @@ export default function Services() {
               Our Services
             </h1>
             <p className="text-white/90 text-lg max-w-2xl">
-              Professional cleaning solutions for homes and holiday properties across Pembrokeshire. 
-              Every service uses eco-friendly products.
+              Professional cleaning solutions for homes and businesses across Pembrokeshire.
+              We use eco-friendly products as standard — though tougher dirt and stains occasionally need extra product or a different method to shift.
             </p>
           </motion.div>
         </div>
@@ -112,10 +192,10 @@ export default function Services() {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Button asChild>
-                    <Link to="/pricing">Get a Quote</Link>
+                    <Link to="/contact">Get a Quote</Link>
                   </Button>
                   <Button variant="whatsapp" asChild>
-                    <a href="https://wa.me/447432670535" target="_blank" rel="noopener noreferrer">
+                    <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
                       <Phone className="w-4 h-4" />
                       WhatsApp Us
                     </a>
@@ -177,16 +257,16 @@ export default function Services() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               {
-                title: "Kitchen & Appliance Extras",
-                items: ["Oven deep clean", "Double oven or range cooker clean", "Fridge interior clean", "Microwave clean", "Extractor fan and filter clean", "Inside kitchen cupboards"],
+                title: "Kitchen Extras",
+                items: ["Inside kitchen cupboards", "Double oven or range cooker clean"],
               },
               {
                 title: "Interior Cleaning Extras",
-                items: ["Interior window cleaning", "Skirting board deep clean", "Tile and grout cleaning", "Limescale removal", "Washing machine deep clean", "Dishwasher clean"],
+                items: ["Interior window cleaning", "Skirting board deep clean", "Tile and grout cleaning", "Limescale removal"],
               },
               {
-                title: "Carpet & Upholstery Extras",
-                items: ["Carpet cleaning (per room)", "Rug cleaning", "Sofa or upholstery cleaning", "Mattress sanitation"],
+                title: "Upholstery Extras",
+                items: ["Sofa or upholstery cleaning", "Mattress sanitation"],
               },
               {
                 title: "Holiday Let Specific Extras",
@@ -221,7 +301,7 @@ export default function Services() {
       </section>
 
       {/* CTA */}
-      <section className="section-padding bg-eco-dark text-white">
+      <section className="section-padding bg-eco-charcoal text-white">
         <div className="container-wide mx-auto text-center">
           <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4">
             Ready to Get Started?
@@ -231,10 +311,10 @@ export default function Services() {
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Button size="lg" variant="gold" asChild>
-              <Link to="/pricing">Get a Quote</Link>
+              <Link to="/contact">Get a Quote</Link>
             </Button>
             <Button size="lg" variant="whatsapp" asChild>
-              <a href="https://wa.me/447432670535" target="_blank" rel="noopener noreferrer">
+              <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
                 <Phone className="w-5 h-5" />
                 WhatsApp Us
               </a>

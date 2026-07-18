@@ -1,5 +1,6 @@
 import { Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { whatsappLink } from "@/lib/constants";
 
 export function WhatsAppButton() {
   return (
@@ -11,7 +12,7 @@ export function WhatsAppButton() {
         asChild
       >
         <a
-          href="https://wa.me/447432670535"
+          href={whatsappLink()}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Contact us on WhatsApp"
