@@ -1,3 +1,4 @@
+@import "@fontsource/outfit/300.css";
 @import "@fontsource/outfit/400.css";
 @import "@fontsource/outfit/500.css";
 @import "@fontsource/outfit/600.css";
@@ -12,42 +13,43 @@
 @layer base {
   :root {
     /* ECOclean Brand Colors */
-    --eco-primary: 155 100% 20%;
-    --eco-secondary: 156 100% 30%;
+    --eco-primary: 155 45% 18%;
+    --eco-secondary: 152 40% 32%;
     --eco-dark: 155 100% 10%;
     --eco-gold: 42 45% 60%;
     --eco-gold-muted: 42 50% 50%;
     --eco-neutral: 42 40% 70%;
-    --eco-charcoal: 155 25% 7%;
-    
+    --eco-charcoal: 155 20% 8%;
+    --eco-tint: 152 35% 95%;
+
     /* Semantic tokens */
     --background: 0 0% 100%;
-    --foreground: 155 100% 10%;
+    --foreground: 155 25% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 155 100% 10%;
+    --card-foreground: 155 25% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 155 100% 10%;
+    --popover-foreground: 155 25% 10%;
 
-    --primary: 155 100% 20%;
+    --primary: 155 45% 18%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 156 100% 30%;
+    --secondary: 152 40% 32%;
     --secondary-foreground: 0 0% 100%;
 
     --muted: 42 20% 96%;
-    --muted-foreground: 155 30% 40%;
+    --muted-foreground: 155 20% 40%;
 
     --accent: 42 45% 60%;
-    --accent-foreground: 155 100% 10%;
+    --accent-foreground: 155 25% 10%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 42 20% 90%;
     --input: 42 20% 90%;
-    --ring: 155 100% 20%;
+    --ring: 155 45% 18%;
 
     --radius: 0.5rem;
 
@@ -107,7 +109,7 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading;
+    @apply font-heading font-normal;
   }
 }
 

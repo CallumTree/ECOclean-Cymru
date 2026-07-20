@@ -1,10 +1,9 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Phone } from "lucide-react";
+import { Phone, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
 import { whatsappLink } from "@/lib/constants";
-import logo from "@/assets/logo.jpeg";
 import {
   Accordion,
   AccordionContent,
@@ -51,18 +50,17 @@ export default function FAQs() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-primary to-eco-secondary py-16 md:py-24">
+      <section className="bg-eco-charcoal py-24 md:py-32">
         <div className="container-wide mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            className="max-w-3xl"
+            className="max-w-2xl"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <img src={logo} alt="ECOclean Cymru" className="h-16 md:h-20 w-auto mb-4 bg-white rounded-lg p-2" />
-            <h1 className="font-heading text-4xl md:text-5xl font-bold text-white mb-4">
+            <h1 className="font-heading text-5xl md:text-6xl font-light text-white mb-4 leading-[1.05]">
               Frequently Asked Questions
             </h1>
-            <p className="text-white/90 text-lg">
+            <p className="text-white/70 text-lg">
               Everything you need to know about our cleaning services.
             </p>
           </motion.div>
@@ -82,7 +80,7 @@ export default function FAQs() {
                 <AccordionItem
                   key={index}
                   value={`item-${index}`}
-                  className="bg-card rounded-xl border border-border px-6 shadow-sm"
+                  className="bg-card border border-border px-6"
                 >
                   <AccordionTrigger className="text-left font-heading font-semibold text-foreground hover:no-underline py-5">
                     {faq.question}
@@ -102,17 +100,20 @@ export default function FAQs() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <h2 className="font-heading text-2xl font-bold text-foreground mb-4">
+            <h2 className="font-heading text-2xl font-medium text-foreground mb-4">
               Still Have Questions?
             </h2>
             <p className="text-muted-foreground mb-6">
               We're happy to help. Get in touch and we'll get back to you promptly.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button asChild>
-                <Link to="/contact">Contact Us</Link>
+              <Button variant="pill" asChild>
+                <Link to="/contact">
+                  Contact Us
+                  <ChevronRight className="w-4 h-4" />
+                </Link>
               </Button>
-              <Button variant="whatsapp" asChild>
+              <Button variant="whatsapp" className="rounded-full uppercase text-xs tracking-wider" asChild>
                 <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
                   <Phone className="w-4 h-4" />
                   WhatsApp Us

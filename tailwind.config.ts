@@ -59,6 +59,7 @@ export default {
           "gold-muted": "hsl(var(--eco-gold-muted))",
           neutral: "hsl(var(--eco-neutral))",
           charcoal: "hsl(var(--eco-charcoal))",
+          tint: "hsl(var(--eco-tint))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",

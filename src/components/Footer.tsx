@@ -60,7 +60,7 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-heading font-semibold text-lg mb-4">Quick Links</h3>
+            <h3 className="font-heading font-semibold text-sm uppercase tracking-wide mb-4">Quick Links</h3>
             <ul className="space-y-2">
               {quickLinks.map((link) => (
                 <li key={link.name}>
@@ -77,7 +77,7 @@ export function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h3 className="font-heading font-semibold text-lg mb-4">Contact Us</h3>
+            <h3 className="font-heading font-semibold text-sm uppercase tracking-wide mb-4">Contact Us</h3>
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-eco-gold shrink-0 mt-0.5" />
@@ -100,7 +100,7 @@ export function Footer() {
 
           {/* Trust Signals */}
           <div>
-            <h3 className="font-heading font-semibold text-lg mb-4">Why Choose Us</h3>
+            <h3 className="font-heading font-semibold text-sm uppercase tracking-wide mb-4">Why Choose Us</h3>
             <ul className="space-y-3">
               {trustSignals.map((signal) => (
                 <li key={signal.text} className="flex items-center gap-3">
