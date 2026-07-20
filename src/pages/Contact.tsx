@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Phone, Mail, MapPin, Send, CheckCircle, Upload, X, ImageIcon } from "lucide-react";
+import { Phone, Mail, MapPin, Send, CheckCircle, Upload, X, ImageIcon, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -15,7 +15,6 @@ import {
 import { Layout } from "@/components/Layout";
 import { useToast } from "@/hooks/use-toast";
 import { CONTACT_EMAIL, WEB3FORMS_ACCESS_KEY, WHATSAPP_DISPLAY_NUMBER, whatsappLink } from "@/lib/constants";
-import logo from "@/assets/logo.jpeg";
 
 const services = [
   "Post Construction Cleans",
@@ -165,18 +164,17 @@ export default function Contact() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-primary to-eco-secondary py-16 md:py-24">
+      <section className="bg-eco-charcoal py-24 md:py-32">
         <div className="container-wide mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            className="max-w-3xl"
+            className="max-w-2xl"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <img src={logo} alt="ECOclean Cymru" className="h-16 md:h-20 w-auto mb-4 bg-white rounded-lg p-2" />
-            <h1 className="font-heading text-4xl md:text-5xl font-bold text-white mb-4">
+            <h1 className="font-heading text-5xl md:text-6xl font-light text-white mb-4 leading-[1.05]">
               Get in Touch
             </h1>
-            <p className="text-white/90 text-lg">
+            <p className="text-white/70 text-lg">
               Ready for a cleaner space? Tell us about the job and we'll be in touch shortly.
             </p>
           </motion.div>
@@ -193,15 +191,16 @@ export default function Contact() {
               animate={{ opacity: 1, y: 0 }}
             >
               {isSubmitted ? (
-                <div className="bg-card rounded-2xl p-8 md:p-12 shadow-card border border-border text-center">
-                  <CheckCircle className="w-16 h-16 text-primary mx-auto mb-6" />
-                  <h2 className="font-heading text-2xl font-bold text-foreground mb-4">
+                <div className="bg-card border border-border p-8 md:p-12 text-center">
+                  <CheckCircle className="w-14 h-14 text-primary mx-auto mb-6" strokeWidth={1.25} />
+                  <h2 className="font-heading text-2xl font-medium text-foreground mb-4">
                     Thank You!
                   </h2>
                   <p className="text-muted-foreground mb-6">
                     We'll be in touch shortly to discuss your job further or issue you a quote.
                   </p>
                   <Button
+                    variant="pill"
                     onClick={() => {
                       setIsSubmitted(false);
                       setFormData({ name: "", contact: "", postcode: "", service: "", message: "" });
@@ -212,8 +211,8 @@ export default function Contact() {
                   </Button>
                 </div>
               ) : (
-                <div className="bg-card rounded-2xl p-8 md:p-12 shadow-card border border-border">
-                  <h2 className="font-heading text-2xl font-bold text-foreground mb-2">
+                <div className="bg-card border border-border p-8 md:p-12">
+                  <h2 className="font-heading text-2xl font-medium text-foreground mb-2">
                     Request a Quote
                   </h2>
                   <p className="text-muted-foreground text-sm mb-6">
@@ -295,7 +294,7 @@ export default function Contact() {
                       <Label htmlFor="photos">Photos (recommended for accuracy)</Label>
                       <label
                         htmlFor="photos"
-                        className="flex flex-col items-center justify-center gap-2 border-2 border-dashed border-border rounded-xl p-6 text-center cursor-pointer hover:border-primary hover:bg-muted/50 transition-colors"
+                        className="flex flex-col items-center justify-center gap-2 border-2 border-dashed border-border p-6 text-center cursor-pointer hover:border-primary hover:bg-muted/50 transition-colors"
                       >
                         <Upload className="w-6 h-6 text-muted-foreground" />
                         <span className="text-sm text-muted-foreground">
@@ -336,7 +335,7 @@ export default function Contact() {
                       )}
                     </div>
 
-                    <Button type="submit" size="lg" disabled={isSubmitting} className="w-full sm:w-auto">
+                    <Button type="submit" variant="pill" size="lg" disabled={isSubmitting} className="w-full sm:w-auto">
                       {isSubmitting ? (
                         "Sending..."
                       ) : (
@@ -359,14 +358,14 @@ export default function Contact() {
               transition={{ delay: 0.1 }}
             >
               {/* WhatsApp CTA */}
-              <div className="bg-[#25D366]/10 rounded-2xl p-6 border border-[#25D366]/20">
+              <div className="bg-[#25D366]/10 p-6 border border-[#25D366]/20">
                 <h3 className="font-heading font-semibold text-lg text-foreground mb-3">
                   Prefer WhatsApp?
                 </h3>
                 <p className="text-muted-foreground text-sm mb-4">
                   Quick questions? Send us a message and we'll reply promptly.
                 </p>
-                <Button variant="whatsapp" className="w-full" asChild>
+                <Button variant="whatsapp" className="w-full rounded-full uppercase text-xs tracking-wider" asChild>
                   <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
                     <Phone className="w-4 h-4" />
                     WhatsApp Us
@@ -375,7 +374,7 @@ export default function Contact() {
               </div>
 
               {/* Contact Details */}
-              <div className="bg-card rounded-2xl p-6 shadow-card border border-border">
+              <div className="bg-card p-6 border border-border">
                 <h3 className="font-heading font-semibold text-lg text-foreground mb-4">
                   Contact Details
                 </h3>

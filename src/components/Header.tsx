@@ -28,13 +28,14 @@ export function Header() {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden lg:flex items-center gap-8">
-          {navigation.map((item) => (
+        <div className="hidden lg:flex items-center">
+          {navigation.map((item, index) => (
             <Link
               key={item.name}
               to={item.href}
               className={cn(
-                "text-sm font-medium transition-colors hover:text-primary",
+                "text-xs font-semibold uppercase tracking-widest transition-colors hover:text-primary pl-6 first:pl-0",
+                index > 0 && "border-l border-border",
                 location.pathname === item.href
                   ? "text-primary"
                   : "text-muted-foreground"
@@ -47,10 +48,10 @@ export function Header() {
 
         {/* Desktop CTAs */}
         <div className="hidden lg:flex items-center gap-3">
-          <Button variant="outline" size="sm" asChild>
+          <Button variant="pillOutline" size="sm" asChild>
             <Link to="/contact">Get a Quote</Link>
           </Button>
-          <Button variant="whatsapp" size="sm" asChild>
+          <Button variant="whatsapp" size="sm" className="rounded-full uppercase text-xs tracking-wider" asChild>
             <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
               <Phone className="w-4 h-4" />
               WhatsApp Us
@@ -78,7 +79,7 @@ export function Header() {
                 to={item.href}
                 onClick={() => setMobileMenuOpen(false)}
                 className={cn(
-                  "block px-3 py-2 rounded-md text-base font-medium transition-colors",
+                  "block px-3 py-2 rounded-md text-xs font-semibold uppercase tracking-widest transition-colors",
                   location.pathname === item.href
                     ? "text-primary bg-muted"
                     : "text-muted-foreground hover:text-primary hover:bg-muted"
@@ -88,10 +89,10 @@ export function Header() {
               </Link>
             ))}
             <div className="pt-4 space-y-2">
-              <Button variant="outline" className="w-full" asChild>
+              <Button variant="pillOutline" className="w-full" asChild>
                 <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>Get a Quote</Link>
               </Button>
-              <Button variant="whatsapp" className="w-full" asChild>
+              <Button variant="whatsapp" className="w-full rounded-full uppercase text-xs tracking-wider" asChild>
                 <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
                   <Phone className="w-4 h-4" />
                   WhatsApp Us

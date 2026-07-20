@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Phone, Home, Sparkles, Building2, HardHat, Briefcase, Calendar, Refrigerator, Layers, Check } from "lucide-react";
+import { Phone, Home, Sparkles, Building2, HardHat, Briefcase, Calendar, Refrigerator, Layers, Check, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
 import { whatsappLink } from "@/lib/constants";
@@ -10,7 +10,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import logo from "@/assets/logo.jpeg";
 
 const services = [
   {
@@ -153,18 +152,17 @@ export default function Services() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-primary to-eco-secondary py-16 md:py-24">
+      <section className="bg-eco-charcoal py-24 md:py-32">
         <div className="container-wide mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            className="max-w-3xl"
+            className="max-w-2xl"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <img src={logo} alt="ECOclean Cymru" className="h-16 md:h-20 w-auto mb-4 bg-white rounded-lg p-2" />
-            <h1 className="font-heading text-4xl md:text-5xl font-bold text-white mb-4">
+            <h1 className="font-heading text-5xl md:text-6xl font-light text-white mb-4 leading-[1.05]">
               Our Services
             </h1>
-            <p className="text-white/90 text-lg max-w-2xl">
+            <p className="text-white/70 text-lg">
               Professional cleaning solutions for homes and businesses across Pembrokeshire.
               We use eco-friendly products as standard — though tougher dirt and stains occasionally need extra product or a different method to shift.
             </p>
@@ -181,7 +179,7 @@ export default function Services() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-3">
+            <h2 className="font-heading text-3xl md:text-4xl font-medium text-foreground mb-3">
               What We Offer
             </h2>
             <p className="text-muted-foreground">
@@ -200,13 +198,11 @@ export default function Services() {
               >
                 <AccordionItem
                   value={service.title}
-                  className="bg-card rounded-xl border border-border px-4 sm:px-6 shadow-card"
+                  className="bg-card border border-border px-4 sm:px-6"
                 >
                   <AccordionTrigger className="hover:no-underline py-4">
                     <div className="flex items-center gap-4 text-left">
-                      <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                        <service.icon className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
-                      </div>
+                      <service.icon className="w-8 h-8 sm:w-9 sm:h-9 text-primary shrink-0" strokeWidth={1.25} />
                       <div>
                         <h3 className="font-heading font-semibold text-base sm:text-lg text-foreground">
                           {service.title}
@@ -250,10 +246,13 @@ export default function Services() {
                       </div>
                     </div>
                     <div className="flex flex-col sm:flex-row gap-3">
-                      <Button asChild>
-                        <Link to="/contact">Get a Quote</Link>
+                      <Button variant="pill" asChild>
+                        <Link to="/contact">
+                          Get a Quote
+                          <ChevronRight className="w-4 h-4" />
+                        </Link>
                       </Button>
-                      <Button variant="whatsapp" asChild>
+                      <Button variant="whatsapp" className="rounded-full uppercase text-xs tracking-wider" asChild>
                         <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
                           <Phone className="w-4 h-4" />
                           WhatsApp Us
@@ -277,7 +276,7 @@ export default function Services() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h2 className="font-heading text-3xl md:text-4xl font-medium text-foreground mb-4">
               Optional Extras
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
@@ -310,13 +309,14 @@ export default function Services() {
             ].map((group, index) => (
               <motion.div
                 key={group.title}
-                className="bg-card rounded-xl p-6 border border-border"
+                className="bg-card p-6 border border-border"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.05 }}
               >
-                <h3 className="font-heading font-semibold text-foreground mb-4">{group.title}</h3>
+                <h3 className="font-heading font-semibold text-foreground">{group.title}</h3>
+                <div className="w-8 h-0.5 bg-eco-gold mt-2 mb-4" />
                 <ul className="space-y-2">
                   {group.items.map((item) => (
                     <li key={item} className="flex items-start gap-2">
@@ -334,19 +334,22 @@ export default function Services() {
       {/* CTA */}
       <section className="section-padding bg-eco-charcoal text-white">
         <div className="container-wide mx-auto text-center">
-          <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="font-heading text-3xl md:text-4xl font-medium mb-4">
             Ready to Get Started?
           </h2>
           <p className="text-white/70 max-w-2xl mx-auto mb-8">
             Get in touch today for a free, no-obligation quote. We'll discuss your needs and provide a fair, transparent price.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button size="lg" variant="gold" asChild>
-              <Link to="/contact">Get a Quote</Link>
+            <Button size="lg" variant="pill" asChild>
+              <Link to="/contact">
+                Get a Quote
+                <ChevronRight className="w-4 h-4" />
+              </Link>
             </Button>
-            <Button size="lg" variant="whatsapp" asChild>
+            <Button size="lg" variant="whatsapp" className="rounded-full uppercase text-xs tracking-wider" asChild>
               <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
-                <Phone className="w-5 h-5" />
+                <Phone className="w-4 h-4" />
                 WhatsApp Us
               </a>
             </Button>
