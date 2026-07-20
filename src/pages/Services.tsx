@@ -4,6 +4,12 @@ import { Phone, Home, Sparkles, Building2, HardHat, Briefcase, Calendar, Refrige
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
 import { whatsappLink } from "@/lib/constants";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import logo from "@/assets/logo.jpeg";
 
 const services = [
@@ -168,72 +174,97 @@ export default function Services() {
 
       {/* Services List */}
       <section className="section-padding">
-        <div className="container-wide mx-auto space-y-16">
-          {services.map((service, index) => (
-            <motion.div
-              key={service.title}
-              className="grid lg:grid-cols-2 gap-8 items-start"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <div>
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <service.icon className="w-7 h-7 text-primary" />
-                  </div>
-                  <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground">
-                    {service.title}
-                  </h2>
-                </div>
-                <p className="text-muted-foreground leading-relaxed mb-6">
-                  {service.description}
-                </p>
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <Button asChild>
-                    <Link to="/contact">Get a Quote</Link>
-                  </Button>
-                  <Button variant="whatsapp" asChild>
-                    <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
-                      <Phone className="w-4 h-4" />
-                      WhatsApp Us
-                    </a>
-                  </Button>
-                </div>
-              </div>
+        <div className="container-narrow mx-auto">
+          <motion.div
+            className="text-center mb-10"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-3">
+              What We Offer
+            </h2>
+            <p className="text-muted-foreground">
+              Tap a service to see what's included.
+            </p>
+          </motion.div>
 
-              <div className="space-y-6">
-                <div className="bg-card rounded-xl p-6 shadow-card border border-border">
-                  <h3 className="font-heading font-semibold text-lg text-foreground mb-4">
-                    What's Included
-                  </h3>
-                  <ul className="space-y-2">
-                    {service.included.map((item) => (
-                      <li key={item} className="flex items-start gap-2">
-                        <Check className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                        <span className="text-sm text-muted-foreground">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="bg-muted rounded-xl p-6">
-                  <h3 className="font-heading font-semibold text-lg text-foreground mb-4">
-                    Not Included
-                  </h3>
-                  <ul className="space-y-2">
-                    {service.excluded.map((item) => (
-                      <li key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
-                        <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground shrink-0 mt-2" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+          <Accordion type="multiple" className="space-y-3">
+            {services.map((service, index) => (
+              <motion.div
+                key={service.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: Math.min(index * 0.05, 0.3) }}
+              >
+                <AccordionItem
+                  value={service.title}
+                  className="bg-card rounded-xl border border-border px-4 sm:px-6 shadow-card"
+                >
+                  <AccordionTrigger className="hover:no-underline py-4">
+                    <div className="flex items-center gap-4 text-left">
+                      <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                        <service.icon className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="font-heading font-semibold text-base sm:text-lg text-foreground">
+                          {service.title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground hidden sm:block">
+                          {service.description}
+                        </p>
+                      </div>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <p className="text-sm text-muted-foreground mb-4 sm:hidden">
+                      {service.description}
+                    </p>
+                    <div className="grid sm:grid-cols-2 gap-4 mb-5">
+                      <div>
+                        <h4 className="font-heading font-semibold text-sm text-foreground mb-2">
+                          What's Included
+                        </h4>
+                        <ul className="space-y-1.5">
+                          {service.included.map((item) => (
+                            <li key={item} className="flex items-start gap-2">
+                              <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                              <span className="text-sm text-muted-foreground">{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div>
+                        <h4 className="font-heading font-semibold text-sm text-foreground mb-2">
+                          Not Included
+                        </h4>
+                        <ul className="space-y-1.5">
+                          {service.excluded.map((item) => (
+                            <li key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
+                              <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground shrink-0 mt-2" />
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <Button asChild>
+                        <Link to="/contact">Get a Quote</Link>
+                      </Button>
+                      <Button variant="whatsapp" asChild>
+                        <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
+                          <Phone className="w-4 h-4" />
+                          WhatsApp Us
+                        </a>
+                      </Button>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </motion.div>
+            ))}
+          </Accordion>
         </div>
       </section>
 
