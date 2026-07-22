@@ -5,6 +5,9 @@
 @import "@fontsource/outfit/700.css";
 @import "@fontsource/inter/400.css";
 @import "@fontsource/inter/500.css";
+@import "@fontsource/fraunces/300.css";
+@import "@fontsource/fraunces/400.css";
+@import "@fontsource/fraunces/500.css";
 
 @tailwind base;
 @tailwind components;
@@ -55,6 +58,7 @@
 
     /* Typography */
     --font-heading: "Outfit", sans-serif;
+    --font-display: "Fraunces", "Cormorant Garamond", Georgia, serif;
     --font-body: "Inter", sans-serif;
 
     /* Shadows */
@@ -130,8 +134,22 @@
     text-wrap: balance;
   }
 
+  .font-display {
+    font-family: var(--font-display);
+    font-feature-settings: "ss01", "ss02";
+  }
+
   .gradient-text {
     @apply bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
+  }
+
+  .eco-gradient-overlay {
+    background: linear-gradient(105deg, hsl(155 100% 8% / 0.92) 0%, hsl(155 60% 15% / 0.72) 45%, hsl(155 40% 20% / 0.25) 100%);
+  }
+
+  .grain-overlay {
+    background-image: radial-gradient(hsl(0 0% 100% / 0.04) 1px, transparent 1px);
+    background-size: 3px 3px;
   }
 }
 
