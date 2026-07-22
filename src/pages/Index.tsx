@@ -9,11 +9,8 @@ import serviceDomestic from "@/assets/service-domestic.jpg";
 import serviceDeep from "@/assets/service-deep.jpg";
 import serviceEot from "@/assets/service-eot.jpg";
 import serviceHolidayLet from "@/assets/service-holidaylet.jpg";
-import beforeKitchen from "@/assets/before-kitchen.jpg";
-import afterKitchen from "@/assets/after-kitchen.jpg";
-import beforeBathroom from "@/assets/before-bathroom.jpg";
-import afterBathroom from "@/assets/after-bathroom.jpg";
 import testimonialsBg from "@/assets/testimonials-bg.jpg";
+import { beforeAfterPairs } from "@/lib/beforeAfterGallery";
 
 const trustItems = [
   { icon: Shield, text: "Fully Insured" },
@@ -52,10 +49,7 @@ const steps = [
   { number: "03", title: "We Clean – Properly", description: "Our team arrives and delivers excellent results" },
 ];
 
-const beforeAfter = [
-  { before: beforeKitchen, after: afterKitchen, label: "Kitchen Deep Clean" },
-  { before: beforeBathroom, after: afterBathroom, label: "Bathroom Reset" },
-];
+const beforeAfter = beforeAfterPairs;
 
 const fadeInUp = {
   initial: { opacity: 0, y: 24 },
