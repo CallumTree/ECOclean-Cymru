@@ -21,6 +21,25 @@ const trustSignals = [
 export function Footer() {
   return (
     <footer className="bg-eco-charcoal text-white">
+      {/* Bold trust band */}
+      <div className="bg-primary">
+        <div className="container-wide mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 items-center">
+            {trustSignals.map((signal) => (
+              <div key={signal.text} className="flex items-center justify-center sm:justify-start gap-4">
+                <div className="w-12 h-12 rounded-full bg-eco-gold/20 flex items-center justify-center shrink-0">
+                  <signal.icon className="w-5 h-5 text-eco-gold" strokeWidth={1.5} />
+                </div>
+                <div>
+                  <p className="font-display text-lg text-white leading-tight">{signal.text}</p>
+                  <p className="text-white/60 text-xs uppercase tracking-widest">Guaranteed</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       <div className="container-wide mx-auto section-padding">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Company Info */}
