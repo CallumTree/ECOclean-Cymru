@@ -34,21 +34,34 @@ export default function About() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="bg-eco-charcoal py-24 md:py-32">
-        <div className="container-wide mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative -mt-16 md:-mt-20 pt-40 md:pt-48 pb-20 md:pb-28 overflow-hidden">
+        <div className="absolute inset-0">
+          <img src={testimonialsBg} alt="" aria-hidden="true" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-eco-dark/85" />
+        </div>
+        <div className="container-wide mx-auto px-4 sm:px-6 lg:px-8 relative">
           <motion.div
             className="max-w-2xl"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <h1 className="font-heading text-5xl md:text-6xl font-light text-white mb-4 leading-[1.05]">
-              About ECOclean Cymru
+            <span className="text-eco-gold text-xs tracking-[0.3em] uppercase">Who we are</span>
+            <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-light text-white mt-4 mb-6 leading-[0.95]">
+              About <em className="italic text-eco-gold/95">ECOclean.</em>
             </h1>
-            <p className="text-white/70 text-lg">
+            <p className="text-white/80 text-lg font-light">
               Professional cleaning with local values.
             </p>
           </motion.div>
         </div>
+      </section>
+
+      {/* Team photo band */}
+      <section className="relative">
+        <div className="aspect-[21/9] md:aspect-[21/7] overflow-hidden">
+          <img src={teamImg} alt="ECOclean Cymru team beside branded van in the Welsh countryside" className="w-full h-full object-cover" />
+        </div>
+        <p className="text-muted-foreground text-xs italic px-4 py-3 container-wide mx-auto">Placeholder team photo — swap in real photo of Leanne and team.</p>
       </section>
 
       {/* About Content */}
