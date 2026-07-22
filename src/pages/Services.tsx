@@ -157,26 +157,62 @@ export default function Services() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="bg-eco-charcoal py-24 md:py-32">
-        <div className="container-wide mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative -mt-16 md:-mt-20 pt-40 md:pt-48 pb-20 md:pb-28 overflow-hidden">
+        <div className="absolute inset-0">
+          <img src={heroCleaning} alt="" aria-hidden="true" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 eco-gradient-overlay" />
+        </div>
+        <div className="container-wide mx-auto px-4 sm:px-6 lg:px-8 relative">
           <motion.div
             className="max-w-2xl"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <h1 className="font-heading text-5xl md:text-6xl font-light text-white mb-4 leading-[1.05]">
-              Our Services
+            <span className="text-eco-gold text-xs tracking-[0.3em] uppercase">Our craft</span>
+            <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-light text-white mt-4 mb-6 leading-[0.95]">
+              Our <em className="italic text-eco-gold/95">services.</em>
             </h1>
-            <p className="text-white/70 text-lg">
+            <p className="text-white/80 text-lg font-light max-w-xl">
               Professional cleaning solutions for homes and businesses across Pembrokeshire.
-              We use eco-friendly products as standard — though tougher dirt and stains occasionally need extra product or a different method to shift.
+              Eco-friendly products as standard — tougher dirt occasionally gets a tougher tool.
             </p>
           </motion.div>
         </div>
       </section>
 
+      {/* Featured services — image tiles */}
+      <section className="section-padding bg-background">
+        <div className="container-wide mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { img: serviceDomestic, title: "Domestic Cleans", tag: "Homes" },
+              { img: serviceDeep, title: "Deep Cleans", tag: "Reset" },
+              { img: serviceEot, title: "End of Tenancy", tag: "Deposit-ready" },
+              { img: serviceHolidayLet, title: "Holiday Let Turnovers", tag: "Guest-ready" },
+            ].map((s, i) => (
+              <motion.div
+                key={s.title}
+                className="group relative overflow-hidden aspect-[3/4]"
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ delay: i * 0.08, duration: 0.6 }}
+              >
+                <img src={s.img} alt={s.title} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-eco-dark via-eco-dark/40 to-transparent" />
+                <div className="absolute inset-0 p-6 flex flex-col justify-end text-white">
+                  <span className="text-eco-gold text-[10px] tracking-[0.3em] uppercase mb-2">{s.tag}</span>
+                  <h3 className="font-display text-2xl font-light leading-tight">{s.title}</h3>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          <p className="text-muted-foreground text-xs italic mt-6">Placeholder photography — real job photos will replace these.</p>
+        </div>
+      </section>
+
       {/* Services List */}
-      <section className="section-padding">
+      <section className="section-padding bg-muted/30">
         <div className="container-narrow mx-auto">
           <motion.div
             className="text-center mb-10"
