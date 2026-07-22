@@ -4,6 +4,11 @@ import { Phone, Home, Sparkles, Building2, HardHat, Briefcase, Calendar, Refrige
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
 import { whatsappLink } from "@/lib/constants";
+import serviceDomestic from "@/assets/service-domestic.jpg";
+import serviceDeep from "@/assets/service-deep.jpg";
+import serviceEot from "@/assets/service-eot.jpg";
+import serviceHolidayLet from "@/assets/service-holidaylet.jpg";
+import heroCleaning from "@/assets/hero-cleaning.jpg";
 import {
   Accordion,
   AccordionContent,
