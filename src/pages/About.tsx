@@ -4,6 +4,8 @@ import { Phone, Shield, Leaf, BadgeCheck, Users, MapPin, ChevronRight } from "lu
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
 import { whatsappLink } from "@/lib/constants";
+import teamImg from "@/assets/about-team.jpg";
+import testimonialsBg from "@/assets/testimonials-bg.jpg";
 
 const values = [
   {
