@@ -9,6 +9,7 @@ import Pricing from "./pages/Pricing";
 import FAQs from "./pages/FAQs";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import BookConsultation from "./pages/BookConsultation";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
