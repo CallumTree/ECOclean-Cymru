@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Phone, Home, Sparkles, Building2, HardHat, Briefcase, Calendar, Refrigerator, Layers, Check, ChevronRight } from "lucide-react";
+import { Phone, Home, Sparkles, Building2, HardHat, Briefcase, Calendar, CalendarClock, Refrigerator, Layers, Check, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
 import { whatsappLink } from "@/lib/constants";
