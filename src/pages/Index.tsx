@@ -9,6 +9,8 @@ import serviceDomestic from "@/assets/service-domestic.jpg";
 import serviceDeep from "@/assets/service-deep.jpg";
 import serviceEot from "@/assets/service-eot.jpg";
 import serviceHolidayLet from "@/assets/service-holidaylet.jpg";
+import serviceCommercial from "@/assets/service-commercial.jpg";
+import servicePostConstruction from "@/assets/service-postconstruction.jpg";
 import testimonialsBg from "@/assets/testimonials-bg.jpg";
 import { beforeAfterPairs } from "@/lib/beforeAfterGallery";
 
@@ -23,8 +25,8 @@ const trustItems = [
 const services = [
   { icon: Sparkles, title: "Deep Cleans", image: serviceDeep, description: "Thorough top-to-bottom cleaning for homes and businesses that need extra attention." },
   { icon: Users, title: "Regular Cleans", image: serviceDomestic, description: "Weekly or biweekly cleans to keep your space consistently fresh, on a routine that suits you." },
-  { icon: Briefcase, title: "Commercial Office Cleans", image: serviceEot, description: "Reliable cleaning for offices and workspaces, keeping things presentable for staff and clients." },
-  { icon: HardHat, title: "Post Construction Cleans", image: serviceHolidayLet, description: "Specialist cleaning for building sites. Quoted only after site visit or photos." },
+  { icon: Briefcase, title: "Commercial Office Cleans", image: serviceCommercial, description: "Reliable cleaning for offices and workspaces, keeping things presentable for staff and clients." },
+  { icon: HardHat, title: "Post Construction Cleans", image: servicePostConstruction, description: "Specialist cleaning for building sites. Quoted only after site visit or photos." },
 ];
 
 const workingWith = [
