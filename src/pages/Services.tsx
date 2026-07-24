@@ -301,6 +301,14 @@ export default function Services() {
                           WhatsApp Us
                         </a>
                       </Button>
+                      {service.consultation && (
+                        <Button variant="pillOutline" asChild>
+                          <Link to="/book-consultation">
+                            <CalendarClock className="w-4 h-4" />
+                            Book a Consultation
+                          </Link>
+                        </Button>
+                      )}
                     </div>
                   </AccordionContent>
                 </AccordionItem>
