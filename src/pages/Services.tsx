@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Phone, Home, Sparkles, Building2, HardHat, Briefcase, Calendar, Refrigerator, Layers, Check, ChevronRight } from "lucide-react";
+import { Phone, Home, Sparkles, Building2, HardHat, Briefcase, Calendar, CalendarClock, Refrigerator, Layers, Check, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
 import { whatsappLink } from "@/lib/constants";
@@ -20,7 +20,8 @@ const services = [
   {
     icon: HardHat,
     title: "Post Construction Cleans",
-    description: "Specialist cleaning for building sites and new-builds, removing dust, debris and residue ready for handover. Quoted after a site visit or photos.",
+    description: "Specialist cleaning for building sites and new-builds, removing dust, debris and residue ready for handover. Also covers mould assessments where damp or mould needs diagnosing before treatment. Quoted after a site visit or photos — book a consultation below.",
+    consultation: true,
     included: [
       "Dust and debris removal",
       "Surface, window sill and skirting wipe-down",
@@ -28,6 +29,7 @@ const services = [
       "Kitchen and bathroom fixture clean",
       "Removal of stickers and protective film",
       "Final touch-up clean before handover",
+      "Mould assessment and treatment recommendations (on request)",
     ],
     excluded: [
       "Waste/skip removal (can be arranged separately)",
@@ -299,6 +301,14 @@ export default function Services() {
                           WhatsApp Us
                         </a>
                       </Button>
+                      {service.consultation && (
+                        <Button variant="pillOutline" asChild>
+                          <Link to="/book-consultation">
+                            <CalendarClock className="w-4 h-4" />
+                            Book a Consultation
+                          </Link>
+                        </Button>
+                      )}
                     </div>
                   </AccordionContent>
                 </AccordionItem>
