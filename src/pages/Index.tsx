@@ -64,8 +64,35 @@ const fadeInUp = {
 const Index = () => {
   return (
     <Layout>
+      {/* Brand Banner */}
+      <section className="bg-background py-12 md:py-16">
+        <div className="container-wide mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10 text-center md:text-left">
+          <motion.img
+            src={logo}
+            alt="ECOclean Cymru logo"
+            className="h-24 md:h-32 w-auto shrink-0"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+          />
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            <h2 className="font-display text-3xl md:text-5xl lg:text-6xl font-light text-foreground leading-none">
+              ECO<span className="font-normal text-primary">clean</span>{" "}
+              <span className="italic text-eco-gold">Cymru</span>
+            </h2>
+            <p className="uppercase tracking-[0.3em] text-xs md:text-sm text-muted-foreground mt-3">
+              Pembrokeshire's Eco-Friendly Cleaning Specialists
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
       {/* HERO — full-bleed image, asymmetric */}
-      <section className="relative -mt-16 md:-mt-20 min-h-[100svh] flex items-center overflow-hidden">
+      <section className="relative min-h-[100svh] flex items-center overflow-hidden">
         <div className="absolute inset-0">
           <img
             src={heroImg}
@@ -167,35 +194,6 @@ const Index = () => {
         >
           Scroll ↓
         </motion.div>
-      </section>
-
-      {/* Brand Banner */}
-      <section className="bg-background py-16 md:py-24">
-        <div className="container-wide mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-center gap-8 md:gap-14 text-center md:text-left">
-          <motion.img
-            src={logo}
-            alt="ECOclean Cymru logo"
-            className="h-32 md:h-44 w-auto shrink-0"
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          />
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            <h2 className="font-display text-4xl md:text-6xl lg:text-7xl font-light text-foreground leading-none">
-              ECO<span className="font-normal text-primary">clean</span>{" "}
-              <span className="italic text-eco-gold">Cymru</span>
-            </h2>
-            <p className="uppercase tracking-[0.3em] text-xs md:text-sm text-muted-foreground mt-4">
-              Pembrokeshire's Eco-Friendly Cleaning Specialists
-            </p>
-          </motion.div>
-        </div>
       </section>
 
       {/* Trust Strip — dark band */}
