@@ -4,7 +4,7 @@ import { Menu, X, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { whatsappLink } from "@/lib/constants";
-import logo from "@/assets/logo.jpeg";
+import logo from "@/assets/logo-mark.png";
 
 // "Pricing" is intentionally left out of the nav (kept at /pricing for later re-enabling).
 const navigation = [

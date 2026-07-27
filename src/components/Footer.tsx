@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin, Shield, Leaf, BadgeCheck } from "lucide-react";
 import { CONTACT_EMAIL, WHATSAPP_DISPLAY_NUMBER } from "@/lib/constants";
-import logo from "@/assets/logo.jpeg";
+import logo from "@/assets/logo-mark.png";
 
 // "Pricing" is intentionally left out of the nav (kept at /pricing for later re-enabling).
 const quickLinks = [
@@ -45,7 +45,7 @@ export function Footer() {
           {/* Company Info */}
           <div className="space-y-4">
             <Link to="/" className="inline-block">
-              <img src={logo} alt="ECOclean Cymru" className="h-16 w-auto bg-white rounded-lg p-1" />
+              <img src={logo} alt="ECOclean Cymru" className="h-20 w-auto" />
             </Link>
             <p className="text-white/70 text-sm leading-relaxed">
               Professional cleaning services across Pembrokeshire, Wales. Reliable, eco-friendly, and committed to excellence.

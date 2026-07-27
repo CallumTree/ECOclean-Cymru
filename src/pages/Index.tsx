@@ -4,6 +4,7 @@ import { Phone, Shield, Leaf, Users, BadgeCheck, UserCheck, ChevronRight, Sparkl
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
 import { whatsappLink } from "@/lib/constants";
+import logo from "@/assets/logo-mark.png";
 import heroImg from "@/assets/hero-cleaning.jpg";
 import serviceDomestic from "@/assets/service-domestic.jpg";
 import serviceDeep from "@/assets/service-deep.jpg";
@@ -145,8 +146,8 @@ const Index = () => {
                   <div className="uppercase tracking-widest text-xs mt-1">Eco-friendly by default</div>
                 </div>
                 <div>
-                  <div className="text-eco-gold text-3xl font-display font-light">£22.50</div>
-                  <div className="uppercase tracking-widest text-xs mt-1">Domestic labour rate / hr</div>
+                  <div className="text-eco-gold text-3xl font-display font-light">CSCS</div>
+                  <div className="uppercase tracking-widest text-xs mt-1">Card-holding crew</div>
                 </div>
                 <div>
                   <div className="text-eco-gold text-3xl font-display font-light">7 Day</div>
@@ -166,6 +167,35 @@ const Index = () => {
         >
           Scroll ↓
         </motion.div>
+      </section>
+
+      {/* Brand Banner */}
+      <section className="bg-background py-16 md:py-24">
+        <div className="container-wide mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-center gap-8 md:gap-14 text-center md:text-left">
+          <motion.img
+            src={logo}
+            alt="ECOclean Cymru logo"
+            className="h-32 md:h-44 w-auto shrink-0"
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          />
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            <h2 className="font-display text-4xl md:text-6xl lg:text-7xl font-light text-foreground leading-none">
+              ECO<span className="font-normal text-primary">clean</span>{" "}
+              <span className="italic text-eco-gold">Cymru</span>
+            </h2>
+            <p className="uppercase tracking-[0.3em] text-xs md:text-sm text-muted-foreground mt-4">
+              Pembrokeshire's Eco-Friendly Cleaning Specialists
+            </p>
+          </motion.div>
+        </div>
       </section>
 
       {/* Trust Strip — dark band */}
