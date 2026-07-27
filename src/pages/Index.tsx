@@ -145,8 +145,8 @@ const Index = () => {
                   <div className="uppercase tracking-widest text-xs mt-1">Eco-friendly by default</div>
                 </div>
                 <div>
-                  <div className="text-eco-gold text-3xl font-display font-light">£22.50</div>
-                  <div className="uppercase tracking-widest text-xs mt-1">Domestic labour rate / hr</div>
+                  <div className="text-eco-gold text-3xl font-display font-light">CSCS</div>
+                  <div className="uppercase tracking-widest text-xs mt-1">Card-holding crew</div>
                 </div>
                 <div>
                   <div className="text-eco-gold text-3xl font-display font-light">7 Day</div>
