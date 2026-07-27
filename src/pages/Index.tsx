@@ -4,7 +4,7 @@ import { Phone, Shield, Leaf, Users, BadgeCheck, UserCheck, ChevronRight, Sparkl
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
 import { whatsappLink } from "@/lib/constants";
-import logo from "@/assets/logo.jpeg";
+import logo from "@/assets/logo-mark.png";
 import heroImg from "@/assets/hero-cleaning.jpg";
 import serviceDomestic from "@/assets/service-domestic.jpg";
 import serviceDeep from "@/assets/service-deep.jpg";
@@ -172,19 +172,15 @@ const Index = () => {
       {/* Brand Banner */}
       <section className="bg-background py-16 md:py-24">
         <div className="container-wide mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-center gap-8 md:gap-14 text-center md:text-left">
-          <motion.div
-            className="border border-border rounded-lg p-4 md:p-5 shrink-0"
+          <motion.img
+            src={logo}
+            alt="ECOclean Cymru logo"
+            className="h-32 md:h-44 w-auto shrink-0"
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-          >
-            <img
-              src={logo}
-              alt="ECOclean Cymru logo"
-              className="h-28 md:h-36 w-auto block"
-            />
-          </motion.div>
+          />
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
