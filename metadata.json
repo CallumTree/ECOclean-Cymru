@@ -1,0 +1,8 @@
+{
+  "name": "ECOclean Cymru",
+  "description": "Professional Cleaning Services Pembrokeshire",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

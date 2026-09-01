@@ -59,9 +59,8 @@ export default function About() {
       {/* Team photo band */}
       <section className="relative">
         <div className="aspect-[21/9] md:aspect-[21/7] overflow-hidden">
-          <img src={teamImg} alt="ECOclean Cymru team beside branded van in the Welsh countryside" className="w-full h-full object-cover" />
+          <img src={teamImg} alt="ECOclean Cymru team" className="w-full h-full object-cover" />
         </div>
-        <p className="text-muted-foreground text-xs italic px-4 py-3 container-wide mx-auto">Placeholder team photo — swap in real photo of Leanne and team.</p>
       </section>
 
       {/* About Content */}

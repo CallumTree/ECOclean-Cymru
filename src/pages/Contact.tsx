@@ -17,15 +17,15 @@ import { useToast } from "@/hooks/use-toast";
 import { CONTACT_EMAIL, WEB3FORMS_ACCESS_KEY, WHATSAPP_DISPLAY_NUMBER, whatsappLink } from "@/lib/constants";
 
 const services = [
-  "Post Construction Cleans",
-  "Holiday Let Turnovers",
-  "Deep Cleans (Domestic or Commercial)",
-  "Regular Weekly/Biweekly Cleans",
-  "Commercial Office Cleans",
-  "Appliance Cleans",
-  "Carpets",
-  "End of Tenancy Clean",
-  "Other",
+  "Construction Site Welfare Facility Cleans",
+  "Post-Construction & Builder Cleans",
+  "Holiday Let & Airbnb Turnovers",
+  "Commercial & Office Cleans",
+  "Deep Cleans & Oven Cleans",
+  "End of Tenancy Cleans",
+  "Regular Domestic Cleans",
+  "Mould Cleaning & Removal",
+  "Other / Custom Query",
 ];
 
 const MAX_PHOTOS = 5;

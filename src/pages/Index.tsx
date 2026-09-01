@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Phone, Shield, Leaf, Users, BadgeCheck, UserCheck, ChevronRight, Sparkles, HardHat, Briefcase, ArrowRight } from "lucide-react";
+import { Phone, Shield, Leaf, Users, BadgeCheck, UserCheck, ChevronRight, Sparkles, HardHat, Briefcase, ArrowRight, Key, Home, Building2, ShieldCheck, CalendarClock, Droplets } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
 import { whatsappLink } from "@/lib/constants";
@@ -8,12 +8,13 @@ import logo from "@/assets/logo-mark.png";
 import heroImg from "@/assets/hero-cleaning.jpg";
 import serviceDomestic from "@/assets/service-domestic.jpg";
 import serviceDeep from "@/assets/service-deep.jpg";
-import serviceEot from "@/assets/service-eot.jpg";
-import serviceHolidayLet from "@/assets/service-holidaylet.jpg";
 import serviceCommercial from "@/assets/service-commercial.jpg";
 import servicePostConstruction from "@/assets/service-postconstruction.jpg";
-import testimonialsBg from "@/assets/testimonials-bg.jpg";
+import serviceHolidayLet from "@/assets/service-holidaylet.jpg";
+import serviceEot from "@/assets/service-eot.jpg";
+import afterKitchen from "@/assets/after-kitchen.jpg";
 import { beforeAfterPairs } from "@/lib/beforeAfterGallery";
+import Testimonials from "@/components/Testimonials";
 
 const trustItems = [
   { icon: Shield, text: "Fully Insured" },
@@ -24,10 +25,78 @@ const trustItems = [
 ];
 
 const services = [
-  { icon: Sparkles, title: "Deep Cleans", image: serviceDeep, description: "Thorough top-to-bottom cleaning for homes and businesses that need extra attention." },
-  { icon: Users, title: "Regular Cleans", image: serviceDomestic, description: "Weekly or biweekly cleans to keep your space consistently fresh, on a routine that suits you." },
-  { icon: Briefcase, title: "Commercial Office Cleans", image: serviceCommercial, description: "Reliable cleaning for offices and workspaces, keeping things presentable for staff and clients." },
-  { icon: HardHat, title: "Post Construction Cleans", image: servicePostConstruction, description: "Specialist cleaning for building sites. Quoted only after site visit or photos." },
+  {
+    icon: ShieldCheck,
+    title: "Construction Site Welfare Facility Cleans",
+    tag: "Construction & Site Welfare",
+    targetMarket: "Site Cabins, Canteens & Welfare Units",
+    schedule: "Scheduled Weekly / Bi-Weekly & Daily Cleans",
+    image: "https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?q=80&w=1200&auto=format",
+    description: "Regular, scheduled weekly or bi-weekly cleans (plus daily maintenance & deep cleans) for site cabins, canteens, drying rooms, and office welfare facilities. CSCS card-holding crew adhering to strict site PPE & hygiene protocols.",
+  },
+  {
+    icon: Key,
+    title: "Holiday Let & Airbnb Turnovers",
+    tag: "Pembrokeshire Hospitality",
+    targetMarket: "Holiday Cottages & Coastal BNBs",
+    schedule: "Changeover & Regular Seasonal Schedules",
+    image: serviceHolidayLet,
+    description: "Fast, reliable changeover cleans between guests so your holiday let is spotless and guest-ready every time. Maintain 5-star host reviews across Pembrokeshire.",
+  },
+  {
+    icon: HardHat,
+    title: "Post-Construction & Builder Cleans",
+    tag: "Builders & Developers",
+    targetMarket: "New Builds & Property Extensions",
+    schedule: "Phased & Final Handover Cleans",
+    image: heroImg,
+    description: "Specialist post-build cleans for building sites, extensions, and renovations. Removing dust, paint overspray, and film ready for client handover.",
+  },
+  {
+    icon: Building2,
+    title: "Commercial & Office Cleans",
+    tag: "Commercial & Workspaces",
+    targetMarket: "Offices, Pubs, Retail & Childcare",
+    schedule: "Scheduled Weekly / Bi-Weekly Cleans",
+    image: serviceCommercial,
+    description: "Reliable regular weekly or bi-weekly scheduled cleaning for offices, hospitality venues, and business premises. Flexible out-of-hours routines keeping workspaces fresh for staff and clients.",
+  },
+  {
+    icon: Sparkles,
+    title: "Deep Cleans & Oven Restoration",
+    tag: "Residential & Commercial",
+    targetMarket: "Homeowners & Commercial Kitchens",
+    schedule: "One-Off Deep or Scheduled Maintenance",
+    image: afterKitchen,
+    description: "Thorough top-to-bottom restorative cleaning for homes and businesses. High dusting, tile grout, appliances, and stubborn oven grime removal.",
+  },
+  {
+    icon: BadgeCheck,
+    title: "End of Tenancy Cleans",
+    tag: "Property & Lettings",
+    targetMarket: "Tenants, Landlords & Estate Agents",
+    schedule: "Scheduled Move-In / Move-Out Cleans",
+    image: serviceEot,
+    description: "Deposit-standard deep cleaning for rental properties. Comprehensive inventory check-list ready for landlords and letting agents across Pembrokeshire.",
+  },
+  {
+    icon: Home,
+    title: "Regular Domestic Cleans",
+    tag: "Home Care",
+    targetMarket: "Homeowners & Busy Families",
+    schedule: "Scheduled Weekly / Bi-Weekly Cleans",
+    image: "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?q=80&w=1200&auto=format",
+    description: "Scheduled weekly or bi-weekly home cleans on a custom schedule. Trusted local cleaners using non-toxic, family and pet-safe eco-friendly products.",
+  },
+  {
+    icon: Droplets,
+    title: "Mould Cleaning & Removal",
+    tag: "Specialist Hygiene",
+    targetMarket: "Damp-Prone Homes, Lettings & Site Cabins",
+    schedule: "Targeted Treatment & Preventative Care",
+    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=1200&auto=format",
+    description: "Specialist anti-fungal mould treatment, black mould eradication, and spore removal for walls, ceilings, tiles, and window frames. Safe biocidal treatment preventing regrowth.",
+  },
 ];
 
 const workingWith = [
@@ -37,13 +106,6 @@ const workingWith = [
   "Childcare & Education",
   "Domestic Clients",
   "Small Businesses",
-];
-
-const testimonials = [
-  { name: "Callum Tree", role: "Construction Manager", company: "Developments & Site Welfare", quote: "ECOclean Cymru consistently deliver quality work on our construction sites. Professional, reliable, and always meet deadlines." },
-  { name: "Amanda Jillions", role: "Pub Landlord", company: "Rose & Willow", quote: "Having a reliable cleaning team has made all the difference. The pub has never looked better, and our customers notice." },
-  { name: "Jack Daniel", role: "Self-Employed Builder", company: "Extensions & Small Works", quote: "Great service for post-build cleans. They understand construction environments and always leave sites spotless." },
-  { name: "Vicky Quin", role: "Owner", company: "Doodles Childcare", quote: "Trustworthy and thorough. They use safe, eco-friendly products which is essential for our childcare setting." },
 ];
 
 const steps = [
@@ -231,7 +293,7 @@ const Index = () => {
               We're a small, accountable Pembrokeshire team who care about the finish. No corner-cutting, no rushed jobs, no chemical stink lingering after we leave.
             </p>
             <p>
-              Every clean is quoted honestly, priced by the hour, and delivered with eco-friendly products as standard — the tougher jobs get the tougher tools when they need them.
+              Every clean is quoted honestly, competitively priced, and delivered with eco-friendly products as standard — the tougher jobs get the tougher tools when they need them.
             </p>
             <Link to="/about" className="inline-flex items-center gap-2 text-primary font-medium mt-2 group">
               More about us
@@ -241,52 +303,86 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Services — image-forward staggered cards */}
+      {/* Services — image-forward cards */}
       <section className="section-padding bg-muted/40">
         <div className="container-wide mx-auto">
-          <motion.div className="max-w-2xl mb-14" {...fadeInUp}>
-            <span className="text-eco-gold text-xs tracking-[0.3em] uppercase">What we do</span>
+          <motion.div className="max-w-3xl mb-14" {...fadeInUp}>
+            <span className="text-eco-gold text-xs tracking-[0.3em] uppercase">Targeted Cleaning Solutions</span>
             <h2 className="font-display text-4xl md:text-5xl font-light text-foreground mt-4 leading-[1.05]">
-              Services, tailored to the room.
+              Professional cleaning tailored to your <em className="italic text-primary">industry & home.</em>
             </h2>
+            <p className="text-muted-foreground mt-4 text-base md:text-lg">
+              From CSCS-accredited construction site welfare cleans to fast 5-star holiday let turnovers and commercial office maintenance across Pembrokeshire.
+            </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-14">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service, i) => (
               <motion.div
                 key={service.title}
-                className={`group ${i % 2 === 1 ? "md:mt-16" : ""}`}
+                className="group flex flex-col bg-card border border-border/60 rounded-xl overflow-hidden hover:border-primary/40 hover:shadow-lg transition-all duration-300"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.7, delay: (i % 2) * 0.1 }}
+                transition={{ duration: 0.6, delay: (i % 3) * 0.1 }}
               >
-                <div className="relative overflow-hidden aspect-[4/3] mb-5">
+                <div className="relative overflow-hidden aspect-[4/3] bg-muted">
                   <img
                     src={service.image}
                     alt={service.title}
                     loading="lazy"
-                    className="w-full h-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-105"
+                    referrerPolicy="no-referrer"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).src = serviceDomestic;
+                    }}
+                    className="w-full h-full object-cover transition-transform duration-[700ms] ease-out group-hover:scale-105"
                   />
-                  <div className="absolute top-4 left-4 w-11 h-11 rounded-full bg-background/90 backdrop-blur flex items-center justify-center">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
+                  
+                  <div className="absolute top-4 left-4 w-10 h-10 rounded-full bg-background/90 backdrop-blur shadow flex items-center justify-center">
                     <service.icon className="w-5 h-5 text-primary" strokeWidth={1.5} />
                   </div>
+
+                  <div className="absolute top-4 right-4 bg-primary/90 text-primary-foreground text-[10px] uppercase tracking-wider font-semibold px-2.5 py-1 rounded-full backdrop-blur">
+                    {service.tag}
+                  </div>
+
+                  <div className="absolute bottom-3 left-4 right-4 text-white text-xs font-medium bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-md border border-white/10">
+                    <span className="text-eco-gold font-semibold">Target:</span> {service.targetMarket}
+                  </div>
                 </div>
-                <h3 className="font-display text-2xl md:text-3xl font-light text-foreground">
-                  {service.title}
-                </h3>
-                <div className="w-10 h-px bg-eco-gold mt-3 mb-4" />
-                <p className="text-muted-foreground leading-relaxed">
-                  {service.description}
-                </p>
+
+                <div className="p-6 flex flex-col flex-1">
+                  {service.schedule && (
+                    <div className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-700 bg-emerald-50 dark:bg-emerald-950/40 dark:text-emerald-300 px-2.5 py-1 rounded-md mb-2.5 border border-emerald-200/60 dark:border-emerald-800/40 w-fit">
+                      <CalendarClock className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                      <span>{service.schedule}</span>
+                    </div>
+                  )}
+                  <h3 className="font-display text-xl md:text-2xl font-normal text-foreground group-hover:text-primary transition-colors">
+                    {service.title}
+                  </h3>
+                  <div className="w-10 h-px bg-eco-gold/80 my-3" />
+                  <p className="text-muted-foreground text-sm leading-relaxed mb-6 flex-1">
+                    {service.description}
+                  </p>
+
+                  <Link
+                    to="/services"
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-primary hover:text-primary/80 transition-colors"
+                  >
+                    View Details & Requirements
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
               </motion.div>
             ))}
           </div>
 
           <div className="mt-16 flex justify-center">
-            <Button variant="pillOutline" asChild>
+            <Button variant="pillOutline" size="lg" asChild>
               <Link to="/services">
-                View All Services
+                View All Services & Specifications
                 <ChevronRight className="w-4 h-4" />
               </Link>
             </Button>
@@ -330,7 +426,6 @@ const Index = () => {
               </motion.div>
             ))}
           </div>
-          <p className="text-white/40 text-xs mt-8 italic">Placeholder photography — real job photos to follow.</p>
         </div>
       </section>
 
@@ -355,47 +450,8 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Testimonials on textured backdrop */}
-      <section className="relative section-padding overflow-hidden">
-        <div className="absolute inset-0">
-          <img src={testimonialsBg} alt="" aria-hidden="true" loading="lazy" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-eco-dark/85" />
-        </div>
-        <div className="container-wide mx-auto relative text-white">
-          <motion.div className="max-w-2xl mb-14" {...fadeInUp}>
-            <span className="text-eco-gold text-xs tracking-[0.3em] uppercase">Client voices</span>
-            <h2 className="font-display text-4xl md:text-5xl font-light mt-4 leading-[1.05]">
-              What our clients say.
-            </h2>
-          </motion.div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {testimonials.map((t, i) => (
-              <motion.div
-                key={t.name}
-                className="bg-white/[0.04] backdrop-blur-sm border border-white/10 p-6 hover:bg-white/[0.07] transition-colors"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-              >
-                <span className="font-display text-5xl text-eco-gold/60 leading-none">"</span>
-                <p className="text-white/85 text-sm leading-relaxed mb-5 -mt-2 italic font-light">
-                  {t.quote}
-                </p>
-                <div className="border-t border-white/10 pt-4">
-                  <p className="font-semibold text-white text-sm">{t.name}</p>
-                  <p className="text-xs text-white/60">{t.role}</p>
-                  <p className="text-xs text-white/40">{t.company}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-          <p className="text-white/50 text-xs mt-8 italic">
-            References and documentation available on request.
-          </p>
-        </div>
-      </section>
+      {/* Testimonials Carousel Section */}
+      <Testimonials />
 
       {/* How It Works — editorial numbered */}
       <section className="section-padding bg-background">

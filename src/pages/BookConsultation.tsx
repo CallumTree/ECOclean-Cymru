@@ -129,8 +129,7 @@ export default function BookConsultation() {
                   Booking calendar coming soon
                 </h3>
                 <p className="text-sm text-muted-foreground max-w-md mx-auto mb-6">
-                  Placeholder — the Google Calendar Appointment Schedule embed will slot in here
-                  once it's set up. In the meantime, message us on WhatsApp and we'll get you booked in.
+                  Online appointment scheduling will be available shortly. In the meantime, send us a quick message on WhatsApp or request a quote and we'll book your consultation right away.
                 </p>
                 <Button variant="whatsapp" className="rounded-full uppercase text-xs tracking-wider" asChild>
                   <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
