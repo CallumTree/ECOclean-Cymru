@@ -1,101 +1,41 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Phone, Shield, Leaf, Users, BadgeCheck, UserCheck, ChevronRight, Sparkles, HardHat, Briefcase, ArrowRight, Key, Home, Building2, ShieldCheck, CalendarClock, Droplets } from "lucide-react";
+import { Phone, ChevronRight, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
 import { whatsappLink } from "@/lib/constants";
 import logo from "@/assets/logo-mark.png";
 import heroImg from "@/assets/hero-cleaning.jpg";
 import serviceDomestic from "@/assets/service-domestic.jpg";
-import serviceDeep from "@/assets/service-deep.jpg";
 import serviceCommercial from "@/assets/service-commercial.jpg";
 import servicePostConstruction from "@/assets/service-postconstruction.jpg";
-import serviceHolidayLet from "@/assets/service-holidaylet.jpg";
-import serviceEot from "@/assets/service-eot.jpg";
-import afterKitchen from "@/assets/after-kitchen.jpg";
 import { beforeAfterPairs } from "@/lib/beforeAfterGallery";
 import Testimonials from "@/components/Testimonials";
 
-const trustItems = [
-  { icon: Shield, text: "Fully Insured" },
-  { icon: Leaf, text: "Eco-Friendly Products" },
-  { icon: Users, text: "Reliable Local Cleaners" },
-  { icon: BadgeCheck, text: "CSCS Card Holders" },
-  { icon: UserCheck, text: "DBS Checks in Progress" },
-];
-
-const services = [
+const servicePillars = [
   {
-    icon: ShieldCheck,
-    title: "Construction Site Welfare Facility Cleans",
-    tag: "Construction & Site Welfare",
-    targetMarket: "Site Cabins, Canteens & Welfare Units",
-    schedule: "Scheduled Weekly / Bi-Weekly & Daily Cleans",
-    image: "https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?q=80&w=1200&auto=format",
-    description: "Regular, scheduled weekly or bi-weekly cleans (plus daily maintenance & deep cleans) for site cabins, canteens, drying rooms, and office welfare facilities. CSCS card-holding crew adhering to strict site PPE & hygiene protocols.",
+    id: "domestic-residential",
+    title: "Domestic Residential",
+    image: serviceDomestic,
+    description:
+      "From regular weekly home cleans and 5-star holiday let changeovers to deposit-guaranteed tenancy cleans, deep oven restorations, and targeted anti-fungal mould treatments. We keep private homes and letting properties spotless with safe, eco-friendly products.",
+    cta: "See Domestic Residential",
   },
   {
-    icon: Key,
-    title: "Holiday Let & Airbnb Turnovers",
-    tag: "Pembrokeshire Hospitality",
-    targetMarket: "Holiday Cottages & Coastal BNBs",
-    schedule: "Changeover & Regular Seasonal Schedules",
-    image: serviceHolidayLet,
-    description: "Fast, reliable changeover cleans between guests so your holiday let is spotless and guest-ready every time. Maintain 5-star host reviews across Pembrokeshire.",
-  },
-  {
-    icon: HardHat,
-    title: "Post-Construction & Builder Cleans",
-    tag: "Builders & Developers",
-    targetMarket: "New Builds & Property Extensions",
-    schedule: "Phased & Final Handover Cleans",
-    image: heroImg,
-    description: "Specialist post-build cleans for building sites, extensions, and renovations. Removing dust, paint overspray, and film ready for client handover.",
-  },
-  {
-    icon: Building2,
-    title: "Commercial & Office Cleans",
-    tag: "Commercial & Workspaces",
-    targetMarket: "Offices, Pubs, Retail & Childcare",
-    schedule: "Scheduled Weekly / Bi-Weekly Cleans",
+    id: "commercial",
+    title: "Commercial",
     image: serviceCommercial,
-    description: "Reliable regular weekly or bi-weekly scheduled cleaning for offices, hospitality venues, and business premises. Flexible out-of-hours routines keeping workspaces fresh for staff and clients.",
+    description:
+      "Tailored contract cleaning for offices, retail units, pubs, restaurants, and community venues across Pembrokeshire. Flexible early morning, evening, or weekend routines with keyholder options keeping your workspace fresh for staff and clients.",
+    cta: "See Commercial",
   },
   {
-    icon: Sparkles,
-    title: "Deep Cleans & Oven Restoration",
-    tag: "Residential & Commercial",
-    targetMarket: "Homeowners & Commercial Kitchens",
-    schedule: "One-Off Deep or Scheduled Maintenance",
-    image: afterKitchen,
-    description: "Thorough top-to-bottom restorative cleaning for homes and businesses. High dusting, tile grout, appliances, and stubborn oven grime removal.",
-  },
-  {
-    icon: BadgeCheck,
-    title: "End of Tenancy Cleans",
-    tag: "Property & Lettings",
-    targetMarket: "Tenants, Landlords & Estate Agents",
-    schedule: "Scheduled Move-In / Move-Out Cleans",
-    image: serviceEot,
-    description: "Deposit-standard deep cleaning for rental properties. Comprehensive inventory check-list ready for landlords and letting agents across Pembrokeshire.",
-  },
-  {
-    icon: Home,
-    title: "Regular Domestic Cleans",
-    tag: "Home Care",
-    targetMarket: "Homeowners & Busy Families",
-    schedule: "Scheduled Weekly / Bi-Weekly Cleans",
-    image: "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?q=80&w=1200&auto=format",
-    description: "Scheduled weekly or bi-weekly home cleans on a custom schedule. Trusted local cleaners using non-toxic, family and pet-safe eco-friendly products.",
-  },
-  {
-    icon: Droplets,
-    title: "Mould Cleaning & Removal",
-    tag: "Specialist Hygiene",
-    targetMarket: "Damp-Prone Homes, Lettings & Site Cabins",
-    schedule: "Targeted Treatment & Preventative Care",
-    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=1200&auto=format",
-    description: "Specialist anti-fungal mould treatment, black mould eradication, and spore removal for walls, ceilings, tiles, and window frames. Safe biocidal treatment preventing regrowth.",
+    id: "construction-welfare",
+    title: "Construction & Welfare",
+    image: servicePostConstruction,
+    description:
+      "CSCS card-holding cleaning operatives dedicated to scheduled site cabin, canteen, and welfare facility hygiene maintenance, plus multi-stage post-construction builder cleans and sparkle finishes ready for client handover.",
+    cta: "See Construction & Welfare",
   },
 ];
 
@@ -153,8 +93,8 @@ const Index = () => {
         </div>
       </section>
 
-      {/* HERO — full-bleed image, asymmetric */}
-      <section className="relative min-h-[100svh] flex items-center overflow-hidden">
+      {/* HERO — full-bleed image, clean editorial presentation */}
+      <section className="relative min-h-[90svh] flex items-center overflow-hidden">
         <div className="absolute inset-0">
           <img
             src={heroImg}
@@ -164,118 +104,71 @@ const Index = () => {
             height={1280}
           />
           <div className="absolute inset-0 eco-gradient-overlay" />
-          <div className="absolute inset-0 grain-overlay opacity-60" />
         </div>
 
         <div className="container-wide mx-auto px-4 sm:px-6 lg:px-8 relative pt-32 pb-20 md:pt-40 md:pb-28 w-full">
-          <div className="grid lg:grid-cols-12 gap-8 items-end">
-            <div className="lg:col-span-7 xl:col-span-6">
-              <motion.span
-                className="inline-flex items-center gap-2 text-eco-gold/90 text-xs tracking-[0.3em] uppercase mb-6"
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-              >
-                <span className="w-8 h-px bg-eco-gold/70" />
-                Pembrokeshire · Est. Local
-              </motion.span>
+          <div className="max-w-3xl">
+            <motion.span
+              className="inline-flex items-center gap-2 text-eco-gold/90 text-xs tracking-[0.3em] uppercase mb-6"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <span className="w-8 h-px bg-eco-gold/70" />
+              Pembrokeshire · Est. Local
+            </motion.span>
 
-              <motion.h1
-                className="font-display text-white leading-[0.95] tracking-tight mb-8 text-[clamp(2.75rem,7vw,5.75rem)] font-light"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.1 }}
-              >
-                Complete{" "}
-                <em className="italic text-eco-gold/95 font-light">cleaning</em>
-                <br />
-                solutions,{" "}
-                <span className="whitespace-nowrap">done properly.</span>
-              </motion.h1>
+            <motion.h1
+              className="font-display text-white leading-[0.95] tracking-tight mb-8 text-[clamp(2.75rem,7vw,5.75rem)] font-light"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+            >
+              Complete{" "}
+              <em className="italic text-eco-gold/95 font-light">cleaning</em>
+              <br />
+              solutions,{" "}
+              <span className="whitespace-nowrap">done properly.</span>
+            </motion.h1>
 
-              <motion.p
-                className="text-white/80 text-lg md:text-xl mb-10 leading-relaxed max-w-xl font-light"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.25 }}
-              >
-                Domestic, deep cleans, end of tenancy and holiday-let turnovers across Pembrokeshire. Eco-friendly products. Trusted by homes and businesses.
-              </motion.p>
-
-              <motion.div
-                className="flex flex-col sm:flex-row gap-4"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.4 }}
-              >
-                <Button size="lg" variant="pill" asChild>
-                  <Link to="/contact">
-                    Get a Quote
-                    <ChevronRight className="w-4 h-4" />
-                  </Link>
-                </Button>
-                <Button size="lg" variant="whatsapp" className="rounded-full uppercase text-xs tracking-wider" asChild>
-                  <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
-                    <Phone className="w-4 h-4" />
-                    WhatsApp Us
-                  </a>
-                </Button>
-              </motion.div>
-            </div>
+            <motion.p
+              className="text-white/80 text-lg md:text-xl mb-10 leading-relaxed max-w-xl font-light"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.25 }}
+            >
+              Domestic, deep cleans, end of tenancy and holiday-let turnovers across Pembrokeshire. Eco-friendly products. Trusted by homes and businesses.
+            </motion.p>
 
             <motion.div
-              className="hidden lg:block lg:col-span-5 lg:col-start-8 xl:col-start-9"
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.9, delay: 0.5 }}
+              className="flex flex-col sm:flex-row gap-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.4 }}
             >
-              <div className="border-l border-eco-gold/40 pl-6 space-y-6 text-white/70 text-sm">
-                <div>
-                  <div className="text-eco-gold text-3xl font-display font-light">100%</div>
-                  <div className="uppercase tracking-widest text-xs mt-1">Eco-friendly by default</div>
-                </div>
-                <div>
-                  <div className="text-eco-gold text-3xl font-display font-light">CSCS</div>
-                  <div className="uppercase tracking-widest text-xs mt-1">Card-holding crew</div>
-                </div>
-                <div>
-                  <div className="text-eco-gold text-3xl font-display font-light">7 Day</div>
-                  <div className="uppercase tracking-widest text-xs mt-1">Fast quote turnaround</div>
-                </div>
-              </div>
+              <Button size="lg" variant="pill" asChild>
+                <Link to="/contact">
+                  Get a Quote
+                  <ChevronRight className="w-4 h-4" />
+                </Link>
+              </Button>
+              <Button size="lg" variant="whatsapp" className="rounded-full uppercase text-xs tracking-wider" asChild>
+                <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
+                  <Phone className="w-4 h-4" />
+                  WhatsApp Us
+                </a>
+              </Button>
             </motion.div>
           </div>
         </div>
-
-        {/* Scroll cue */}
-        <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/50 text-[10px] tracking-[0.4em] uppercase"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.1 }}
-        >
-          Scroll ↓
-        </motion.div>
       </section>
 
-      {/* Trust Strip — dark band */}
-      <section className="bg-eco-dark py-6 border-y border-white/5">
+      {/* Trust Strip — clean single row of plain text */}
+      <section className="bg-eco-dark py-5 border-y border-white/5">
         <div className="container-wide mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-4">
-            {trustItems.map((item, index) => (
-              <motion.div
-                key={item.text}
-                className="flex items-center gap-2 text-white/70"
-                initial={{ opacity: 0, y: 8 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.08 }}
-              >
-                <item.icon className="w-4 h-4 text-eco-gold" strokeWidth={1.5} />
-                <span className="text-xs uppercase tracking-widest font-medium">{item.text}</span>
-              </motion.div>
-            ))}
-          </div>
+          <p className="text-center text-xs md:text-sm uppercase tracking-widest text-white/70 font-medium">
+            Fully Insured &nbsp;&bull;&nbsp; Eco-Friendly Products &nbsp;&bull;&nbsp; Reliable Local Cleaners &nbsp;&bull;&nbsp; CSCS Card Holders &nbsp;&bull;&nbsp; DBS Checks in Progress
+          </p>
         </div>
       </section>
 
@@ -303,86 +196,63 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Services — image-forward cards */}
+      {/* Services — 3 Pillar Teasers */}
       <section className="section-padding bg-muted/40">
         <div className="container-wide mx-auto">
           <motion.div className="max-w-3xl mb-14" {...fadeInUp}>
             <span className="text-eco-gold text-xs tracking-[0.3em] uppercase">Targeted Cleaning Solutions</span>
             <h2 className="font-display text-4xl md:text-5xl font-light text-foreground mt-4 leading-[1.05]">
-              Professional cleaning tailored to your <em className="italic text-primary">industry & home.</em>
+              Professional cleaning tailored across <em className="italic text-primary">3 core pillars.</em>
             </h2>
             <p className="text-muted-foreground mt-4 text-base md:text-lg">
-              From CSCS-accredited construction site welfare cleans to fast 5-star holiday let turnovers and commercial office maintenance across Pembrokeshire.
+              Delivering reliable, eco-conscious cleaning for Pembrokeshire homes, holiday lettings, commercial premises, and construction site facilities.
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, i) => (
+            {servicePillars.map((pillar, i) => (
               <motion.div
-                key={service.title}
+                key={pillar.id}
                 className="group flex flex-col bg-card border border-border/60 rounded-xl overflow-hidden hover:border-primary/40 hover:shadow-lg transition-all duration-300"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.6, delay: (i % 3) * 0.1 }}
+                transition={{ duration: 0.6, delay: i * 0.1 }}
               >
                 <div className="relative overflow-hidden aspect-[4/3] bg-muted">
                   <img
-                    src={service.image}
-                    alt={service.title}
+                    src={pillar.image}
+                    alt={pillar.title}
                     loading="lazy"
-                    referrerPolicy="no-referrer"
-                    onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).src = serviceDomestic;
-                    }}
                     className="w-full h-full object-cover transition-transform duration-[700ms] ease-out group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
-                  
-                  <div className="absolute top-4 left-4 w-10 h-10 rounded-full bg-background/90 backdrop-blur shadow flex items-center justify-center">
-                    <service.icon className="w-5 h-5 text-primary" strokeWidth={1.5} />
-                  </div>
-
-                  <div className="absolute top-4 right-4 bg-primary/90 text-primary-foreground text-[10px] uppercase tracking-wider font-semibold px-2.5 py-1 rounded-full backdrop-blur">
-                    {service.tag}
-                  </div>
-
-                  <div className="absolute bottom-3 left-4 right-4 text-white text-xs font-medium bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-md border border-white/10">
-                    <span className="text-eco-gold font-semibold">Target:</span> {service.targetMarket}
-                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                 </div>
 
                 <div className="p-6 flex flex-col flex-1">
-                  {service.schedule && (
-                    <div className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-700 bg-emerald-50 dark:bg-emerald-950/40 dark:text-emerald-300 px-2.5 py-1 rounded-md mb-2.5 border border-emerald-200/60 dark:border-emerald-800/40 w-fit">
-                      <CalendarClock className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                      <span>{service.schedule}</span>
-                    </div>
-                  )}
-                  <h3 className="font-display text-xl md:text-2xl font-normal text-foreground group-hover:text-primary transition-colors">
-                    {service.title}
+                  <h3 className="font-display text-2xl font-normal text-foreground group-hover:text-primary transition-colors">
+                    {pillar.title}
                   </h3>
                   <div className="w-10 h-px bg-eco-gold/80 my-3" />
                   <p className="text-muted-foreground text-sm leading-relaxed mb-6 flex-1">
-                    {service.description}
+                    {pillar.description}
                   </p>
 
-                  <Link
-                    to="/services"
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-primary hover:text-primary/80 transition-colors"
-                  >
-                    View Details & Requirements
-                    <ChevronRight className="w-3.5 h-3.5" />
-                  </Link>
+                  <Button variant="pill" size="sm" className="w-full justify-center" asChild>
+                    <Link to={`/services#${pillar.id}`}>
+                      {pillar.cta}
+                      <ChevronRight className="w-4 h-4" />
+                    </Link>
+                  </Button>
                 </div>
               </motion.div>
             ))}
           </div>
 
-          <div className="mt-16 flex justify-center">
+          <div className="mt-14 flex justify-center">
             <Button variant="pillOutline" size="lg" asChild>
               <Link to="/services">
-                View All Services & Specifications
+                View All Inclusions & Specifications
                 <ChevronRight className="w-4 h-4" />
               </Link>
             </Button>

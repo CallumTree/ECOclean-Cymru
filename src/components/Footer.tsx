@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Phone, Mail, MapPin, Shield, Leaf, BadgeCheck } from "lucide-react";
+import { Phone, Mail, MapPin } from "lucide-react";
 import { CONTACT_EMAIL, WHATSAPP_DISPLAY_NUMBER } from "@/lib/constants";
 import logo from "@/assets/logo-mark.png";
 
@@ -12,31 +12,15 @@ const quickLinks = [
   { name: "Contact", href: "/contact" },
 ];
 
-const trustSignals = [
-  { icon: Shield, text: "Fully Insured" },
-  { icon: Leaf, text: "Eco-Friendly" },
-  { icon: BadgeCheck, text: "CSCS Card Holders" },
-];
-
 export function Footer() {
   return (
     <footer className="bg-eco-charcoal text-white">
-      {/* Bold trust band */}
-      <div className="bg-primary">
-        <div className="container-wide mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 items-center">
-            {trustSignals.map((signal) => (
-              <div key={signal.text} className="flex items-center justify-center sm:justify-start gap-4">
-                <div className="w-12 h-12 rounded-full bg-eco-gold/20 flex items-center justify-center shrink-0">
-                  <signal.icon className="w-5 h-5 text-eco-gold" strokeWidth={1.5} />
-                </div>
-                <div>
-                  <p className="font-display text-lg text-white leading-tight">{signal.text}</p>
-                  <p className="text-white/60 text-xs uppercase tracking-widest">Guaranteed</p>
-                </div>
-              </div>
-            ))}
-          </div>
+      {/* Plain trust band */}
+      <div className="bg-primary/95 border-b border-white/10">
+        <div className="container-wide mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <p className="text-center text-xs md:text-sm uppercase tracking-widest text-white/90 font-medium">
+            Fully Insured &nbsp;&bull;&nbsp; Eco-Friendly Cleaning &nbsp;&bull;&nbsp; CSCS Card-Holding Crew &nbsp;&bull;&nbsp; Pembrokeshire Local
+          </p>
         </div>
       </div>
 
@@ -117,16 +101,15 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Trust Signals */}
+          {/* Why Choose Us */}
           <div>
             <h3 className="font-heading font-semibold text-sm uppercase tracking-wide mb-4">Why Choose Us</h3>
-            <ul className="space-y-3">
-              {trustSignals.map((signal) => (
-                <li key={signal.text} className="flex items-center gap-3">
-                  <signal.icon className="w-5 h-5 text-eco-gold" />
-                  <span className="text-white/70 text-sm">{signal.text}</span>
-                </li>
-              ))}
+            <ul className="space-y-2.5 text-white/70 text-sm">
+              <li>Eco-Friendly Products</li>
+              <li>Fully Insured Cleaners</li>
+              <li>CSCS Card-Holding Crew</li>
+              <li>Transparent Free Quotes</li>
+              <li>Pembrokeshire Local Team</li>
             </ul>
           </div>
         </div>

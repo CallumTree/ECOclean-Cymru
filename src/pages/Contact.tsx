@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -41,6 +42,7 @@ export default function Contact() {
     postcode: "",
     service: "",
     message: "",
+    needsSiteVisit: false,
   });
   const [photos, setPhotos] = useState<File[]>([]);
 
@@ -126,7 +128,8 @@ export default function Contact() {
       payload.append("phone_or_email", formData.contact);
       payload.append("postcode", formData.postcode);
       payload.append("service", formData.service || "Not specified");
-      payload.append("message", formData.message);
+      payload.append("needs_site_visit", formData.needsSiteVisit ? "YES — On-site visit / consultation requested" : "No");
+      payload.append("message", `${formData.needsSiteVisit ? "[FLAG: Site visit / consultation requested]\n\n" : ""}${formData.message}`);
       // Web3Forms accepts repeated multipart fields for multiple attachments —
       // double check the exact field name/limits in the Web3Forms dashboard once a real access key is in place.
       photos.forEach((file) => payload.append("attachment", file));
@@ -203,7 +206,7 @@ export default function Contact() {
                     variant="pill"
                     onClick={() => {
                       setIsSubmitted(false);
-                      setFormData({ name: "", contact: "", postcode: "", service: "", message: "" });
+                      setFormData({ name: "", contact: "", postcode: "", service: "", message: "", needsSiteVisit: false });
                       setPhotos([]);
                     }}
                   >
@@ -275,8 +278,25 @@ export default function Contact() {
                       </div>
                     </div>
 
+                    <div className="rounded-lg border border-border/80 bg-muted/30 p-4 transition-colors hover:bg-muted/50">
+                      <div className="flex items-center space-x-3">
+                        <Checkbox
+                          id="needsSiteVisit"
+                          checked={formData.needsSiteVisit}
+                          onCheckedChange={(checked) =>
+                            setFormData((prev) => ({ ...prev, needsSiteVisit: checked === true }))
+                          }
+                        />
+                        <Label
+                          htmlFor="needsSiteVisit"
+                          className="text-sm font-medium leading-normal cursor-pointer text-foreground"
+                        >
+                          I'd like to book a consultation
+                        </Label>
+                      </div>
+                    </div>
+
                     <div className="space-y-2">
-                      <Label htmlFor="message">Describe Your Project</Label>
                       <Textarea
                         id="message"
                         placeholder="Tell us about the space, the job, and anything else that would help us quote accurately..."
