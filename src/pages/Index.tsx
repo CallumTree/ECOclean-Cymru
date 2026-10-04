@@ -7,15 +7,10 @@ import { whatsappLink } from "@/lib/constants";
 import logo from "@/assets/logo-mark.png";
 import heroImg from "@/assets/hero-cleaning.jpg";
 import servicePostConstruction from "@/assets/service-postconstruction.jpg";
+import serviceDomestic from "@/assets/real-photos/bathroom-after.jpg";
+import serviceCommercial from "@/assets/real-photos/pub-corridor-after.jpg";
 import { beforeAfterPairs } from "@/lib/beforeAfterGallery";
 import Testimonials from "@/components/Testimonials";
-
-// Replaced AI-generated placeholders with licensed Unsplash photos that
-// actually depict cleaning (prior images showed a family lounging and a
-// generic corporate office, neither showing any cleaning taking place).
-// Photo credits: Vitaly Gariev (domestic) and Towfiqu Barbhuiya (commercial), via Unsplash.
-const serviceDomestic = "https://images.unsplash.com/photo-1758273705627-937374bfa978?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080";
-const serviceCommercial = "https://images.unsplash.com/photo-1627905646269-7f034dcc5738?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080";
 
 const servicePillars = [
   {
