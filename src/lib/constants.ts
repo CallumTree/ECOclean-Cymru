@@ -8,5 +8,4 @@ export function whatsappLink(message?: string) {
 
 export const CONTACT_EMAIL = "leanne@ecocleancymru.com";
 
-// Free access key from https://web3forms.com — replace before going live.
-export const WEB3FORMS_ACCESS_KEY = "YOUR_WEB3FORMS_ACCESS_KEY";
+export const WEB3FORMS_ACCESS_KEY = "dd18c611-7469-46b7-8d93-ed42f4204cb4";
