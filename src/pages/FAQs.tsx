@@ -18,11 +18,11 @@ const faqs = [
   },
   {
     question: "Are you insured?",
-    answer: "Yes, ECOclean Cymru LTD is fully insured. We carry comprehensive public liability insurance to protect both our clients and our team. Documentation is available on request.",
+    answer: "Yes, ECOclean Cymru Ltd is fully insured. We carry comprehensive public liability insurance to protect both our clients and our team. Documentation is available on request.",
   },
   {
     question: "Do I need to be home during the clean?",
-    answer: "Not necessarily. Many of our clients provide us with keys or access codes. We're fully insured and trustworthy – we're happy to clean while you're at work or out. If you'd prefer to be home, that's fine too.",
+    answer: "Not necessarily. Many of our clients provide us with keys or access codes. We're happy to clean while you're at work or out. If you'd prefer to be home, that's fine too.",
   },
   {
     question: "What about pets?",

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { MessageSquare, Mail, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { CONTACT_EMAIL } from "@/lib/constants";
 
 interface ExitScreenProps {
   title: string;
@@ -50,7 +51,7 @@ export function ExitScreen({ title, message, showEmail = false }: ExitScreenProp
             className="w-full"
             asChild
           >
-            <a href="mailto:Leanne@ecocleancymru.com">
+            <a href={`mailto:${CONTACT_EMAIL}`}>
               <Mail className="w-5 h-5" />
               Email us
             </a>

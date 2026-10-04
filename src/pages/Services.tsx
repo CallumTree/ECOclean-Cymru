@@ -129,7 +129,7 @@ const servicePillars: ServicePillar[] = [
       {
         title: "End of Tenancy Cleans",
         summary: "Deposit-standard move-in and move-out deep cleaning for rental properties across Pembrokeshire.",
-        description: "Comprehensive, deposit-guaranteed deep cleaning for rental properties across Pembrokeshire. Designed to meet strict letting agent and landlord inventory checklists, ensuring tenants secure their full deposit return and properties are ready for immediate re-letting.",
+        description: "Comprehensive deep cleaning for rental properties across Pembrokeshire. Designed to meet strict letting agent and landlord inventory checklists, helping tenants move out with confidence and properties ready for immediate re-letting.",
         included: [
           "Full property deep clean covering bedrooms, living areas, kitchens, and bathrooms",
           "Internal window cleaning, frame, sill, and track wipe-downs",
@@ -180,7 +180,7 @@ const servicePillars: ServicePillar[] = [
           "Washroom & toilet block deep sanitization, mirror polishing, and consumable restocking",
           "Commercial floor vacuuming, hard floor mopping, and entrance matting care",
           "Waste bin emptying, liner replacement, and eco-friendly recycling sorting",
-          "Keyholder options and fully insured out-of-hours cleaning teams",
+          "Keyholder options for out-of-hours cleaning teams",
         ],
         excluded: [
           "Server room deep technical hardware maintenance",

@@ -1,18 +1,23 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Calendar as CalendarIcon, ArrowLeft } from "lucide-react";
+import { Calendar as CalendarIcon, ArrowLeft, Upload, X, ImageIcon } from "lucide-react";
 import { format, addDays, isWeekend, isBefore, startOfDay } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
 import { QuoteResult } from "@/lib/pricingLogic";
+
+const MAX_PHOTOS = 5;
+const MAX_TOTAL_BYTES = 15 * 1024 * 1024; // 15MB combined
 
 interface AvailabilityRequestProps {
   result: QuoteResult;
   onBack: () => void;
-  onSubmit: (data: AvailabilitySubmission) => void;
+  onSubmit: (data: AvailabilitySubmission) => void | Promise<void>;
+  isSubmitting?: boolean;
 }
 
 export type TimeSlot = 'morning' | 'midday' | 'afternoon';
@@ -24,6 +29,7 @@ export interface AvailabilitySubmission {
   preferredDate: Date;
   timeSlot: TimeSlot;
   notes: string;
+  photos: File[];
   result: QuoteResult;
 }
 
@@ -33,11 +39,13 @@ const TIME_SLOT_LABELS: Record<TimeSlot, string> = {
   afternoon: 'Afternoon (1pm–5pm)',
 };
 
-export function AvailabilityRequest({ result, onBack, onSubmit }: AvailabilityRequestProps) {
+export function AvailabilityRequest({ result, onBack, onSubmit, isSubmitting = false }: AvailabilityRequestProps) {
+  const { toast } = useToast();
   const [step, setStep] = useState(1);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [timeSlot, setTimeSlot] = useState<TimeSlot | null>(null);
   const [notes, setNotes] = useState("");
+  const [photos, setPhotos] = useState<File[]>([]);
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
@@ -90,6 +98,37 @@ export function AvailabilityRequest({ result, onBack, onSubmit }: AvailabilityRe
     setStep(3);
   };
 
+  const handleFilesSelected = (fileList: FileList | null) => {
+    if (!fileList) return;
+    const incoming = Array.from(fileList);
+
+    if (photos.length + incoming.length > MAX_PHOTOS) {
+      toast({
+        title: "Too many photos",
+        description: `Please attach up to ${MAX_PHOTOS} photos.`,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const combined = [...photos, ...incoming];
+    const totalBytes = combined.reduce((sum, file) => sum + file.size, 0);
+    if (totalBytes > MAX_TOTAL_BYTES) {
+      toast({
+        title: "Photos too large",
+        description: "Please keep your combined photos under 15MB.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setPhotos(combined);
+  };
+
+  const removePhoto = (index: number) => {
+    setPhotos((prev) => prev.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = () => {
     if (validateStep3() && selectedDate && timeSlot) {
       onSubmit({
@@ -99,6 +138,7 @@ export function AvailabilityRequest({ result, onBack, onSubmit }: AvailabilityRe
         preferredDate: selectedDate,
         timeSlot,
         notes,
+        photos,
         result,
       });
     }
@@ -218,6 +258,54 @@ export function AvailabilityRequest({ result, onBack, onSubmit }: AvailabilityRe
           className="resize-none"
         />
 
+        <div className="space-y-2">
+          <Label htmlFor="availability-photos">Add photos (optional)</Label>
+          <p className="text-sm text-muted-foreground -mt-1">
+            Add a few photos and we may be able to skip straight to the consultation, so we can more accurately quote.
+          </p>
+          <label
+            htmlFor="availability-photos"
+            className="flex flex-col items-center justify-center gap-2 border-2 border-dashed border-border p-6 text-center cursor-pointer hover:border-primary hover:bg-muted/50 transition-colors rounded-xl"
+          >
+            <Upload className="w-6 h-6 text-muted-foreground" />
+            <span className="text-sm text-muted-foreground">
+              Click to upload photos of the space (up to {MAX_PHOTOS}, 15MB total)
+            </span>
+            <input
+              id="availability-photos"
+              type="file"
+              accept="image/*"
+              multiple
+              className="hidden"
+              onChange={(e) => handleFilesSelected(e.target.files)}
+            />
+          </label>
+
+          {photos.length > 0 && (
+            <ul className="grid sm:grid-cols-2 gap-2 mt-3">
+              {photos.map((file, index) => (
+                <li
+                  key={`${file.name}-${index}`}
+                  className="flex items-center justify-between gap-2 bg-muted rounded-lg px-3 py-2 text-sm"
+                >
+                  <span className="flex items-center gap-2 min-w-0">
+                    <ImageIcon className="w-4 h-4 text-primary shrink-0" />
+                    <span className="truncate">{file.name}</span>
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => removePhoto(index)}
+                    className="text-muted-foreground hover:text-destructive transition-colors shrink-0"
+                    aria-label={`Remove ${file.name}`}
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
         <Button size="lg" className="w-full" onClick={handleContinueToContact}>
           Continue
         </Button>
@@ -309,10 +397,15 @@ export function AvailabilityRequest({ result, onBack, onSubmit }: AvailabilityRe
           <p className="text-foreground font-semibold mt-1">
             Estimated: £{result.finalPrice}
           </p>
+          {photos.length > 0 && (
+            <p className="text-sm text-muted-foreground mt-1">
+              {photos.length} photo{photos.length > 1 ? "s" : ""} attached
+            </p>
+          )}
         </div>
 
-        <Button size="lg" className="w-full" onClick={handleSubmit}>
-          Request availability
+        <Button size="lg" className="w-full" onClick={handleSubmit} disabled={isSubmitting}>
+          {isSubmitting ? "Sending…" : "Request availability"}
         </Button>
       </motion.div>
     );

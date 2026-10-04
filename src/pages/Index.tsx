@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Phone, ChevronRight, ArrowRight } from "lucide-react";
+import { Phone, ChevronRight, ArrowRight, Leaf, BadgeCheck, MapPin, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
 import { whatsappLink } from "@/lib/constants";
@@ -12,7 +12,31 @@ import serviceCommercial from "@/assets/real-photos/pub-bar.jpg";
 // directly representative of the site welfare units this pillar covers.
 const servicePostConstruction = "https://images.unsplash.com/photo-1789784145518-68a9deec9d61?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080";
 import { beforeAfterPairs } from "@/lib/beforeAfterGallery";
-import Testimonials from "@/components/Testimonials";
+
+// Shown in place of customer reviews until we have real, verifiable
+// Google reviews to display instead of asking people to take our word for it.
+const whyChooseUs = [
+  {
+    icon: Leaf,
+    title: "Eco-Friendly as Standard",
+    description: "Non-toxic, environmentally responsible products, safe for family and pets.",
+  },
+  {
+    icon: BadgeCheck,
+    title: "DBS Checked",
+    description: "Every team member is DBS checked before they set foot in your home or business.",
+  },
+  {
+    icon: MapPin,
+    title: "Pembrokeshire Local",
+    description: "Based here, serving here — not a franchise or a call centre miles away.",
+  },
+  {
+    icon: Clock,
+    title: "Flexible Scheduling",
+    description: "Early mornings, evenings, or weekends — we work around you.",
+  },
+];
 
 const servicePillars = [
   {
@@ -20,7 +44,7 @@ const servicePillars = [
     title: "Domestic Residential",
     image: serviceDomestic,
     description:
-      "From regular weekly home cleans and 5-star holiday let changeovers to deposit-guaranteed tenancy cleans, deep oven restorations, and targeted anti-fungal mould treatments. We keep private homes and letting properties spotless with safe, eco-friendly products.",
+      "From regular weekly home cleans and 5-star holiday let changeovers to thorough end-of-tenancy cleans, deep oven restorations, and targeted anti-fungal mould treatments. We keep private homes and letting properties spotless with safe, eco-friendly products.",
     cta: "See Domestic Residential",
   },
   {
@@ -169,7 +193,7 @@ const Index = () => {
       <section className="bg-eco-dark py-5 border-y border-white/5">
         <div className="container-wide mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-center text-xs md:text-sm uppercase tracking-widest text-white/70 font-medium">
-            Fully Insured &nbsp;&bull;&nbsp; Eco-Friendly Products &nbsp;&bull;&nbsp; Reliable Local Cleaners &nbsp;&bull;&nbsp; DBS Checked &nbsp;&bull;&nbsp; Working Towards CSCS
+            Eco-Friendly Products &nbsp;&bull;&nbsp; Reliable Local Cleaners &nbsp;&bull;&nbsp; DBS Checked &nbsp;&bull;&nbsp; Working Towards CSCS
           </p>
         </div>
       </section>
@@ -322,8 +346,41 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Testimonials Carousel Section */}
-      <Testimonials />
+      {/* Why Choose Us — replaces customer reviews until we have real,
+          verifiable Google reviews to show instead */}
+      <section className="section-padding bg-eco-charcoal text-white">
+        <div className="container-wide mx-auto">
+          <motion.div
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="font-heading text-3xl md:text-4xl font-medium mb-3">
+              Why Pembrokeshire Chooses Us
+            </h2>
+            <p className="text-white/70 max-w-xl mx-auto">
+              No gimmicks — just reliable, well-done cleaning from a local team.
+            </p>
+          </motion.div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {whyChooseUs.map((item, index) => (
+              <motion.div
+                key={item.title}
+                className="bg-white/5 border border-white/10 p-6 rounded-lg"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.05 }}
+              >
+                <item.icon className="w-6 h-6 text-eco-gold mb-3" />
+                <h3 className="font-heading font-semibold mb-1.5">{item.title}</h3>
+                <p className="text-sm text-white/70 leading-relaxed">{item.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* How It Works — editorial numbered */}
       <section className="section-padding bg-background">

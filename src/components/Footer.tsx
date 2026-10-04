@@ -106,7 +106,6 @@ export function Footer() {
             <h3 className="font-heading font-semibold text-sm uppercase tracking-wide mb-4">Why Choose Us</h3>
             <ul className="space-y-2.5 text-white/70 text-sm">
               <li>Eco-Friendly Products</li>
-              <li>Fully Insured Cleaners</li>
               <li>DBS Checked Cleaners</li>
               <li>Working Towards CSCS Accreditation</li>
               <li>Transparent Free Quotes</li>
@@ -119,7 +118,7 @@ export function Footer() {
         <div className="mt-12 pt-8 border-t border-white/10">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-white/50 text-sm">
-              © {new Date().getFullYear()} ECOclean Cymru LTD. All rights reserved.
+              © {new Date().getFullYear()} ECOclean Cymru Ltd. All rights reserved.
             </p>
             <p className="text-white/50 text-sm">
               Serving Pembrokeshire, Wales

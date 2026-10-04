@@ -204,22 +204,18 @@ export const Testimonials = () => {
             </motion.h2>
           </div>
 
-          {/* Trust stats badge */}
+          {/* Trust badge - no numeric rating shown until we have real,
+              verifiable reviews (Google etc.) to back it up */}
           <motion.div
-            className="flex items-center gap-4 bg-white/10 backdrop-blur-md border border-white/15 px-5 py-3 rounded-full self-start md:self-auto"
+            className="flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/15 px-5 py-3 rounded-full self-start md:self-auto"
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
           >
-            <div className="flex -space-x-1">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 fill-eco-gold text-eco-gold" />
-              ))}
-            </div>
-            <div className="h-4 w-px bg-white/20" />
+            <Star className="w-4 h-4 fill-eco-gold text-eco-gold" />
             <div className="text-xs text-white/90 font-medium">
-              <span className="text-eco-gold font-bold text-sm">5.0</span> Rating · 100% Recommended
+              Trusted by local homes & businesses
             </div>
           </motion.div>
         </div>
@@ -358,7 +354,7 @@ export const Testimonials = () => {
         <div className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-white/10 pt-8 text-xs text-white/60">
           <p className="flex items-center gap-2">
             <ThumbsUp className="w-4 h-4 text-eco-gold" />
-            100% satisfaction guarantee on all Pembrokeshire cleans. Client references available upon request.
+            Dedicated to getting every Pembrokeshire clean right. Client references available upon request.
           </p>
           <a
             href="/contact"

@@ -1,13 +1,14 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import {
-  Sparkles, Bed, Car, Truck, Boxes, Hammer, AlertCircle, Home,
+  Sparkles, Bed, Boxes, Hammer, AlertCircle, Home,
   Bath, ChefHat, Sofa,
 } from "lucide-react";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
 import { QuestionContainer } from "./QuestionContainer";
 import { OptionCard } from "./OptionCard";
 import { CheckboxOption } from "./CheckboxOption";
@@ -22,20 +23,17 @@ import {
   ServiceType,
   CustomerService,
   PropertySize,
-  VehicleSize,
-  VehicleLevel,
   HolidayLetVariant,
   Condition,
   Access,
-  isPropertyService,
   getAddonsForService,
   SERVICE_LABELS,
   CUSTOMER_SERVICE_LABELS,
-  vehicleServiceType,
   holidayLetServiceType,
   DEEP_INTERIOR_ADDONS,
   DEEP_EXTERIOR_ADDONS,
 } from "@/lib/pricingLogic";
+import { WEB3FORMS_ACCESS_KEY } from "@/lib/constants";
 import logo from "@/assets/logo.jpeg";
 
 type FlowType = "entry" | "service" | "questionnaire" | "result" | "availability" | "confirmation";
@@ -44,16 +42,13 @@ interface State {
   flow: FlowType;
   step: number;
   customerService: CustomerService | null;
-  // Internal resolved type (set after variant chosen for vehicle/holiday-let)
+  // Internal resolved type (set after variant chosen for holiday-let)
   serviceType: ServiceType | null;
   // Property fields
   propertySize: PropertySize | null;
   bathrooms: number;
   kitchens: number;
   receptionRooms: number;
-  // Vehicle fields
-  vehicleSize: VehicleSize | null;
-  vehicleLevel: VehicleLevel | null;
   // Holiday Let
   holidayLetVariant: HolidayLetVariant | null;
   // Common
@@ -66,6 +61,7 @@ interface State {
   result: QuoteResult | null;
   preferredDate: Date | null;
   timeSlot: string | null;
+  photosSubmitted: number;
 }
 
 const initialState: State = {
@@ -77,8 +73,6 @@ const initialState: State = {
   bathrooms: 1,
   kitchens: 1,
   receptionRooms: 0,
-  vehicleSize: null,
-  vehicleLevel: null,
   holidayLetVariant: null,
   condition: null,
   access: "easy",
@@ -89,6 +83,7 @@ const initialState: State = {
   result: null,
   preferredDate: null,
   timeSlot: null,
+  photosSubmitted: 0,
 };
 
 const SERVICE_OPTIONS: { id: CustomerService; icon: typeof Home; description: string }[] = [
@@ -96,7 +91,6 @@ const SERVICE_OPTIONS: { id: CustomerService; icon: typeof Home; description: st
   { id: 'end-of-tenancy', icon: Boxes, description: 'Full move-out clean — landlord standard' },
   { id: 'holiday-let', icon: Home, description: 'Turnover or deep reset for short-term lets' },
   { id: 'post-construction', icon: Hammer, description: 'After-builders / TC handover clean' },
-  { id: 'vehicle', icon: Car, description: 'Exterior, interior or full detail' },
 ];
 
 // Condition copy varies by service
@@ -121,22 +115,18 @@ const CONDITION_COPY: Record<CustomerService, Record<Condition, string>> = {
     medium: 'Post-build clean',
     heavy: 'Heavy build clean',
   },
-  'vehicle': {
-    light: 'Recently cleaned',
-    medium: 'Used regularly',
-    heavy: 'Heavily soiled / stained',
-  },
 };
 
 export function PricingQuestionnaire() {
+  const { toast } = useToast();
   const [state, setState] = useState<State>(initialState);
   const [callbackOpen, setCallbackOpen] = useState(false);
+  const [isSubmittingPhotos, setIsSubmittingPhotos] = useState(false);
 
   const update = (u: Partial<State>) => setState((p) => ({ ...p, ...u }));
   const reset = () => setState(initialState);
 
   const cs = state.customerService;
-  const isVehicleFlow = cs === 'vehicle';
   const isHolidayLet = cs === 'holiday-let';
   const isPostConstruction = cs === 'post-construction';
   const skipCondition = isHolidayLet; // Holiday let has no condition step
@@ -144,19 +134,16 @@ export function PricingQuestionnaire() {
   // Total steps depend on the flow
   const totalSteps = useMemo(() => {
     if (!cs) return 5;
-    if (isVehicleFlow) return 5; // type, level, condition, add-ons, location
     if (isHolidayLet) return 4;  // size, variant, add-ons, logistics
     if (isPostConstruction) return 4; // size, build stage, add-ons, site
     return 5; // deep / EoT: size, condition, interior, exterior, logistics
-  }, [cs, isVehicleFlow, isHolidayLet, isPostConstruction]);
+  }, [cs, isHolidayLet, isPostConstruction]);
 
   // Live preview — best-effort
   const livePreview = useMemo<QuoteResult | null>(() => {
     if (!state.serviceType) return null;
     const conditionForCalc: Condition = state.condition ?? 'light';
-    const isProp = isPropertyService(state.serviceType);
-    if (isProp && !state.propertySize) return null;
-    if (!isProp && !state.vehicleSize) return null;
+    if (!state.propertySize) return null;
     try {
       const input: QuoteInput = {
         serviceType: state.serviceType,
@@ -164,7 +151,6 @@ export function PricingQuestionnaire() {
         bathrooms: state.bathrooms,
         kitchens: state.kitchens,
         receptionRooms: state.receptionRooms,
-        vehicleSize: state.vehicleSize ?? undefined,
         condition: conditionForCalc,
         access: state.access,
         wasteRemoval: state.wasteRemoval,
@@ -204,8 +190,7 @@ export function PricingQuestionnaire() {
     if (id === 'deep-clean') serviceType = 'domestic-deep';
     else if (id === 'end-of-tenancy') serviceType = 'end-of-tenancy';
     else if (id === 'post-construction') serviceType = 'post-construction';
-    else if (id === 'holiday-let') serviceType = 'domestic-regular'; // placeholder until variant chosen
-    else serviceType = 'vehicle-exterior'; // placeholder until level chosen
+    else serviceType = 'domestic-regular'; // holiday-let: placeholder until variant chosen
     update({
       customerService: id,
       serviceType,
@@ -213,14 +198,13 @@ export function PricingQuestionnaire() {
       step: 1,
       addOns: [],
       condition: null,
-      vehicleLevel: null,
       holidayLetVariant: null,
     });
   };
 
   // Availability handlers
   const startAvailability = () => update({ flow: "availability" });
-  const handleAvailabilitySubmit = (submission: AvailabilitySubmission) => {
+  const handleAvailabilitySubmit = async (submission: AvailabilitySubmission) => {
     const label = SERVICE_LABELS[submission.result.serviceType];
     const dateStr = format(submission.preferredDate, "EEEE, d MMMM yyyy");
     const lines = [
@@ -241,13 +225,52 @@ export function PricingQuestionnaire() {
         ? `Add-ons: ${submission.result.selectedExtras.join(', ')}`
         : null,
       submission.notes ? `\nNotes: ${submission.notes}` : null,
+      submission.photos.length
+        ? `\n${submission.photos.length} photo(s) attached — sent separately by email.`
+        : null,
     ].filter(Boolean).join('\n');
+
+    // wa.me links can't carry file attachments, so photos are sent via
+    // Web3Forms (same access key as the Contact form) as a real email
+    // attachment, while WhatsApp still opens immediately for a fast reply.
+    if (submission.photos.length > 0) {
+      setIsSubmittingPhotos(true);
+      try {
+        const payload = new FormData();
+        payload.append("access_key", WEB3FORMS_ACCESS_KEY);
+        payload.append("subject", `Availability request photos from ${submission.customerName} — ecocleancymru.com`);
+        payload.append("from_name", "ECOclean Cymru website — instant quote tool");
+        payload.append("name", submission.customerName);
+        payload.append("phone", submission.customerPhone);
+        if (submission.customerEmail) payload.append("email", submission.customerEmail);
+        payload.append("service", label);
+        payload.append("preferred_date", dateStr);
+        payload.append("message", lines);
+        submission.photos.forEach((file) => payload.append("attachment", file));
+
+        const response = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          body: payload,
+        });
+        const result = await response.json();
+        if (!result.success) throw new Error(result.message || "Submission failed");
+      } catch {
+        toast({
+          title: "Photos didn't send",
+          description: "Your availability request still went through — just mention the photos when you WhatsApp us.",
+          variant: "destructive",
+        });
+      } finally {
+        setIsSubmittingPhotos(false);
+      }
+    }
 
     window.open(`https://wa.me/447432670535?text=${encodeURIComponent(lines)}`, '_blank');
     update({
       flow: "confirmation",
       preferredDate: submission.preferredDate,
       timeSlot: submission.timeSlot ?? null,
+      photosSubmitted: submission.photos.length,
     });
   };
 
@@ -293,145 +316,6 @@ export function PricingQuestionnaire() {
 
   // ===== QUESTIONNAIRE =====
   if (state.flow === "questionnaire" && cs && state.serviceType) {
-    // ---------- VEHICLE FLOW ----------
-    if (isVehicleFlow) {
-      // Step 1: vehicle type
-      if (state.step === 1) {
-        return (
-          <QuestionContainer
-            currentStep={1}
-            totalSteps={totalSteps}
-            question="What type of vehicle?"
-            onBack={goBack}
-          >
-            {([
-              { id: 'small-car' as VehicleSize, label: 'Small car' },
-              { id: 'saloon' as VehicleSize, label: 'Saloon' },
-              { id: 'suv' as VehicleSize, label: 'SUV' },
-              { id: 'van' as VehicleSize, label: 'Van' },
-            ]).map((v) => (
-              <OptionCard
-                key={v.id}
-                icon={v.id === 'van' ? Truck : Car}
-                title={v.label}
-                selected={state.vehicleSize === v.id}
-                onClick={() => update({ vehicleSize: v.id, step: 2 })}
-              />
-            ))}
-          </QuestionContainer>
-        );
-      }
-      // Step 2: service level
-      if (state.step === 2) {
-        const opts: { id: VehicleLevel; title: string; description: string }[] = [
-          { id: 'exterior', title: 'Exterior Valet', description: 'Snow foam, pressure wash, hand wash, wheels, drying' },
-          { id: 'interior', title: 'Interior Valet', description: 'Vacuum, surface wipe down, dashboard clean' },
-          { id: 'full-detail', title: 'Full Detail', description: 'Full exterior valet + full interior valet' },
-        ];
-        return (
-          <QuestionContainer
-            currentStep={2}
-            totalSteps={totalSteps}
-            question="Choose your service level"
-            onBack={goBack}
-          >
-            {opts.map((o) => (
-              <OptionCard
-                key={o.id}
-                title={o.title}
-                description={o.description}
-                selected={state.vehicleLevel === o.id}
-                onClick={() => {
-                  update({
-                    vehicleLevel: o.id,
-                    serviceType: vehicleServiceType(o.id),
-                    addOns: [],
-                    step: 3,
-                  });
-                }}
-              />
-            ))}
-          </QuestionContainer>
-        );
-      }
-      // Step 3: condition
-      if (state.step === 3) {
-        const copy = CONDITION_COPY[cs];
-        return (
-          <QuestionContainer
-            currentStep={3}
-            totalSteps={totalSteps}
-            question="What condition is the vehicle in?"
-            onBack={goBack}
-          >
-            {(['light', 'medium', 'heavy'] as Condition[]).map((c) => (
-              <OptionCard
-                key={c}
-                icon={AlertCircle}
-                title={c[0].toUpperCase() + c.slice(1)}
-                description={copy[c]}
-                selected={state.condition === c}
-                onClick={() => update({ condition: c, step: 4 })}
-              />
-            ))}
-          </QuestionContainer>
-        );
-      }
-      // Step 4: add-ons
-      if (state.step === 4) {
-        const addons = getAddonsForService(state.serviceType);
-        return (
-          <QuestionContainer
-            currentStep={4}
-            totalSteps={totalSteps}
-            question="Any add-ons?"
-            helperText="Optional extras — select any that apply."
-            onBack={goBack}
-          >
-            {addons.map((a) => (
-              <CheckboxOption
-                key={a.id}
-                label={a.label}
-                checked={state.addOns.includes(a.id)}
-                onChange={() => toggleAddon(a.id)}
-              />
-            ))}
-            <PricePreview livePreview={livePreview} />
-            <div className="pt-4">
-              <Button size="lg" className="w-full" onClick={() => update({ step: 5 })}>Continue</Button>
-            </div>
-          </QuestionContainer>
-        );
-      }
-      // Step 5: location
-      if (state.step === 5) {
-        return (
-          <QuestionContainer
-            currentStep={5}
-            totalSteps={totalSteps}
-            question="Where are you based?"
-            helperText="Postcode helps us plan the visit."
-            onBack={goBack}
-          >
-            <div>
-              <Label htmlFor="postcode">Postcode</Label>
-              <Input
-                id="postcode"
-                type="text"
-                value={state.postcode}
-                onChange={(e) => update({ postcode: e.target.value.toUpperCase() })}
-                placeholder="e.g. SA61 1AB"
-              />
-            </div>
-            <PricePreview livePreview={livePreview} />
-            <div className="pt-4">
-              <Button size="lg" className="w-full" onClick={finalise}>See my quote</Button>
-            </div>
-          </QuestionContainer>
-        );
-      }
-    }
-
     // ---------- HOLIDAY LET FLOW ----------
     if (isHolidayLet) {
       // Step 1: property size
@@ -730,6 +614,7 @@ export function PricingQuestionnaire() {
         result={state.result}
         onBack={() => update({ flow: "result" })}
         onSubmit={handleAvailabilitySubmit}
+        isSubmitting={isSubmittingPhotos}
       />
     );
   }
@@ -741,6 +626,7 @@ export function PricingQuestionnaire() {
         result={state.result}
         preferredDate={state.preferredDate}
         timeSlot={state.timeSlot ?? undefined}
+        photosSubmitted={state.photosSubmitted}
         onStartOver={reset}
       />
     );

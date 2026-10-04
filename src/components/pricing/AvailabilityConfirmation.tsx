@@ -8,6 +8,7 @@ interface AvailabilityConfirmationProps {
   result: QuoteResult;
   preferredDate: Date;
   timeSlot?: string;
+  photosSubmitted?: number;
   onStartOver: () => void;
 }
 
@@ -21,10 +22,12 @@ export function AvailabilityConfirmation({
   result,
   preferredDate,
   timeSlot,
+  photosSubmitted = 0,
   onStartOver,
 }: AvailabilityConfirmationProps) {
   const isDomestic = isDomesticService(result.serviceType);
   const showDepositNote = isDomestic && result.finalPrice >= 180;
+  const hasPhotos = photosSubmitted > 0;
 
   return (
     <motion.div
@@ -95,7 +98,11 @@ export function AvailabilityConfirmation({
           What happens next?
         </h3>
         <ul className="text-sm text-muted-foreground space-y-2">
-          <li>• We'll check our schedule and contact you to confirm</li>
+          {hasPhotos ? (
+            <li>• We've received your {photosSubmitted} photo{photosSubmitted > 1 ? "s" : ""} — if they give us enough to go on, we may be able to confirm your price without a separate consultation</li>
+          ) : (
+            <li>• We'll check our schedule and contact you to confirm, which may include a quick consultation to confirm the scope</li>
+          )}
           <li>• Final timing will be agreed with you directly</li>
           <li>• You can reach us on WhatsApp if you have questions</li>
         </ul>

@@ -4,8 +4,8 @@ import { Phone, Shield, Leaf, BadgeCheck, Users, MapPin, ChevronRight } from "lu
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
 import { whatsappLink } from "@/lib/constants";
-import teamImg from "@/assets/about-team.jpg";
 import testimonialsBg from "@/assets/testimonials-bg.jpg";
+import bathroomAfter from "@/assets/real-photos/bathroom-after.jpg";
 
 const values = [
   {
@@ -56,10 +56,10 @@ export default function About() {
         </div>
       </section>
 
-      {/* Team photo band */}
+      {/* Photo band */}
       <section className="relative">
         <div className="aspect-[21/9] md:aspect-[21/7] overflow-hidden">
-          <img src={teamImg} alt="ECOclean Cymru team" className="w-full h-full object-cover" />
+          <img src={bathroomAfter} alt="A sparkling clean bathroom finished by ECOclean Cymru" className="w-full h-full object-cover" />
         </div>
       </section>
 
@@ -77,7 +77,7 @@ export default function About() {
               <div className="w-12 h-0.5 bg-eco-gold mb-6" />
               <div className="space-y-4 text-muted-foreground leading-relaxed">
                 <p>
-                  ECOclean Cymru LTD is a professional cleaning company based in Pembrokeshire, Wales.
+                  ECOclean Cymru Ltd is a professional cleaning company based in Pembrokeshire, Wales.
                   We provide reliable, high-quality cleaning services to homes and businesses across the county.
                 </p>
                 <p>
