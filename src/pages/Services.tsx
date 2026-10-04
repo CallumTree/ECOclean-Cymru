@@ -307,16 +307,6 @@ export default function Services() {
                             </ul>
                           </div>
                         </div>
-
-                        {/* Single CTA: Get a Quote */}
-                        <div>
-                          <Button variant="pill" size="sm" asChild>
-                            <Link to="/contact">
-                              Get a Quote
-                              <ChevronRight className="w-4 h-4" />
-                            </Link>
-                          </Button>
-                        </div>
                       </AccordionContent>
                     </AccordionItem>
                   </motion.div>
