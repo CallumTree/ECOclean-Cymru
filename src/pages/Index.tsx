@@ -6,9 +6,11 @@ import { Layout } from "@/components/Layout";
 import { whatsappLink } from "@/lib/constants";
 import logo from "@/assets/logo-mark.png";
 import heroImg from "@/assets/hero-cleaning.jpg";
-import servicePostConstruction from "@/assets/service-postconstruction.jpg";
 import serviceDomestic from "@/assets/real-photos/bathroom-after.jpg";
 import serviceCommercial from "@/assets/real-photos/pub-bar.jpg";
+// Photo credit: MChe Lee, via Unsplash — stacked modular welfare cabins,
+// directly representative of the site welfare units this pillar covers.
+const servicePostConstruction = "https://images.unsplash.com/photo-1789784145518-68a9deec9d61?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080";
 import { beforeAfterPairs } from "@/lib/beforeAfterGallery";
 import Testimonials from "@/components/Testimonials";
 
