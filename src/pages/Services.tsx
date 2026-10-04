@@ -27,6 +27,45 @@ interface ServicePillar {
   services: ServiceItem[];
 }
 
+// Licensed Unsplash photos for the Construction & Welfare pillar
+const constructionGalleryPhotos = [
+  {
+    src: "https://images.unsplash.com/photo-1529220502050-f15e570c634e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600",
+    alt: "Cleaning in progress caution signage",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1634586648651-f1fb9ec10d90?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600",
+    alt: "Renovation site mid-clean, debris and tools on the floor",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1740325927180-6e57faaae5db?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600",
+    alt: "Eco-friendly cleaning products ready for use",
+  },
+];
+
+const extrasGroups = [
+  {
+    title: "Kitchen Extras",
+    items: ["Inside kitchen cupboards", "Double oven or range cooker clean"],
+  },
+  {
+    title: "Interior Cleaning Extras",
+    items: ["Interior window cleaning", "Skirting board deep clean", "Tile and grout cleaning", "Limescale removal"],
+  },
+  {
+    title: "Upholstery Extras",
+    items: ["Sofa or upholstery cleaning", "Mattress sanitation"],
+  },
+  {
+    title: "Holiday Let Specific Extras",
+    items: ["Bed linen change (per bed)", "Towel replacement", "Linen laundry service", "Welcome pack setup", "Toiletries restocking", "Bin management between guests"],
+  },
+  {
+    title: "Exterior Cleaning Extras",
+    items: ["Patio pressure washing", "Driveway pressure washing", "Render soft wash", "Roof moss removal", "Gutter clearing"],
+  },
+];
+
 const servicePillars: ServicePillar[] = [
   {
     id: "domestic-residential",
@@ -281,102 +320,80 @@ export default function Services() {
                           {service.description}
                         </p>
 
-                        <div className="grid sm:grid-cols-2 gap-6 mb-6">
-                          <div className="bg-background p-4 rounded-md border border-border/60">
-                            <h5 className="font-heading font-semibold text-sm text-foreground mb-3">
-                              What's Included
-                            </h5>
-                            <ul className="list-disc list-inside space-y-1.5 text-xs md:text-sm text-muted-foreground">
-                              {service.included.map((item) => (
-                                <li key={item} className="leading-relaxed">
-                                  <span>{item}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                          <div className="bg-background p-4 rounded-md border border-border/60">
-                            <h5 className="font-heading font-semibold text-sm text-foreground mb-3">
-                              Not Included / Special Add-Ons
-                            </h5>
-                            <ul className="list-disc list-inside space-y-1.5 text-xs md:text-sm text-muted-foreground">
-                              {service.excluded.map((item) => (
-                                <li key={item} className="leading-relaxed">
-                                  <span>{item}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
+                        <div className="bg-background p-4 rounded-md border border-border/60 mb-4">
+                          <h5 className="font-heading font-semibold text-sm text-foreground mb-3">
+                            What's Included
+                          </h5>
+                          <ul className="list-disc list-inside space-y-1.5 text-xs md:text-sm text-muted-foreground">
+                            {service.included.map((item) => (
+                              <li key={item} className="leading-relaxed">
+                                <span>{item}</span>
+                              </li>
+                            ))}
+                          </ul>
                         </div>
+
+                        <p className="text-xs text-muted-foreground/80 leading-relaxed">
+                          <span className="font-medium text-muted-foreground">Not included:</span>{" "}
+                          {service.excluded.join(" • ")} — ask about add-ons.
+                        </p>
                       </AccordionContent>
                     </AccordionItem>
                   </motion.div>
                 ))}
+
+                {/* Optional Extras - folded in here since every category
+                    below is domestic-flavoured (kitchen/interior/upholstery/
+                    holiday let/exterior); doesn't fit Commercial or
+                    Construction & Welfare, so no standalone page section */}
+                {pillar.id === "domestic-residential" && (
+                  <AccordionItem
+                    value="optional-extras"
+                    className="bg-card border border-border px-4 sm:px-6 rounded-lg overflow-hidden shadow-sm hover:border-border transition-colors"
+                  >
+                    <AccordionTrigger className="hover:no-underline py-5 text-left">
+                      <div className="flex-1 pr-4">
+                        <h4 className="font-heading font-semibold text-lg md:text-xl text-foreground">
+                          Optional Extras & Add-Ons
+                        </h4>
+                        <p className="text-xs md:text-sm text-muted-foreground mt-1 font-normal">
+                          Add any of these to your clean — select extras when building your quote.
+                        </p>
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent className="pt-2 pb-6 border-t border-border/60">
+                      <div className="grid sm:grid-cols-2 gap-x-8 gap-y-5 mt-4">
+                        {extrasGroups.map((group) => (
+                          <div key={group.title}>
+                            <h5 className="font-heading font-semibold text-sm text-foreground mb-1.5">
+                              {group.title}
+                            </h5>
+                            <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+                              {group.items.join(" • ")}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                )}
               </Accordion>
+
+              {pillar.id === "construction-welfare" && (
+                <div className="grid grid-cols-3 gap-3 pt-2">
+                  {constructionGalleryPhotos.map((photo) => (
+                    <img
+                      key={photo.src}
+                      src={photo.src}
+                      alt={photo.alt}
+                      loading="lazy"
+                      className="w-full h-24 sm:h-32 object-cover rounded-md border border-border/60"
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           ))}
-        </div>
-      </section>
-
-      {/* Extras Section */}
-      <section className="section-padding bg-muted/30">
-        <div className="container-wide mx-auto">
-          <motion.div
-            className="text-center mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="font-heading text-3xl md:text-4xl font-medium text-foreground mb-4">
-              Optional Extras
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Add any of these services to your clean for a tailored result. Select extras when building your quote.
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              {
-                title: "Kitchen Extras",
-                items: ["Inside kitchen cupboards", "Double oven or range cooker clean"],
-              },
-              {
-                title: "Interior Cleaning Extras",
-                items: ["Interior window cleaning", "Skirting board deep clean", "Tile and grout cleaning", "Limescale removal"],
-              },
-              {
-                title: "Upholstery Extras",
-                items: ["Sofa or upholstery cleaning", "Mattress sanitation"],
-              },
-              {
-                title: "Holiday Let Specific Extras",
-                items: ["Bed linen change (per bed)", "Towel replacement", "Linen laundry service", "Welcome pack setup", "Toiletries restocking", "Bin management between guests"],
-              },
-              {
-                title: "Exterior Cleaning Extras",
-                items: ["Patio pressure washing", "Driveway pressure washing", "Render soft wash", "Roof moss removal", "Gutter clearing"],
-              },
-            ].map((group, index) => (
-              <motion.div
-                key={group.title}
-                className="bg-card p-6 border border-border"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.05 }}
-              >
-                <h3 className="font-heading font-semibold text-foreground">{group.title}</h3>
-                <div className="w-8 h-0.5 bg-eco-gold mt-2 mb-4" />
-                <ul className="list-disc list-inside space-y-2 text-sm text-muted-foreground">
-                  {group.items.map((item) => (
-                    <li key={item} className="leading-relaxed">
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            ))}
-          </div>
         </div>
       </section>
 
