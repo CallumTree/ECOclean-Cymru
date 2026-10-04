@@ -20,8 +20,8 @@ const values = [
   },
   {
     icon: BadgeCheck,
-    title: "CSCS Qualified",
-    description: "Our team holds CSCS cards for safe work on construction sites and commercial environments.",
+    title: "DBS Checked",
+    description: "Our team is DBS checked, giving you peace of mind when we're working in and around your home or business.",
   },
   {
     icon: Users,
@@ -87,8 +87,9 @@ export default function About() {
                 </p>
                 <p>
                   From regular domestic cleaning to specialist post-construction work, we bring the same
-                  attention to detail and professionalism to every job. Our team holds CSCS cards and
-                  is experienced in working across various environments, from family homes to building sites.
+                  attention to detail and professionalism to every job. Our team is DBS checked and
+                  is experienced in working across various environments, from family homes to building
+                  sites, and we're currently working towards CSCS accreditation.
                 </p>
               </div>
             </div>

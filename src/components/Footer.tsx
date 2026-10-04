@@ -19,7 +19,7 @@ export function Footer() {
       <div className="bg-primary/95 border-b border-white/10">
         <div className="container-wide mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <p className="text-center text-xs md:text-sm uppercase tracking-widest text-white/90 font-medium">
-            Fully Insured &nbsp;&bull;&nbsp; Eco-Friendly Cleaning &nbsp;&bull;&nbsp; CSCS Card-Holding Crew &nbsp;&bull;&nbsp; Pembrokeshire Local
+            Fully Insured &nbsp;&bull;&nbsp; Eco-Friendly Cleaning &nbsp;&bull;&nbsp; DBS Checked &nbsp;&bull;&nbsp; Working Towards CSCS &nbsp;&bull;&nbsp; Pembrokeshire Local
           </p>
         </div>
       </div>
@@ -107,7 +107,8 @@ export function Footer() {
             <ul className="space-y-2.5 text-white/70 text-sm">
               <li>Eco-Friendly Products</li>
               <li>Fully Insured Cleaners</li>
-              <li>CSCS Card-Holding Crew</li>
+              <li>DBS Checked Cleaners</li>
+              <li>Working Towards CSCS Accreditation</li>
               <li>Transparent Free Quotes</li>
               <li>Pembrokeshire Local Team</li>
             </ul>

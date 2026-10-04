@@ -62,7 +62,7 @@ const testimonialsData: TestimonialItem[] = [
     serviceCategory: "commercial",
     serviceTag: "Post-Build Builder Clean",
     rating: 5,
-    quote: "Great service for post-build cleans. They understand construction environments, wear appropriate CSCS PPE, and leave newly renovated sites spotless.",
+    quote: "Great service for post-build cleans. They understand construction environments, wear appropriate site PPE, and leave newly renovated sites spotless.",
     date: "Recent Client",
     verified: true,
   },

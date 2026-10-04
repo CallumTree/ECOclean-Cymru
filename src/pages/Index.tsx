@@ -6,11 +6,16 @@ import { Layout } from "@/components/Layout";
 import { whatsappLink } from "@/lib/constants";
 import logo from "@/assets/logo-mark.png";
 import heroImg from "@/assets/hero-cleaning.jpg";
-import serviceDomestic from "@/assets/service-domestic.jpg";
-import serviceCommercial from "@/assets/service-commercial.jpg";
 import servicePostConstruction from "@/assets/service-postconstruction.jpg";
 import { beforeAfterPairs } from "@/lib/beforeAfterGallery";
 import Testimonials from "@/components/Testimonials";
+
+// Replaced AI-generated placeholders with licensed Unsplash photos that
+// actually depict cleaning (prior images showed a family lounging and a
+// generic corporate office, neither showing any cleaning taking place).
+// Photo credits: Vitaly Gariev (domestic) and Towfiqu Barbhuiya (commercial), via Unsplash.
+const serviceDomestic = "https://images.unsplash.com/photo-1758273705627-937374bfa978?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080";
+const serviceCommercial = "https://images.unsplash.com/photo-1627905646269-7f034dcc5738?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080";
 
 const servicePillars = [
   {
@@ -34,7 +39,7 @@ const servicePillars = [
     title: "Construction & Welfare",
     image: servicePostConstruction,
     description:
-      "CSCS card-holding cleaning operatives dedicated to scheduled site cabin, canteen, and welfare facility hygiene maintenance, plus multi-stage post-construction builder cleans and sparkle finishes ready for client handover.",
+      "Dedicated cleaning operatives for scheduled site cabin, canteen, and welfare facility hygiene maintenance, plus multi-stage post-construction builder cleans and sparkle finishes ready for client handover. DBS checked, working towards CSCS accreditation.",
     cta: "See Construction & Welfare",
   },
 ];
@@ -167,7 +172,7 @@ const Index = () => {
       <section className="bg-eco-dark py-5 border-y border-white/5">
         <div className="container-wide mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-center text-xs md:text-sm uppercase tracking-widest text-white/70 font-medium">
-            Fully Insured &nbsp;&bull;&nbsp; Eco-Friendly Products &nbsp;&bull;&nbsp; Reliable Local Cleaners &nbsp;&bull;&nbsp; CSCS Card Holders &nbsp;&bull;&nbsp; DBS Checks in Progress
+            Fully Insured &nbsp;&bull;&nbsp; Eco-Friendly Products &nbsp;&bull;&nbsp; Reliable Local Cleaners &nbsp;&bull;&nbsp; DBS Checked &nbsp;&bull;&nbsp; Working Towards CSCS
           </p>
         </div>
       </section>
