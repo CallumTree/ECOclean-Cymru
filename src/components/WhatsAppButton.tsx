@@ -1,10 +1,17 @@
 import { Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { whatsappLink } from "@/lib/constants";
+import { useHideNearFooter } from "@/hooks/useHideNearFooter";
 
 export function WhatsAppButton() {
+  const visible = useHideNearFooter();
+
   return (
-    <div className="fixed bottom-6 right-6 z-50 md:hidden">
+    <div
+      className={`fixed bottom-6 right-6 z-50 md:hidden transition-opacity duration-300 ${
+        visible ? "opacity-100" : "opacity-0 pointer-events-none"
+      }`}
+    >
       <Button
         variant="whatsapp"
         size="lg"
