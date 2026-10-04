@@ -8,7 +8,7 @@ import logo from "@/assets/logo-mark.png";
 import heroImg from "@/assets/hero-cleaning.jpg";
 import servicePostConstruction from "@/assets/service-postconstruction.jpg";
 import serviceDomestic from "@/assets/real-photos/bathroom-after.jpg";
-import serviceCommercial from "@/assets/real-photos/pub-corridor-after.jpg";
+import serviceCommercial from "@/assets/real-photos/pub-bar.jpg";
 import { beforeAfterPairs } from "@/lib/beforeAfterGallery";
 import Testimonials from "@/components/Testimonials";
 
