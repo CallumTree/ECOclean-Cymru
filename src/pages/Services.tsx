@@ -185,7 +185,7 @@ const servicePillars: ServicePillar[] = [
           "Internal glass window polishing, frame cleaning, sills, and skirting board deep wipes",
           "Sanitizing built-in appliances, kitchen units, sanitaryware, and chrome fittings",
           "Hard floor scrub, wash, and carpet protective vacuuming",
-          "Mould assessment and damp diagnosis on request before final decorating",
+          "Surface mould & mildew cleans on request before final decorating",
         ],
         excluded: [
           "Waste skip loading or heavy rubbish removal",
