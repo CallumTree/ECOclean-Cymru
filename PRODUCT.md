@@ -81,16 +81,17 @@ domestic cleaner or a franchise cannot honestly claim.
 
 - **Verified claims:** public liability insurance is in place, and every
   team member is DBS checked.
-- **CSCS: not held.** Do not say "CSCS qualified" or "CSCS card holders".
-  The meta and OG descriptions in `index.html` currently do, and need
-  correcting. Use "working towards" wording only if the owner confirms it.
+- **CSCS: not held.** Don't mention CSCS anywhere on the site, including
+  "working towards" wording, until the cards are actually held. The owner
+  plans to get them.
 - **Real photos:** before and after shots of an oven and a toilet, a
   finished bathroom, and a pub bar (`src/assets/real-photos/`, paired in
   `src/lib/beforeAfterGallery.ts`). Other service images are stock and are
   credited in code comments.
 - **Missing:** no customer reviews, testimonials, case studies, client
   logos or accreditation badges yet. The home page uses "Why choose us"
-  instead of reviews on purpose. Never invent any of these.
+  instead of reviews on purpose, and the old placeholder testimonials
+  component has been deleted. Never invent any of these.
 
 ## Product Principles
 

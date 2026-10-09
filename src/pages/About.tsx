@@ -89,7 +89,7 @@ export default function About() {
                   From regular domestic cleaning to specialist post-construction work, we bring the same
                   attention to detail and professionalism to every job. Our team is DBS checked and
                   is experienced in working across various environments, from family homes to building
-                  sites, and we're currently working towards CSCS accreditation.
+                  sites.
                 </p>
               </div>
             </div>

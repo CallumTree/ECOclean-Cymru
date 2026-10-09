@@ -192,12 +192,12 @@ const servicePillars: ServicePillar[] = [
   {
     id: "construction-welfare",
     pillarTitle: "Construction & Welfare",
-    pillarDescription: "DBS-checked cleaning teams, working towards CSCS accreditation, dedicated to site welfare units, canteens, drying rooms, and phased post-build handover cleans.",
+    pillarDescription: "DBS-checked cleaning teams dedicated to site welfare units, canteens, drying rooms, and phased post-build handover cleans.",
     services: [
       {
         title: "Construction Site Welfare Facility Cleans",
         summary: "Scheduled hygiene maintenance for site cabins, canteens, drying rooms, and offices by DBS-checked crew.",
-        description: "Scheduled and deep hygiene maintenance for site cabins, canteens, drying rooms, shower blocks, and site management offices across Pembrokeshire. DBS-checked operatives, currently working towards CSCS accreditation, adhering strictly to site safety protocols, PPE requirements, RAMS, and HSE welfare hygiene standards on weekly, bi-weekly, or daily shift rotations.",
+        description: "Scheduled and deep hygiene maintenance for site cabins, canteens, drying rooms, shower blocks, and site management offices across Pembrokeshire. DBS-checked operatives adhering strictly to site safety protocols, PPE requirements, RAMS, and HSE welfare hygiene standards on weekly, bi-weekly, or daily shift rotations.",
         included: [
           "Scheduled weekly, bi-weekly, or daily shift-tailored cleaning rotations",
           "Site canteen & mess room tables, benches, counters, and microwave/fridge sanitization",
@@ -205,7 +205,7 @@ const servicePillars: ServicePillar[] = [
           "Welfare toilets, shower blocks, and washroom sanitization & paper product restocking",
           "High-touch point disinfectant wipes (door handles, light switches, keypads, handrails)",
           "Site manager offices, desks, computer monitors & filing equipment dust & wipe",
-          "DBS-checked crew wearing mandatory site PPE (hard hat, boots, hi-vis, gloves), working towards CSCS accreditation",
+          "DBS-checked crew wearing mandatory site PPE (hard hat, boots, hi-vis, gloves)",
           "Custom site safety briefing & RAMS compliance provided prior to starting work",
         ],
         excluded: [

@@ -60,7 +60,7 @@ const servicePillars = [
     title: "Construction & Welfare",
     image: servicePostConstruction,
     description:
-      "Dedicated cleaning operatives for scheduled site cabin, canteen, and welfare facility hygiene maintenance, plus multi-stage post-construction builder cleans and sparkle finishes ready for client handover. DBS checked, working towards CSCS accreditation.",
+      "Dedicated cleaning operatives for scheduled site cabin, canteen, and welfare facility hygiene maintenance, plus multi-stage post-construction builder cleans and sparkle finishes ready for client handover. DBS checked and fully insured.",
     cta: "See Construction & Welfare",
   },
 ];
@@ -193,7 +193,7 @@ const Index = () => {
       <section className="bg-eco-dark py-5 border-y border-white/5">
         <div className="container-wide mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-center text-xs md:text-sm uppercase tracking-widest text-white/70 font-medium">
-            Eco-Friendly Products &nbsp;&bull;&nbsp; Reliable Local Cleaners &nbsp;&bull;&nbsp; DBS Checked &nbsp;&bull;&nbsp; Working Towards CSCS
+            Eco-Friendly Products &nbsp;&bull;&nbsp; Reliable Local Cleaners &nbsp;&bull;&nbsp; DBS Checked &nbsp;&bull;&nbsp; Fully Insured
           </p>
         </div>
       </section>
