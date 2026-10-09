@@ -202,7 +202,7 @@ const Index = () => {
       <section className="section-padding bg-background">
         <div className="container-wide mx-auto grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
           <motion.div className="lg:col-span-5 lg:col-start-1" {...fadeInUp}>
-            <span className="text-eco-gold text-xs tracking-[0.3em] uppercase">Our approach</span>
+            <span className="inline-flex items-center gap-2 text-muted-foreground text-xs tracking-[0.3em] uppercase"><span className="w-8 h-px bg-eco-gold" aria-hidden="true" />Our approach</span>
             <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-light text-foreground mt-4 leading-[1.05]">
               Cleaning that actually feels <em className="italic text-primary">clean.</em>
             </h2>
@@ -226,7 +226,7 @@ const Index = () => {
       <section className="section-padding bg-muted/40">
         <div className="container-wide mx-auto">
           <motion.div className="max-w-3xl mb-14" {...fadeInUp}>
-            <span className="text-eco-gold text-xs tracking-[0.3em] uppercase">Targeted Cleaning Solutions</span>
+            <span className="inline-flex items-center gap-2 text-muted-foreground text-xs tracking-[0.3em] uppercase"><span className="w-8 h-px bg-eco-gold" aria-hidden="true" />Targeted Cleaning Solutions</span>
             <h2 className="font-display text-4xl md:text-5xl font-light text-foreground mt-4 leading-[1.05]">
               Professional cleaning tailored across <em className="italic text-primary">3 core pillars.</em>
             </h2>
@@ -276,7 +276,7 @@ const Index = () => {
           </div>
 
           <div className="mt-14 flex justify-center">
-            <Button variant="pillOutline" size="lg" asChild>
+            <Button variant="pillOutline" size="lg" className="h-auto min-h-12 py-3 whitespace-normal text-center" asChild>
               <Link to="/services">
                 View All Inclusions & Specifications
                 <ChevronRight className="w-4 h-4" />
@@ -311,11 +311,11 @@ const Index = () => {
                 <div className="grid grid-cols-2 gap-1 aspect-[16/9]">
                   <div className="relative overflow-hidden">
                     <img src={pair.before} alt={`${pair.label} before`} loading="lazy" className="w-full h-full object-cover grayscale-[30%]" />
-                    <span className="absolute top-3 left-3 bg-black/60 text-white text-[10px] tracking-widest uppercase px-2 py-1">Before</span>
+                    <span className="absolute top-3 left-3 bg-black/60 text-white text-xs tracking-widest uppercase px-2 py-1">Before</span>
                   </div>
                   <div className="relative overflow-hidden">
                     <img src={pair.after} alt={`${pair.label} after`} loading="lazy" className="w-full h-full object-cover" />
-                    <span className="absolute top-3 left-3 bg-eco-gold text-eco-charcoal text-[10px] tracking-widest uppercase px-2 py-1 font-semibold">After</span>
+                    <span className="absolute top-3 left-3 bg-eco-gold text-eco-charcoal text-xs tracking-widest uppercase px-2 py-1 font-semibold">After</span>
                   </div>
                 </div>
                 <p className="mt-4 font-display text-xl text-white/90">{pair.label}</p>
@@ -386,7 +386,7 @@ const Index = () => {
       <section className="section-padding bg-background">
         <div className="container-wide mx-auto">
           <motion.div className="text-center mb-16" {...fadeInUp}>
-            <span className="text-eco-gold text-xs tracking-[0.3em] uppercase">Simple, from day one</span>
+            <span className="inline-flex items-center gap-2 text-muted-foreground text-xs tracking-[0.3em] uppercase"><span className="w-8 h-px bg-eco-gold" aria-hidden="true" />Simple, from day one</span>
             <h2 className="font-display text-4xl md:text-5xl font-light text-foreground mt-4 leading-[1.05]">
               How it works.
             </h2>

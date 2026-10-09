@@ -96,7 +96,7 @@ components:
     textColor: "{colors.linen-white}"
   button-whatsapp:
     backgroundColor: "{colors.whatsapp-green}"
-    textColor: "{colors.linen-white}"
+    textColor: "{colors.charcoal-moss}"
     typography: "{typography.label}"
     rounded: "{rounded.full}"
     height: "48px"
@@ -316,8 +316,9 @@ is filled.
 - **Outline (pill outline):** a 2px Preseli Green stroke and green label on
   a transparent background, filling green with white text on hover. Used
   for the header's "Get a Quote".
-- **WhatsApp:** WhatsApp brand green (#25D366) with a phone icon. This is
-  the only sanctioned off-palette colour.
+- **WhatsApp:** WhatsApp brand green (#25D366) with a phone icon and a
+  Charcoal Moss label (about 10:1 contrast). This is the only sanctioned
+  off-palette colour.
 - **Gold:** a Harvest Gold fill with Ink Moss text, for the occasional
   secondary emphasis on dark bands.
 - **Focus:** a 2px Preseli Green ring with a 2px offset on every variant.
@@ -382,8 +383,7 @@ white, separated by bullets. Plain text only, with no icons or badges.
 - **Don't** use purple or blue gradients, glassmorphism or neon glows.
 - **Don't** set Harvest Gold body text on light surfaces (2.2:1 fails
   WCAG).
-- **Don't** add new white-on-#25D366 text. The current WhatsApp button
-  label is only 2.0:1, a known gap. Fix it with Ink Moss label text or
-  WhatsApp's darker teal (#075E54) rather than copying the pattern.
+- **Don't** put white text on WhatsApp green (#25D366). It's only 2.0:1,
+  so the label is always Charcoal Moss.
 - **Don't** use bold or black Fraunces, or bounce, elastic or scale-pop
   motion.

@@ -49,7 +49,7 @@ export function Header() {
               key={item.name}
               to={item.href}
               className={cn(
-                "text-xs font-semibold uppercase tracking-widest transition-colors hover:text-primary pl-6 first:pl-0",
+                "text-xs font-semibold uppercase tracking-widest transition-colors hover:text-primary px-6 first:pl-0 last:pr-0",
                 index > 0 && "border-l border-border",
                 location.pathname === item.href
                   ? "text-primary"
@@ -77,7 +77,10 @@ export function Header() {
         {/* Mobile menu button */}
         <button
           type="button"
-          className="lg:hidden p-2 text-foreground"
+          className="lg:hidden p-2 -mr-2 text-foreground"
+          aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileMenuOpen}
+          aria-controls="mobile-menu"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -86,7 +89,7 @@ export function Header() {
 
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-border bg-background">
+        <div id="mobile-menu" className="lg:hidden border-t border-border bg-background">
           <div className="container-wide mx-auto px-4 py-4 space-y-1">
             {navigation.map((item) => (
               <Link

@@ -112,6 +112,11 @@
     @apply bg-background text-foreground font-body antialiased;
   }
 
+  ::selection {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading font-normal;
   }
@@ -184,6 +189,18 @@
 
   .scroll-banner {
     animation: scroll 30s linear infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    .scroll-banner,
+    .animate-fade-up,
+    .animate-fade-in {
+      animation: none;
+    }
   }
 
   @keyframes scroll {
