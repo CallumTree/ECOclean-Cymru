@@ -1,0 +1,471 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-09T16:29:26+00:00",
+  "title": "Design System: ECOclean Cymru",
+  "extensions": {
+    "colorMeta": {
+      "preseli-green": {
+        "role": "primary",
+        "displayName": "Preseli Green",
+        "canonical": "oklch(34.6% 0.056 163.5)",
+        "hex": "#194331",
+        "tonalRamp": [
+          "#001205",
+          "#002c1c",
+          "#204937",
+          "#3f6855",
+          "#5e8874",
+          "#7faa95",
+          "#a4d0ba",
+          "#cdfbe4"
+        ]
+      },
+      "preseli-green-light": {
+        "role": "primary",
+        "displayName": "Preseli Green Light",
+        "canonical": "oklch(50.1% 0.083 160.9)",
+        "hex": "#317254",
+        "tonalRamp": [
+          "#001401",
+          "#002f16",
+          "#004d31",
+          "#2a6c4e",
+          "#4c8d6d",
+          "#6eaf8d",
+          "#93d5b3",
+          "#bdffdc"
+        ]
+      },
+      "preseli-deep": {
+        "role": "primary",
+        "displayName": "Preseli Deep",
+        "canonical": "oklch(28.3% 0.065 159.4)",
+        "hex": "#00331e",
+        "tonalRamp": [
+          "#001203",
+          "#002d18",
+          "#1c4a33",
+          "#3b6950",
+          "#5b8970",
+          "#7bab90",
+          "#a1d2b5",
+          "#cafddf"
+        ]
+      },
+      "harvest-gold": {
+        "role": "secondary",
+        "displayName": "Harvest Gold",
+        "canonical": "oklch(75.2% 0.089 87.1)",
+        "hex": "#c7ab6b",
+        "tonalRamp": [
+          "#1a0500",
+          "#361f00",
+          "#543b00",
+          "#735a15",
+          "#947a3a",
+          "#b69b5b",
+          "#ddc180",
+          "#ffeba9"
+        ]
+      },
+      "harvest-gold-deep": {
+        "role": "secondary",
+        "displayName": "Harvest Gold Deep",
+        "canonical": "oklch(70.1% 0.116 85.6)",
+        "hex": "#bf9940",
+        "tonalRamp": [
+          "#1f0100",
+          "#3c1b00",
+          "#5b3800",
+          "#7b5700",
+          "#9c7712",
+          "#bf993f",
+          "#e6bf67",
+          "#ffe991"
+        ]
+      },
+      "harvest-straw": {
+        "role": "secondary",
+        "displayName": "Harvest Straw",
+        "canonical": "oklch(80.9% 0.061 87.5)",
+        "hex": "#d1bf94",
+        "tonalRamp": [
+          "#160800",
+          "#302100",
+          "#4d3e15",
+          "#6c5c34",
+          "#8d7b53",
+          "#ae9d73",
+          "#d5c297",
+          "#ffedc1"
+        ]
+      },
+      "charcoal-moss": {
+        "role": "neutral",
+        "displayName": "Charcoal Moss",
+        "canonical": "oklch(20.2% 0.014 167.5)",
+        "hex": "#101815",
+        "tonalRamp": [
+          "#060d0a",
+          "#1e2623",
+          "#39423e",
+          "#56605c",
+          "#76807b",
+          "#97a19d",
+          "#bcc7c2",
+          "#e6f2ec"
+        ]
+      },
+      "ink-moss": {
+        "role": "neutral",
+        "displayName": "Ink Moss",
+        "canonical": "oklch(22.9% 0.021 166.8)",
+        "hex": "#13201b",
+        "tonalRamp": [
+          "#040e09",
+          "#1a2722",
+          "#36433d",
+          "#53625b",
+          "#72817b",
+          "#93a39c",
+          "#b8c9c1",
+          "#e2f3eb"
+        ]
+      },
+      "lichen-grey": {
+        "role": "neutral",
+        "displayName": "Lichen Grey",
+        "canonical": "oklch(54.5% 0.053 166.5)",
+        "hex": "#527a69",
+        "tonalRamp": [
+          "#001106",
+          "#012c1e",
+          "#214939",
+          "#3f6757",
+          "#5e8876",
+          "#7fa997",
+          "#a4d0bd",
+          "#cefbe7"
+        ]
+      },
+      "warm-linen": {
+        "role": "neutral",
+        "displayName": "Warm Linen",
+        "canonical": "oklch(97.2% 0.004 87.4)",
+        "hex": "#f7f6f3",
+        "tonalRamp": [
+          "#0c0b09",
+          "#252422",
+          "#41403d",
+          "#5e5d5b",
+          "#7e7d7b",
+          "#9f9e9c",
+          "#c5c4c1",
+          "#efeeeb"
+        ]
+      },
+      "linen-mint": {
+        "role": "neutral",
+        "displayName": "Linen Mint",
+        "canonical": "oklch(96.7% 0.011 166.6)",
+        "hex": "#eef7f3",
+        "tonalRamp": [
+          "#070d0a",
+          "#1f2623",
+          "#3b423e",
+          "#58605c",
+          "#777f7c",
+          "#98a19d",
+          "#bec6c2",
+          "#e8f1ed"
+        ]
+      },
+      "linen-border": {
+        "role": "neutral",
+        "displayName": "Linen Border",
+        "canonical": "oklch(93.0% 0.010 87.5)",
+        "hex": "#ebe8e0",
+        "tonalRamp": [
+          "#0d0b07",
+          "#26241f",
+          "#423f3a",
+          "#605d57",
+          "#807d77",
+          "#a19e97",
+          "#c7c4bd",
+          "#f1eee7"
+        ]
+      },
+      "linen-white": {
+        "role": "neutral",
+        "displayName": "Linen White",
+        "canonical": "oklch(100% 0 0)",
+        "hex": "#ffffff",
+        "tonalRamp": [
+          "#0c0b09",
+          "#252422",
+          "#41403d",
+          "#5e5d5b",
+          "#7e7d7b",
+          "#9f9e9c",
+          "#c5c4c1",
+          "#efeeeb"
+        ]
+      },
+      "whatsapp-green": {
+        "role": "tertiary",
+        "displayName": "WhatsApp Green",
+        "canonical": "#25D366",
+        "hex": "#25D366",
+        "tonalRamp": [
+          "#06301a",
+          "#075E54",
+          "#128C7E",
+          "#1ea952",
+          "#25D366",
+          "#5fe08d",
+          "#9cecb9",
+          "#dcf8c6"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero headlines and wordmark banner; one per page."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section openers."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Group and CTA-band headings."
+      },
+      "title-sm": {
+        "displayName": "Title Small",
+        "purpose": "Card titles, service names, FAQ questions."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running copy, 65-75ch."
+      },
+      "body-lead": {
+        "displayName": "Body Lead",
+        "purpose": "Hero and section intros."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Buttons, nav, trust strip."
+      },
+      "eyebrow": {
+        "displayName": "Eyebrow",
+        "purpose": "Kicker above headlines, led by a gold hairline."
+      }
+    },
+    "shadows": [
+      {
+        "name": "rest",
+        "value": "0 1px 2px 0 hsl(155 100% 10% / 0.03)",
+        "purpose": "FAQ items, inputs, static cards."
+      },
+      {
+        "name": "raised",
+        "value": "0 4px 6px -1px hsl(155 100% 10% / 0.05), 0 2px 4px -2px hsl(155 100% 10% / 0.05)",
+        "purpose": "Scrolled header, button hover."
+      },
+      {
+        "name": "lifted",
+        "value": "0 10px 15px -3px hsl(155 100% 10% / 0.08), 0 4px 6px -4px hsl(155 100% 10% / 0.05)",
+        "purpose": "Card hover, floating action buttons."
+      },
+      {
+        "name": "card",
+        "value": "0 2px 8px -2px hsl(155 100% 10% / 0.08), 0 8px 24px -4px hsl(155 100% 10% / 0.06)",
+        "purpose": "Feature cards on tinted sections."
+      }
+    ],
+    "motion": [
+      {
+        "name": "fade-up",
+        "value": "opacity 0→1, translateY(24px→0), 0.6s ease-out, once in view",
+        "purpose": "Section and card entrance."
+      },
+      {
+        "name": "state",
+        "value": "200ms all ease",
+        "purpose": "Button colour and shadow changes."
+      },
+      {
+        "name": "card-hover",
+        "value": "300ms all ease",
+        "purpose": "Card border and shadow lift."
+      },
+      {
+        "name": "accordion",
+        "value": "0.2s ease-out",
+        "purpose": "FAQ open/close."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
+      },
+      {
+        "name": "2xl",
+        "value": "1400px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Pill Button",
+      "kind": "button",
+      "refersTo": "button-pill",
+      "description": "Main call to action (Get a Quote) on hero and CTA bands.",
+      "html": "<button class=\"ds-btn-pill\">Get a Quote <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m9 18 6-6-6-6\"/></svg></button>",
+      "css": ".ds-btn-pill { display:inline-flex; align-items:center; gap:8px; height:48px; padding:0 32px; border:none; border-radius:9999px; background:hsl(var(--primary, 155 45% 18%)); color:#fff; font-family: Inter, sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; cursor:pointer; transition: background 200ms, box-shadow 200ms; } .ds-btn-pill:hover { background:hsl(var(--eco-secondary, 152 40% 32%)); } .ds-btn-pill:focus-visible { outline: 2px solid hsl(var(--primary, 155 45% 18%)); outline-offset: 2px; }"
+    },
+    {
+      "name": "Outline Pill Button",
+      "kind": "button",
+      "refersTo": "button-pill-outline",
+      "description": "Secondary call to action, e.g. header Get a Quote.",
+      "html": "<button class=\"ds-btn-pill-outline\">Get a Quote</button>",
+      "css": ".ds-btn-pill-outline { height:36px; padding:0 16px; border:2px solid hsl(var(--primary, 155 45% 18%)); border-radius:9999px; background:transparent; color:hsl(var(--primary, 155 45% 18%)); font-family: Inter, sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; cursor:pointer; transition: background 200ms, color 200ms; } .ds-btn-pill-outline:hover { background:hsl(var(--primary, 155 45% 18%)); color:#fff; } .ds-btn-pill-outline:focus-visible { outline: 2px solid hsl(var(--primary, 155 45% 18%)); outline-offset: 2px; }"
+    },
+    {
+      "name": "WhatsApp Button",
+      "kind": "button",
+      "refersTo": "button-whatsapp",
+      "description": "Direct WhatsApp contact; the one sanctioned off-palette colour. Current white label is 2.0:1 (known gap).",
+      "html": "<a class=\"ds-btn-whatsapp\" href=\"#\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z\"/></svg> WhatsApp Us</a>",
+      "css": ".ds-btn-whatsapp { display:inline-flex; align-items:center; gap:8px; height:48px; padding:0 32px; border-radius:9999px; background:#25D366; color:#fff; text-decoration:none; font-family: Inter, sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; box-shadow: 0 1px 2px 0 hsl(155 100% 10% / 0.03); transition: background 200ms, box-shadow 200ms; } .ds-btn-whatsapp:hover { background:#20BD5A; box-shadow: 0 4px 6px -1px hsl(155 100% 10% / 0.05), 0 2px 4px -2px hsl(155 100% 10% / 0.05); } .ds-btn-whatsapp:focus-visible { outline: 2px solid hsl(var(--primary, 155 45% 18%)); outline-offset: 2px; }"
+    },
+    {
+      "name": "Gold Button",
+      "kind": "button",
+      "refersTo": "button-gold",
+      "description": "Occasional secondary emphasis, mainly on dark bands.",
+      "html": "<button class=\"ds-btn-gold\">Request a Callback</button>",
+      "css": ".ds-btn-gold { height:40px; padding:0 20px; border:none; border-radius:6px; background:hsl(var(--eco-gold, 42 45% 60%)); color:hsl(var(--foreground, 155 25% 10%)); font-family:Inter,sans-serif; font-size:14px; font-weight:500; cursor:pointer; transition: background 200ms; } .ds-btn-gold:hover { background:hsl(var(--eco-gold-muted, 42 50% 50%)); } .ds-btn-gold:focus-visible { outline: 2px solid hsl(var(--primary, 155 45% 18%)); outline-offset: 2px; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Contact and pricing form fields.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-field-label\">Your name</span><input class=\"ds-input\" placeholder=\"Jane Jones\"></label>",
+      "css": ".ds-field { display:flex; flex-direction:column; gap:6px; font-family:Inter,sans-serif; } .ds-field-label { font-size:14px; font-weight:500; color:hsl(var(--foreground, 155 25% 10%)); } .ds-input { height:40px; padding:8px 12px; border:1px solid hsl(var(--border, 42 20% 90%)); border-radius:6px; background:#fff; color:hsl(var(--foreground, 155 25% 10%)); font-size:14px; } .ds-input::placeholder { color:hsl(var(--muted-foreground, 155 20% 40%)); } .ds-input:focus-visible { outline:2px solid hsl(var(--primary, 155 45% 18%)); outline-offset:2px; }"
+    },
+    {
+      "name": "Service Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Service pillar card with image, title, copy and link.",
+      "html": "<article class=\"ds-card\"><div class=\"ds-card-img\"></div><div class=\"ds-card-body\"><h3 class=\"ds-card-title\">Domestic Residential</h3><p class=\"ds-card-copy\">Regular home cleans, holiday-let changeovers and end-of-tenancy cleans with safe, eco-friendly products.</p><a class=\"ds-card-link\" href=\"#\">See Domestic Residential →</a></div></article>",
+      "css": ".ds-card { max-width:360px; background:#fff; border:1px solid hsl(42 20% 90% / 0.6); border-radius:12px; overflow:hidden; box-shadow:0 1px 2px 0 hsl(155 100% 10% / 0.03); transition: border-color 300ms, box-shadow 300ms; } .ds-card:hover { border-color:hsl(155 45% 18% / 0.4); box-shadow:0 10px 15px -3px hsl(155 100% 10% / 0.08), 0 4px 6px -4px hsl(155 100% 10% / 0.05); } .ds-card-img { aspect-ratio:4/3; background:linear-gradient(135deg, hsl(152 35% 95%), hsl(42 20% 96%)); } .ds-card-body { padding:24px; } .ds-card-title { margin:0 0 8px; font-family:Outfit,sans-serif; font-size:20px; font-weight:600; color:hsl(var(--foreground, 155 25% 10%)); } .ds-card-copy { margin:0 0 16px; font-family:Inter,sans-serif; font-size:14px; line-height:1.625; color:hsl(var(--muted-foreground, 155 20% 40%)); } .ds-card-link { font-family:Inter,sans-serif; font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:hsl(var(--primary, 155 45% 18%)); text-decoration:none; } .ds-card-link:hover { text-decoration:underline; text-underline-offset:4px; } .ds-card-link:focus-visible { outline: 2px solid hsl(var(--primary, 155 45% 18%)); outline-offset: 2px; }"
+    },
+    {
+      "name": "Desktop Navigation",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Uppercase tracked links with hairline dividers; active link in Preseli Green.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-link is-active\" href=\"#\">Home</a><a class=\"ds-nav-link\" href=\"#\">Services</a><a class=\"ds-nav-link\" href=\"#\">FAQs</a><a class=\"ds-nav-link\" href=\"#\">About</a><a class=\"ds-nav-link\" href=\"#\">Contact</a></nav>",
+      "css": ".ds-nav { display:flex; align-items:center; } .ds-nav-link { padding-left:24px; margin-left:24px; border-left:1px solid hsl(var(--border, 42 20% 90%)); font-family: Inter, sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; letter-spacing:0.1em; color:hsl(var(--muted-foreground, 155 20% 40%)); text-decoration:none; transition: color 200ms; } .ds-nav-link:first-child { padding-left:0; margin-left:0; border-left:none; } .ds-nav-link:hover, .ds-nav-link.is-active { color:hsl(var(--primary, 155 45% 18%)); } .ds-nav-link:focus-visible { outline: 2px solid hsl(var(--primary, 155 45% 18%)); outline-offset: 2px; }"
+    },
+    {
+      "name": "Display Headline with Eyebrow",
+      "kind": "custom",
+      "description": "Signature hero type: gold hairline eyebrow over light Fraunces with one gold italic word.",
+      "html": "<div class=\"ds-hero\"><span class=\"ds-eyebrow\"><span class=\"ds-rule\"></span>Pembrokeshire · Est. Local</span><h1 class=\"ds-display\">Complete <em>cleaning</em><br>solutions, done properly.</h1></div>",
+      "css": ".ds-hero { padding:40px; background:hsl(var(--eco-dark, 155 100% 10%)); } .ds-eyebrow { display:inline-flex; align-items:center; gap:8px; margin-bottom:24px; font-family:Inter,sans-serif; font-size:12px; font-weight:500; letter-spacing:0.3em; text-transform:uppercase; color:hsl(42 45% 60% / 0.9); } .ds-rule { width:32px; height:1px; background:hsl(42 45% 60% / 0.7); } .ds-display { margin:0; font-family:Fraunces, 'Cormorant Garamond', Georgia, serif; font-feature-settings:'ss01','ss02'; font-weight:300; font-size:clamp(2.75rem, 7vw, 5.75rem); line-height:0.95; letter-spacing:-0.025em; color:#fff; } .ds-display em { font-style:italic; color:hsl(42 45% 60% / 0.95); }"
+    },
+    {
+      "name": "Trust Strip",
+      "kind": "custom",
+      "description": "Single plain-text line of verified trust points on a Preseli Deep band.",
+      "html": "<div class=\"ds-trust\"><p>Eco-Friendly Products &nbsp;&bull;&nbsp; Reliable Local Cleaners &nbsp;&bull;&nbsp; DBS Checked &nbsp;&bull;&nbsp; Fully Insured</p></div>",
+      "css": ".ds-trust { padding:20px 16px; background:hsl(var(--eco-dark, 155 100% 10%)); border-block:1px solid rgb(255 255 255 / 0.05); } .ds-trust p { margin:0; text-align:center; font-family:Inter,sans-serif; font-size:12px; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:rgb(255 255 255 / 0.7); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Fresh Linen Room",
+    "overview": " **Creative North Star: \"The Fresh Linen Room\"**\n\nThe site should feel like walking into a room that has just been cleaned properly: bright, airy and calm, with nothing out of place. Most of the space is light linen. Preseli Green gives it weight and trust, and Harvest Gold is used sparingly, like a sprig of gorse on a freshly made bed. The finished result comes first. Real photographs of clean work carry the emotion, and the interface frames them without competing.\n\nPages are generous rather than dense, with tall sections, wide margins and short paragraphs. Type does the expressive work. A light, high-contrast Fraunces serif gives an editorial voice in large sizes, with gold italics for emphasis, while Outfit and Inter keep everything else plain and legible. Dark green bands (Preseli Deep) are the counterpoint: they hold the hero overlay, trust strips and closing calls to action, so the light sections feel fresh by contrast.\n\nThe system rules out the category's clichés. That means no bright-blue \"sparkle\" look (bubbles, shine stars, mascots), no posed stock photos of grinning cleaners, no loud sales banners or countdowns, and no techy purple or blue gradients or glowing glass.",
+    "keyCharacteristics": [
+      "Light linen surfaces, with deep green bands for punctuation.",
+      "A light Fraunces display face with gold italic emphasis words.",
+      "Small, widely tracked uppercase labels and eyebrows, often led by a thin gold rule.",
+      "Rounded pill buttons for every main call to action.",
+      "Soft, ambient shadows tinted green, never grey.",
+      "Restrained, once-only fade-up motion."
+    ],
+    "rules": [
+      {
+        "name": "The Sprig of Gorse Rule",
+        "body": "Harvest Gold is an accent, never a field. Keep it to emphasis words, eyebrows, hairlines and the occasional button, at roughly 5% of any screen or less. Its rarity is what makes it special.",
+        "section": "colors"
+      },
+      {
+        "name": "The Gold-on-Dark Rule",
+        "body": "Harvest Gold text only appears on Preseli Deep, Charcoal Moss or photo overlays, where it reaches 6.3:1 or more. On white it falls to 2.2:1, which fails WCAG, so on light surfaces gold is limited to hairlines, fills with Ink Moss text, or display type at 48px or larger, and even then only as a single decorative word.",
+        "section": "colors"
+      },
+      {
+        "name": "The No Cold Grey Rule",
+        "body": "Every neutral is tinted green or gold. Never introduce slate, zinc or pure #000 or #808080.",
+        "section": "colors"
+      },
+      {
+        "name": "The Light Serif Rule",
+        "body": "Fraunces is only ever set light (300) or regular (400). Bold serif headlines break the linen calm.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Italic Rule",
+        "body": "At most one word or short phrase per display heading is set in gold italic. Two makes it decoration.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tinted Shadow Rule",
+        "body": "Shadow colour is always Preseli Deep at low alpha. A neutral or black shadow muddies the linen.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Gentle Lift Rule",
+        "body": "Hover adds at most one step of shadow, plus a border shift to Preseli Green at 40% opacity. No translate or scale bounce.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** keep most of every page on Linen White, Warm Linen or Linen Mint, with Preseli Deep bands as deliberate punctuation.",
+      "**Do** set display headlines in light Fraunces with at most one gold italic word.",
+      "**Do** use pill buttons for every main call to action, keeping \"Get a Quote\" and \"WhatsApp Us\" one tap away on mobile.",
+      "**Do** tint every shadow and neutral green or gold.",
+      "**Do** use real job photography first. Credit any stock image in a code comment.",
+      "**Do** keep motion to a single 0.6s ease-out fade-up, once per element, and honour `prefers-reduced-motion`."
+    ],
+    "donts": [
+      "**Don't** use the bright-blue \"sparkle\" cleaning look: bubbles, shine stars, cartoon mascots or clip-art leaves.",
+      "**Don't** use posed stock photos of over-smiling cleaners.",
+      "**Don't** add loud sales banners, countdown timers, red discount badges or \"LOWEST PRICE\" stickers.",
+      "**Don't** use purple or blue gradients, glassmorphism or neon glows.",
+      "**Don't** set Harvest Gold body text on light surfaces (2.2:1 fails WCAG).",
+      "**Don't** add new white-on-#25D366 text. The current WhatsApp button label is only 2.0:1, a known gap. Fix it with Ink Moss label text or WhatsApp's darker teal (#075E54) rather than copying the pattern.",
+      "**Don't** use bold or black Fraunces, or bounce, elastic or scale-pop motion."
+    ]
+  }
+}
