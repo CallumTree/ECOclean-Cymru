@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -98,38 +99,47 @@ export function Header() {
       </nav>
 
       {/* Mobile Navigation */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-border bg-background">
-          <div className="container-wide mx-auto px-4 py-4 space-y-1">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className={cn(
-                  "block px-3 py-2 rounded-md text-xs font-semibold uppercase tracking-widest transition-colors",
-                  location.pathname === item.href
-                    ? "text-primary bg-muted"
-                    : "text-muted-foreground hover:text-primary hover:bg-muted"
-                )}
-              >
-                {item.name}
-              </Link>
-            ))}
-            <div className="pt-4 space-y-2">
-              <Button variant="pillOutline" className="w-full" asChild>
-                <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>Get a Quote</Link>
-              </Button>
-              <Button variant="whatsapp" className="w-full rounded-full uppercase text-xs tracking-wider" asChild>
-                <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
-                  <Phone className="w-4 h-4" />
-                  WhatsApp Us
-                </a>
-              </Button>
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            key="mobile-menu"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
+            className="lg:hidden border-t border-border bg-background overflow-hidden"
+          >
+            <div className="container-wide mx-auto px-4 py-4 space-y-1">
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={cn(
+                    "block px-3 py-2 rounded-md text-xs font-semibold uppercase tracking-widest transition-colors",
+                    location.pathname === item.href
+                      ? "text-primary bg-muted"
+                      : "text-muted-foreground hover:text-primary hover:bg-muted"
+                  )}
+                >
+                  {item.name}
+                </Link>
+              ))}
+              <div className="pt-4 space-y-2">
+                <Button variant="pillOutline" className="w-full" asChild>
+                  <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>Get a Quote</Link>
+                </Button>
+                <Button variant="whatsapp" className="w-full rounded-full uppercase text-xs tracking-wider" asChild>
+                  <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">
+                    <Phone className="w-4 h-4" />
+                    WhatsApp Us
+                  </a>
+                </Button>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

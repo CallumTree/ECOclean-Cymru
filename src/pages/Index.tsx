@@ -259,7 +259,12 @@ const Index = () => {
                     </>
                   ) : (
                     <div className="w-full h-full flex items-center justify-center bg-eco-tint">
-                      {pillar.icon && <pillar.icon className="w-16 h-16 text-primary" strokeWidth={1} />}
+                      {pillar.icon && (
+                        <pillar.icon
+                          className="w-16 h-16 text-primary transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-6"
+                          strokeWidth={1}
+                        />
+                      )}
                     </div>
                   )}
                 </div>
@@ -372,13 +377,13 @@ const Index = () => {
             {whyChooseUs.map((item, index) => (
               <motion.div
                 key={item.title}
-                className="bg-white/5 border border-white/10 p-6 rounded-lg"
+                className="group bg-white/5 border border-white/10 p-6 rounded-lg transition-colors hover:bg-white/10"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.05 }}
               >
-                <item.icon className="w-6 h-6 text-eco-gold mb-3" />
+                <item.icon className="w-6 h-6 text-eco-gold mb-3 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6" />
                 <h3 className="font-heading font-semibold mb-1.5">{item.title}</h3>
                 <p className="text-sm text-white/70 leading-relaxed">{item.description}</p>
               </motion.div>
