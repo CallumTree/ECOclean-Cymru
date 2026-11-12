@@ -16,6 +16,7 @@ import {
 import { Layout } from "@/components/Layout";
 import { useToast } from "@/hooks/use-toast";
 import { CONTACT_EMAIL, WEB3FORMS_ACCESS_KEY, WHATSAPP_DISPLAY_NUMBER, whatsappLink } from "@/lib/constants";
+import testimonialsBg from "@/assets/testimonials-bg.jpg";
 
 const services = [
   "Construction Site Welfare Facility Cleans",
@@ -25,7 +26,6 @@ const services = [
   "Deep Cleans & Oven Cleans",
   "End of Tenancy Cleans",
   "Regular Domestic Cleans",
-  "Mould Cleaning & Removal",
   "Other / Custom Query",
 ];
 
@@ -167,17 +167,21 @@ export default function Contact() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="bg-eco-charcoal py-24 md:py-32">
-        <div className="container-wide mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative -mt-16 md:-mt-20 pt-40 md:pt-48 pb-20 md:pb-28 overflow-hidden">
+        <div className="absolute inset-0">
+          <img src={testimonialsBg} alt="" aria-hidden="true" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-eco-dark/85" />
+        </div>
+        <div className="container-wide mx-auto px-4 sm:px-6 lg:px-8 relative">
           <motion.div
             className="max-w-2xl"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <h1 className="font-heading text-5xl md:text-6xl font-light text-white mb-4 leading-[1.05]">
-              Get in Touch
+            <h1 className="font-display text-5xl md:text-6xl font-light text-white mb-4 leading-[0.95]">
+              Get in <em className="italic text-eco-gold/95">touch.</em>
             </h1>
-            <p className="text-white/70 text-lg">
+            <p className="text-white/80 text-lg font-light">
               Ready for a cleaner space? Tell us about the job and we'll be in touch shortly.
             </p>
           </motion.div>

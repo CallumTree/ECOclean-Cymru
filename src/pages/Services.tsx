@@ -27,22 +27,6 @@ interface ServicePillar {
   services: ServiceItem[];
 }
 
-// Licensed Unsplash photos for the Construction & Welfare pillar
-const constructionGalleryPhotos = [
-  {
-    src: "https://images.unsplash.com/photo-1529220502050-f15e570c634e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600",
-    alt: "Cleaning in progress caution signage",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1634586648651-f1fb9ec10d90?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600",
-    alt: "Renovation site mid-clean, debris and tools on the floor",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1740325927180-6e57faaae5db?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600",
-    alt: "Eco-friendly cleaning products ready for use",
-  },
-];
-
 const extrasGroups = [
   {
     title: "Kitchen Extras",
@@ -70,96 +54,76 @@ const servicePillars: ServicePillar[] = [
   {
     id: "domestic-residential",
     pillarTitle: "Domestic Residential",
-    pillarDescription: "Trusted domestic cleaning, holiday let turnovers, tenancy cleans, deep resets, and anti-fungal mould treatments across Pembrokeshire.",
+    pillarDescription: "Regular domestic cleaning, holiday let turnovers, deep cleans and end of tenancy cleans across Pembrokeshire.",
     services: [
       {
         title: "Regular Domestic Cleans",
-        summary: "Scheduled weekly or bi-weekly home cleaning by dedicated, vetted local cleaners using family-safe eco products.",
-        description: "Consistent and trustworthy domestic home cleaning on a fixed weekly or bi-weekly routine across Pembrokeshire. Designed for homeowners, busy families, and private residences, our vetted local cleaning staff use family and pet-safe eco-friendly products to maintain a healthy, spotless living environment.",
+        summary: "Scheduled weekly or bi-weekly home cleaning from a dedicated, vetted local cleaner using family-safe eco products.",
+        description: "Reliable, consistent home cleaning on a weekly or bi-weekly routine. You get the same vetted cleaner each visit, using eco-friendly products that are safe around kids and pets.",
         included: [
-          "Dedicated regular cleaner for personal consistency and trust",
-          "Kitchen counter wiping, hobs, sink sanitization, and exterior appliance cleaning",
-          "Bathroom & shower deep scrubbing, limescale control, and mirror polishing",
-          "Dusting all surfaces, picture frames, ornaments, and skirting boards",
-          "Vacuuming carpets & rug areas; mopping hard floors throughout the house",
-          "Bed making, bin emptying, and gentle tidying of living spaces",
-          "Non-toxic, eco-friendly plant-based cleaning chemicals safe for kids & pets",
+          "Same dedicated cleaner each visit",
+          "Kitchen surfaces, hob and sink cleaned",
+          "Bathroom clean including limescale and mirrors",
+          "Dusting of surfaces and skirting boards",
+          "Vacuuming and mopping of all floors",
+          "Bed making, bin emptying and general tidying",
         ],
         excluded: [
-          "Heavy oven degreasing (available as an occasional add-on)",
-          "Off-site laundry & ironing",
+          "Heavy oven degreasing (available as an add-on)",
+          "Laundry and ironing",
         ],
       },
       {
         title: "Holiday Let & Airbnb Turnovers",
-        summary: "Fast, reliable changeover cleans between guests to keep your property 5-star guest-ready.",
-        description: "Fast, dependable turnover cleaning tailored for Pembrokeshire holiday homeowners, coastal cottages, apartments, and letting agents. Scheduled flexibly around guest check-in and check-out windows to ensure seamless arrivals and glowing reviews.",
+        summary: "Fast, reliable changeover cleans between guests, scheduled around check-in and check-out.",
+        description: "Quick turnaround cleaning for holiday cottages, apartments and lets, scheduled flexibly around your guest check-in and check-out times.",
         included: [
-          "Flexible changeover scheduling aligned with guest check-in / check-out windows",
-          "Full kitchen deep sanitization, appliance wipe-downs, and cutlery/crockery checks",
-          "Sparkling bathroom deep clean, anti-limescale treatment, and mirror polishing",
-          "Bed stripping, fresh linen fitting, and hotel-style bed dressing (on request)",
-          "High-touch surface disinfection (remotes, door handles, key safes, light switches)",
-          "Thorough vacuuming and mopping of all floors, patios, and entryways",
-          "Pre-arrival damage check, lost property reporting, and welcome pack placement",
-          "Bin emptying & fresh liner installation prior to new guest arrival",
+          "Flexible scheduling around guest changeovers",
+          "Full kitchen clean and appliance wipe-down",
+          "Bathroom clean and limescale treatment",
+          "Bed linen change and bed-making (on request)",
+          "High-touch surface cleaning (handles, remotes, switches)",
+          "Vacuuming and mopping of all floors",
+          "Damage check and lost property reporting",
+          "Bin emptying and fresh liners before the next guest",
         ],
         excluded: [
-          "Off-site commercial laundry processing (available as a dedicated extra)",
-          "Welcome pack hamper sourcing & purchasing",
+          "Off-site laundry service (available as an add-on)",
+          "Welcome pack sourcing",
         ],
       },
       {
         title: "Deep Cleans & Oven Cleans",
-        summary: "Intensive top-to-bottom restorative cleaning for homes or commercial kitchens needing a total reset.",
-        description: "A comprehensive, intensive top-to-bottom restorative clean for homeowners, private residences, and commercial kitchens needing a total reset. Tackles heavy grime, stubborn limescale, oven grease, and hidden dust traps that regular cleaning misses on a one-off or periodic schedule.",
+        summary: "A thorough top-to-bottom clean for homes or kitchens that need a proper reset.",
+        description: "An intensive clean beyond a normal visit — for homes or commercial kitchens needing a full reset. Tackles built-up grime, limescale and the spots regular cleaning misses.",
         included: [
-          "Heavy-duty oven, range cooker, hob, and extractor filter deep degreasing",
-          "Refrigerator, freezer, dishwasher, and washing machine drum & seal hygiene wash",
-          "High-level dusting of light fittings, ceiling corners, and curtain poles",
-          "Tile grout scrubbing, hard water deposit scaling, and silicone line treatment",
-          "Moving movable furniture to clean underneath and behind",
-          "Detailed door, frame, architrave, and radiator deep cleaning",
+          "Oven, hob and extractor deep clean",
+          "Fridge, freezer, dishwasher and washing machine clean",
+          "High dusting of light fittings and curtain poles",
+          "Tile grout and limescale treatment",
+          "Furniture moved to clean behind and underneath",
+          "Doors, frames and radiators cleaned",
         ],
         excluded: [
-          "Appliance electrical repairs",
-          "Structural wall painting or plaster repair",
+          "Appliance repairs",
+          "Wall painting or plaster repair",
         ],
       },
       {
         title: "End of Tenancy Cleans",
-        summary: "Deposit-standard move-in and move-out deep cleaning for rental properties across Pembrokeshire.",
-        description: "Comprehensive deep cleaning for rental properties across Pembrokeshire. Designed to meet strict letting agent and landlord inventory checklists, helping tenants move out with confidence and properties ready for immediate re-letting.",
+        summary: "Deposit-standard cleaning for rental properties, move-in or move-out.",
+        description: "A full deep clean for rental properties, designed to meet letting agent and landlord checklists so tenants can move out with confidence.",
         included: [
-          "Full property deep clean covering bedrooms, living areas, kitchens, and bathrooms",
-          "Internal window cleaning, frame, sill, and track wipe-downs",
-          "Inside and outside cupboard, wardrobe, and drawer sanitization",
-          "Oven, hob, extractor fan, and built-in appliance deep degreasing",
-          "Limescale removal from taps, shower heads, tile grout, and glass screens",
-          "Skirting boards, door frames, light switches, and socket faceplate wipe-downs",
-          "Detailed move-out inventory checklist provided for agent sign-off",
+          "Full clean of bedrooms, living areas, kitchen and bathroom",
+          "Internal window, sill and frame cleaning",
+          "Inside cupboards, wardrobes and drawers",
+          "Oven and built-in appliance deep clean",
+          "Limescale removal from taps, grout and glass",
+          "Skirting boards, door frames and switches wiped down",
         ],
         excluded: [
-          "Professional carpet steam extraction (available as a specialized add-on)",
-          "Garden clearance or outdoor shed emptying",
-        ],
-      },
-      {
-        title: "Mould Cleaning & Removal",
-        summary: "Specialist anti-fungal treatments, spore eradication, and preventative care for walls and ceilings.",
-        description: "Specialist anti-fungal mould treatment, black mould eradication, and spore removal for damp-prone homes, rental properties, bathrooms, and domestic premises. Includes on-site damp cause assessment, safe biocidal wash eliminating mould at the root, and preventative barrier spray application.",
-        included: [
-          "Surface stain eradication & deep anti-fungal biocidal wash on affected walls & ceilings",
-          "Black mould treatment on bathroom tile grout, silicone sealants & window frames",
-          "Airborne spore control preparation and safe sanitizing wipe-down of surrounding areas",
-          "On-site diagnostic assessment for underlying damp causes (condensation, cold bridging, ventilation)",
-          "Application of anti-mould preventative barrier spray following cleaning treatment",
-          "Operatives equipped with full specialist PPE and respiratory protection",
-          "Post-treatment care guidelines and moisture control recommendations for property owners",
-        ],
-        excluded: [
-          "Structural damp-proofing tanking or major building repairs (roofing, guttering)",
-          "Replacing severely rotted timber or water-damaged structural plasterboard",
+          "Carpet steam cleaning (available as an add-on)",
+          "Garden or outdoor clearance",
         ],
       },
     ],
@@ -167,24 +131,24 @@ const servicePillars: ServicePillar[] = [
   {
     id: "commercial",
     pillarTitle: "Commercial",
-    pillarDescription: "Dependable, tailored contract cleaning for offices, retail units, venues, and hospitality spaces across Pembrokeshire.",
+    pillarDescription: "Reliable contract cleaning for offices, retail units and hospitality venues across Pembrokeshire.",
     services: [
       {
         title: "Commercial & Office Cleans",
-        summary: "Scheduled weekly, bi-weekly, or daily out-of-hours contract cleaning for offices and commercial premises.",
-        description: "Dependable, high-grade commercial cleaning for offices, retail stores, pubs, restaurants, and childcare facilities across Pembrokeshire. Available on custom weekly, bi-weekly, or daily contract schedules with flexible early morning, evening, or weekend out-of-hours slots and insured keyholder options.",
+        summary: "Scheduled contract cleaning for offices and commercial premises, in or out of hours.",
+        description: "Dependable commercial cleaning for offices, retail units, pubs and venues, on a schedule that suits you — including early morning, evening or weekend slots with keyholder options.",
         included: [
-          "Custom weekly, bi-weekly, or daily contract cleaning packages",
-          "Workstation, desk, keyboard, phone, and reception area sanitization",
-          "Staff kitchen & breakroom deep cleans including microwaves, kettles, and sinks",
-          "Washroom & toilet block deep sanitization, mirror polishing, and consumable restocking",
-          "Commercial floor vacuuming, hard floor mopping, and entrance matting care",
-          "Waste bin emptying, liner replacement, and eco-friendly recycling sorting",
-          "Keyholder options for out-of-hours cleaning teams",
+          "Custom weekly, bi-weekly or daily schedules",
+          "Desks, workstations and reception areas cleaned",
+          "Staff kitchen and breakroom cleaned",
+          "Washroom cleaning and consumable restocking",
+          "Floor vacuuming and mopping",
+          "Bin emptying and recycling sorted",
+          "Keyholder options for out-of-hours access",
         ],
         excluded: [
-          "Server room deep technical hardware maintenance",
-          "Exterior window abseiling / cradle cleaning",
+          "IT/server room maintenance",
+          "Exterior high-level window cleaning",
         ],
       },
     ],
@@ -192,43 +156,41 @@ const servicePillars: ServicePillar[] = [
   {
     id: "construction-welfare",
     pillarTitle: "Construction & Welfare",
-    pillarDescription: "DBS-checked cleaning teams, working towards CSCS accreditation, dedicated to site welfare units, canteens, drying rooms, and phased post-build handover cleans.",
+    pillarDescription: "DBS-checked cleaning teams, working towards CSCS accreditation, covering site welfare units and post-build handover cleans.",
     services: [
       {
         title: "Construction Site Welfare Facility Cleans",
-        summary: "Scheduled hygiene maintenance for site cabins, canteens, drying rooms, and offices by DBS-checked crew.",
-        description: "Scheduled and deep hygiene maintenance for site cabins, canteens, drying rooms, shower blocks, and site management offices across Pembrokeshire. DBS-checked operatives, currently working towards CSCS accreditation, adhering strictly to site safety protocols, PPE requirements, RAMS, and HSE welfare hygiene standards on weekly, bi-weekly, or daily shift rotations.",
+        summary: "Scheduled hygiene cleaning for site cabins, canteens and welfare facilities by DBS-checked crew.",
+        description: "Scheduled cleaning for site cabins, canteens, drying rooms and welfare units, carried out by DBS-checked operatives working towards CSCS accreditation and following site safety protocols.",
         included: [
-          "Scheduled weekly, bi-weekly, or daily shift-tailored cleaning rotations",
-          "Site canteen & mess room tables, benches, counters, and microwave/fridge sanitization",
-          "Drying rooms, locker areas & boot washdowns with disinfectant wash",
-          "Welfare toilets, shower blocks, and washroom sanitization & paper product restocking",
-          "High-touch point disinfectant wipes (door handles, light switches, keypads, handrails)",
-          "Site manager offices, desks, computer monitors & filing equipment dust & wipe",
-          "DBS-checked crew wearing mandatory site PPE (hard hat, boots, hi-vis, gloves), working towards CSCS accreditation",
-          "Custom site safety briefing & RAMS compliance provided prior to starting work",
+          "Scheduled weekly, bi-weekly or daily rotations",
+          "Canteen and mess room cleaned",
+          "Drying rooms and locker areas cleaned",
+          "Welfare toilets and shower blocks cleaned and restocked",
+          "High-touch point disinfection",
+          "Site office cleaning",
+          "Crew in full site PPE, working towards CSCS accreditation",
         ],
         excluded: [
-          "Hazardous chemical waste or asbestos removal",
-          "Structural site clearance (covered under Post-Construction / Builder Cleans)",
+          "Hazardous waste or asbestos removal",
+          "Structural site clearance (see Post-Construction Cleans)",
         ],
       },
       {
         title: "Post-Construction & Builder Cleans",
-        summary: "Phased builder and sparkle cleans removing plaster dust, paint overspray, and film ready for client handover.",
-        description: "Specialist multi-stage post-construction cleaning for building sites, extensions, and commercial renovations across Pembrokeshire. We offer phased builder cleans, sparkle cleans, and pre-handover touch-ups to eliminate fine plaster dust, paint overspray, silicone film, and grout haze.",
+        summary: "Phased builder cleans removing dust, debris and residue ready for handover.",
+        description: "Multi-stage cleaning for building sites, extensions and renovations — from an initial builder clean through to a final sparkle clean ready for handover.",
         included: [
-          "Phased cleaning options: Initial builder clean, sparkle clean, and pre-handover touch-up",
-          "Fine plaster dust, sawdust, and residual building debris vacuuming with HEPA filtration",
-          "Paint overspray, sticker adhesive, and grout haze removal from glass and tiles",
-          "Internal glass window polishing, frame cleaning, sills, and skirting board deep wipes",
-          "Sanitizing built-in appliances, kitchen units, sanitaryware, and chrome fittings",
-          "Hard floor scrub, wash, and carpet protective vacuuming",
-          "Surface mould & mildew cleans on request before final decorating",
+          "Builder clean, sparkle clean and pre-handover touch-up",
+          "Dust and debris removal with HEPA filtration",
+          "Paint overspray and adhesive removal from glass and tiles",
+          "Internal window and sill cleaning",
+          "Kitchen units and sanitaryware cleaned",
+          "Hard floor clean and carpet protection",
         ],
         excluded: [
-          "Waste skip loading or heavy rubbish removal",
-          "Exterior high-reach scaffolding or render jet washing",
+          "Skip loading or rubbish removal",
+          "Exterior scaffolding or render cleaning",
         ],
       },
     ],
@@ -378,20 +340,6 @@ export default function Services() {
                   </AccordionItem>
                 )}
               </Accordion>
-
-              {pillar.id === "construction-welfare" && (
-                <div className="grid grid-cols-3 gap-3 pt-2">
-                  {constructionGalleryPhotos.map((photo) => (
-                    <img
-                      key={photo.src}
-                      src={photo.src}
-                      alt={photo.alt}
-                      loading="lazy"
-                      className="w-full h-24 sm:h-32 object-cover rounded-md border border-border/60"
-                    />
-                  ))}
-                </div>
-              )}
             </div>
           ))}
         </div>

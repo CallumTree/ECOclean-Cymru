@@ -106,8 +106,8 @@ export default function About() {
             </h2>
             <div className="grid sm:grid-cols-2 gap-8">
               {values.map((value) => (
-                <div key={value.title}>
-                  <value.icon className="w-9 h-9 text-primary mb-4" strokeWidth={1.25} />
+                <div key={value.title} className="group">
+                  <value.icon className="w-9 h-9 text-primary mb-4 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6" strokeWidth={1.25} />
                   <h3 className="font-heading font-semibold text-lg text-foreground">
                     {value.title}
                   </h3>
