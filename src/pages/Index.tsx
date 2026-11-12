@@ -12,6 +12,7 @@ import serviceCommercial from "@/assets/real-photos/pub-bar.jpg";
 // directly representative of the site welfare units this pillar covers.
 const servicePostConstruction = "https://images.unsplash.com/photo-1789784145518-68a9deec9d61?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080";
 import { beforeAfterPairs } from "@/lib/beforeAfterGallery";
+import { BeforeAfterSlider } from "@/components/BeforeAfterSlider";
 
 // Shown in place of customer reviews until we have real, verifiable
 // Google reviews to display instead of asking people to take our word for it.
@@ -122,12 +123,15 @@ const Index = () => {
       {/* HERO — full-bleed image, clean editorial presentation */}
       <section className="relative min-h-[90svh] flex items-center overflow-hidden">
         <div className="absolute inset-0">
-          <img
+          <motion.img
             src={heroImg}
             alt="Professional cleaner wiping a marble worktop in a sunlit kitchen"
-            className="w-full h-full object-cover scale-105"
+            className="w-full h-full object-cover"
             width={1920}
             height={1280}
+            initial={{ scale: 1.08 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 16, ease: "easeOut" }}
           />
           <div className="absolute inset-0 eco-gradient-overlay" />
         </div>
@@ -295,7 +299,7 @@ const Index = () => {
               Before &amp; <em className="italic text-eco-gold/95">after.</em>
             </h2>
             <p className="text-white/60 mt-4 max-w-lg">
-              Real difference, real detail. Slide your eye across — these are the moments that matter.
+              Real difference, real detail. Drag the slider to see it for yourself.
             </p>
           </motion.div>
 
@@ -308,16 +312,12 @@ const Index = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: i * 0.1 }}
               >
-                <div className="grid grid-cols-2 gap-1 aspect-[16/9]">
-                  <div className="relative overflow-hidden">
-                    <img src={pair.before} alt={`${pair.label} before`} loading="lazy" className="w-full h-full object-cover grayscale-[30%]" />
-                    <span className="absolute top-3 left-3 bg-black/60 text-white text-[10px] tracking-widest uppercase px-2 py-1">Before</span>
-                  </div>
-                  <div className="relative overflow-hidden">
-                    <img src={pair.after} alt={`${pair.label} after`} loading="lazy" className="w-full h-full object-cover" />
-                    <span className="absolute top-3 left-3 bg-eco-gold text-eco-charcoal text-[10px] tracking-widest uppercase px-2 py-1 font-semibold">After</span>
-                  </div>
-                </div>
+                <BeforeAfterSlider
+                  before={pair.before}
+                  after={pair.after}
+                  beforeAlt={`${pair.label} before`}
+                  afterAlt={`${pair.label} after`}
+                />
                 <p className="mt-4 font-display text-xl text-white/90">{pair.label}</p>
               </motion.div>
             ))}
