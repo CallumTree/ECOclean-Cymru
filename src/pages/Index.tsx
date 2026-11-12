@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Phone, ChevronRight, ArrowRight, Leaf, BadgeCheck, MapPin, Clock } from "lucide-react";
+import { Phone, ChevronRight, ArrowRight, Leaf, BadgeCheck, MapPin, Clock, HardHat } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
 import { whatsappLink } from "@/lib/constants";
@@ -8,9 +8,6 @@ import logo from "@/assets/logo-mark.png";
 import heroImg from "@/assets/hero-cleaning.jpg";
 import serviceDomestic from "@/assets/real-photos/bathroom-after.jpg";
 import serviceCommercial from "@/assets/real-photos/pub-bar.jpg";
-// Photo credit: MChe Lee, via Unsplash — stacked modular welfare cabins,
-// directly representative of the site welfare units this pillar covers.
-const servicePostConstruction = "https://images.unsplash.com/photo-1789784145518-68a9deec9d61?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080";
 import { beforeAfterPairs } from "@/lib/beforeAfterGallery";
 import { BeforeAfterSlider } from "@/components/BeforeAfterSlider";
 
@@ -45,7 +42,7 @@ const servicePillars = [
     title: "Domestic Residential",
     image: serviceDomestic,
     description:
-      "From regular weekly home cleans and 5-star holiday let changeovers to thorough end-of-tenancy cleans, deep oven restorations, and targeted anti-fungal mould treatments. We keep private homes and letting properties spotless with safe, eco-friendly products.",
+      "Regular home cleans, holiday let changeovers, end-of-tenancy cleans and deep oven restorations. We keep private homes and letting properties spotless with safe, eco-friendly products.",
     cta: "See Domestic Residential",
   },
   {
@@ -59,7 +56,7 @@ const servicePillars = [
   {
     id: "construction-welfare",
     title: "Construction & Welfare",
-    image: servicePostConstruction,
+    icon: HardHat,
     description:
       "Dedicated cleaning operatives for scheduled site cabin, canteen, and welfare facility hygiene maintenance, plus multi-stage post-construction builder cleans and sparkle finishes ready for client handover. DBS checked, working towards CSCS accreditation.",
     cta: "See Construction & Welfare",
@@ -250,13 +247,21 @@ const Index = () => {
                 transition={{ duration: 0.6, delay: i * 0.1 }}
               >
                 <div className="relative overflow-hidden aspect-[4/3] bg-muted">
-                  <img
-                    src={pillar.image}
-                    alt={pillar.title}
-                    loading="lazy"
-                    className="w-full h-full object-cover transition-transform duration-[700ms] ease-out group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                  {pillar.image ? (
+                    <>
+                      <img
+                        src={pillar.image}
+                        alt={pillar.title}
+                        loading="lazy"
+                        className="w-full h-full object-cover transition-transform duration-[700ms] ease-out group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                    </>
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-eco-tint">
+                      {pillar.icon && <pillar.icon className="w-16 h-16 text-primary" strokeWidth={1} />}
+                    </div>
+                  )}
                 </div>
 
                 <div className="p-6 flex flex-col flex-1">

@@ -1,10 +1,15 @@
 import { ChevronRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useHideNearFooter } from "@/hooks/useHideNearFooter";
 
 export function FloatingQuoteButton() {
   const visible = useHideNearFooter();
+  const { pathname } = useLocation();
+
+  // Pointless (and on smaller screens, overlapping) to float a "Get a
+  // Quote" button on the page that already is the quote form.
+  if (pathname === "/contact") return null;
 
   return (
     <div

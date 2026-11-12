@@ -4,6 +4,7 @@ import { Phone, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
 import { whatsappLink } from "@/lib/constants";
+import heroCleaning from "@/assets/hero-cleaning.jpg";
 import {
   Accordion,
   AccordionContent,
@@ -50,17 +51,21 @@ export default function FAQs() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="bg-eco-charcoal py-24 md:py-32">
-        <div className="container-wide mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative -mt-16 md:-mt-20 pt-40 md:pt-48 pb-20 md:pb-28 overflow-hidden">
+        <div className="absolute inset-0">
+          <img src={heroCleaning} alt="" aria-hidden="true" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 eco-gradient-overlay" />
+        </div>
+        <div className="container-wide mx-auto px-4 sm:px-6 lg:px-8 relative">
           <motion.div
             className="max-w-2xl"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <h1 className="font-heading text-5xl md:text-6xl font-light text-white mb-4 leading-[1.05]">
-              Frequently Asked Questions
+            <h1 className="font-display text-5xl md:text-6xl font-light text-white mb-4 leading-[0.95]">
+              Frequently <em className="italic text-eco-gold/95">asked.</em>
             </h1>
-            <p className="text-white/70 text-lg">
+            <p className="text-white/80 text-lg font-light">
               Everything you need to know about our cleaning services.
             </p>
           </motion.div>
