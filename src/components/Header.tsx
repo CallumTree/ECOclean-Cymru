@@ -44,21 +44,34 @@ export function Header() {
 
         {/* Desktop Navigation */}
         <div className="hidden lg:flex items-center">
-          {navigation.map((item, index) => (
-            <Link
-              key={item.name}
-              to={item.href}
-              className={cn(
-                "text-xs font-semibold uppercase tracking-widest transition-colors hover:text-primary pl-6 first:pl-0",
-                index > 0 && "border-l border-border",
-                location.pathname === item.href
-                  ? "text-primary"
-                  : "text-muted-foreground"
-              )}
-            >
-              {item.name}
-            </Link>
-          ))}
+          {navigation.map((item, index) => {
+            const active = location.pathname === item.href;
+            return (
+              <Link
+                key={item.name}
+                to={item.href}
+                className={cn(
+                  "group relative pl-6 first:pl-0",
+                  index > 0 && "border-l border-border"
+                )}
+              >
+                <span
+                  className={cn(
+                    "relative text-xs font-semibold uppercase tracking-widest transition-colors",
+                    active ? "text-primary" : "text-muted-foreground group-hover:text-primary"
+                  )}
+                >
+                  {item.name}
+                  <span
+                    className={cn(
+                      "absolute left-0 -bottom-1.5 h-px w-full bg-primary origin-left transition-transform duration-300",
+                      active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                    )}
+                  />
+                </span>
+              </Link>
+            );
+          })}
         </div>
 
         {/* Desktop CTAs */}
