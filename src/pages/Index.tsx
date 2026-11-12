@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Phone, ChevronRight, ArrowRight, Leaf, BadgeCheck, MapPin, Clock, HardHat } from "lucide-react";
+import { Phone, ChevronRight, ArrowRight, Leaf, BadgeCheck, MapPin, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/Layout";
 import { whatsappLink } from "@/lib/constants";
@@ -8,6 +8,7 @@ import logo from "@/assets/logo-mark.png";
 import heroImg from "@/assets/hero-cleaning.jpg";
 import serviceDomestic from "@/assets/real-photos/bathroom-after.jpg";
 import serviceCommercial from "@/assets/real-photos/pub-bar.jpg";
+import serviceConstruction from "@/assets/real-photos/construction-site.jpg";
 import { beforeAfterPairs } from "@/lib/beforeAfterGallery";
 import { BeforeAfterSlider } from "@/components/BeforeAfterSlider";
 
@@ -56,7 +57,7 @@ const servicePillars = [
   {
     id: "construction-welfare",
     title: "Construction & Welfare",
-    icon: HardHat,
+    image: serviceConstruction,
     description:
       "Dedicated cleaning operatives for scheduled site cabin, canteen, and welfare facility hygiene maintenance, plus multi-stage post-construction builder cleans and sparkle finishes ready for client handover. DBS checked, working towards CSCS accreditation.",
     cta: "See Construction & Welfare",
@@ -247,26 +248,13 @@ const Index = () => {
                 transition={{ duration: 0.6, delay: i * 0.1 }}
               >
                 <div className="relative overflow-hidden aspect-[4/3] bg-muted">
-                  {pillar.image ? (
-                    <>
-                      <img
-                        src={pillar.image}
-                        alt={pillar.title}
-                        loading="lazy"
-                        className="w-full h-full object-cover transition-transform duration-[700ms] ease-out group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-                    </>
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-eco-tint">
-                      {pillar.icon && (
-                        <pillar.icon
-                          className="w-16 h-16 text-primary transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-6"
-                          strokeWidth={1}
-                        />
-                      )}
-                    </div>
-                  )}
+                  <img
+                    src={pillar.image}
+                    alt={pillar.title}
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-transform duration-[700ms] ease-out group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                 </div>
 
                 <div className="p-6 flex flex-col flex-1">
